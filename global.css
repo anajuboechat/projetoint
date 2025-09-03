@@ -1,0 +1,32 @@
+:root {
+  --background-color: #f7fbe9;
+  --text-primary: #000000;
+  --text-secondary: #828282;
+  --button-background: #3b3f2b;
+  --button-text: #e6e6e6;
+  --avatar-background: #c1e3c5;
+  --border-color: #e0e0e0;
+  --input-background: rgba(247, 251, 233, 0.6);
+  --active-tab-background: #d9d9d9;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-primary);
+}
+
+.page-container {
+  max-width: 375px;
+  margin: 0 auto;
+  background-color: var(--background-color);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+main {
+  flex-grow: 1;
+}
