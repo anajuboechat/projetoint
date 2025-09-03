@@ -3,57 +3,40 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MedVest+ - Web</title>
-  <link rel="stylesheet" href="style.css">
+  <title>MedVest+ - Início</title>
+  <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
 
   <div class="splash">
-    <img src="logo.png" alt="Logo MedVest+">
+    <img src="./assets/images/logo.png" alt="Logo MedVest+">
+  </div>
+
+  <div id="loading" class="loading hidden">
+    <div class="spinner"></div>
   </div>
 
   <div class="sidebar">
     <h2>MedVest+</h2>
-    <a href="#">Início</a>
-    <a href="#">Simulados</a>
-    <a href="#">Flashcards</a>
-    <a href="#">Notificações</a>
-    <a href="perfil.html">Perfil</a>
-    <img src="logo.png" alt="logo">
-
+    <a href="#" class="nav-link">Início</a>
+    <a href="./pages/simulados.html" class="nav-link">Simulados</a>
+    <a href="./pages/flashcards.html" class="nav-link">Flashcards</a>
+    <a href="./pages/notificacoes.html" class="nav-link">Notificações</a>
+    <a href="./pages/perfil.html" class="nav-link">Perfil</a>
+    <img src="./assets/images/logo.png" alt="logo">
   </div>
 
-  <!-- Conteúdo principal -->
   <div class="main">
     <div class="title">
       <h1>Áreas do Conhecimento</h1>
     </div>
-
     <div class="cards">
-      <div class="card">
-        <span>Química</span>
-        <img src="quimica-removebg-preview.png" alt="Química">
-      </div>
-
-      <div class="card">
-        <span>Biologia</span>
-        <img src="biologia-removebg-preview.png" alt="Biologia">
-      </div>
-
-      <div class="card">
-        <span>Física</span>
-        <img src="fisica-removebg-preview.png" alt="Física">
-      </div>
+      <div class="card"><span>Química</span><img src="./assets/images/quimica-removebg-preview.png" alt="Química"></div>
+      <div class="card"><span>Biologia</span><img src="./assets/images/biologia-removebg-preview.png" alt="Biologia"></div>
+      <div class="card"><span>Física</span><img src="./assets/images/fisica-removebg-preview.png" alt="Física"></div>
     </div>
   </div>
 
-  <script>
-    // Remove a tela de splash depois de 2.5s
-    window.addEventListener("load", () => {
-      setTimeout(() => {
-        document.querySelector(".splash").classList.add("hidden");
-      }, 2500);
-    });
-  </script>
+  <script src="./js/script.js"></script>
 </body>
 </html>
