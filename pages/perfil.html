@@ -9,7 +9,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/css/global.css">
   <style>
-
   /* --- Ajuste de tela cheia --- */
   html, body {
     margin: 0;
@@ -17,14 +16,13 @@
     height: 100%;
     width: 100%;
     box-sizing: border-box;
-    overflow: hidden; /* remove barra de rolagem */
+    overflow: hidden;
   }
 
-  /* --- Layout Principal --- */
   .layout {
-    display: flex; /* Coloca sidebar e main lado a lado */
-    height: 100vh; /* ocupa altura toda da tela */
-    width: 100vw;  /* ocupa largura toda da tela */
+    display: flex;
+    height: 100vh;
+    width: 100vw;
   }
 
   .sidebar {
@@ -36,7 +34,7 @@
     padding: 20px 0;
     padding-left: 0.125%;
     box-shadow: 2px 0 8px rgba(0,0,0,0.1);
-    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-family:'Lucida Sans', Verdana, sans-serif;
   }
 
   .sidebar h2 {
@@ -67,7 +65,7 @@
   }
 
   .main {
-    flex: 1; /* pega todo o restante da largura */
+    flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -76,10 +74,10 @@
     max-width: 1000px;
     margin: 0 auto;
     font-family:'Lucida Sans', Verdana, sans-serif;
-    overflow: hidden; /* impede scroll interno */
+    overflow: hidden;
   }
 
-  /* CSS do profile */
+  /* --- Profile --- */
   .profile-section {
     display: flex;
     flex-direction: column;
@@ -103,8 +101,10 @@
   }
 
   .avatar-bg {
-    width: 100%;
-    height: 100%;
+    width: 130px;
+    height: 135px;
+    border-radius: 50%;
+    object-fit: cover;
   }
 
   .edit-icon-wrapper {
@@ -113,6 +113,7 @@
     bottom: -1px;
     width: 32px;
     height: 32px;
+    cursor: pointer;
   }
 
   .edit-icon-bg {
@@ -191,6 +192,13 @@
     display: flex;
     align-items: center;
     gap: 12px;
+    cursor: pointer;
+  }
+
+  .preference-item img {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
   }
 
   .preference-item span {
@@ -212,30 +220,35 @@
     width: 100%;
     align-self: center;
   }
+
+  #fileInput {
+    display: none;
+  }
   </style>
 </head>
 <body>
   <div class="layout">
     <div class="sidebar">
-    <h2>MedVest+</h2>
-    <a href="/index.html" class="nav-link">Início</a>
-    <a href="./simulados.html" class="nav-link">Simulados</a>
-    <a href="./flashcards.html" class="nav-link">Flashcards</a>
-    <a href="./notificacoes.html" class="nav-link">Notificações</a>
-    <a href="#" class="nav-link">Perfil</a>
-    <img src="/assets/images/logo.png" alt="logo">
-  </div>
+      <h2>MedVest+</h2>
+      <a href="/index.html" class="nav-link">Início</a>
+      <a href="./simulados.html" class="nav-link">Simulados</a>
+      <a href="./flashcards.html" class="nav-link">Flashcards</a>
+      <a href="./notificacoes.html" class="nav-link">Notificações</a>
+      <a href="#" class="nav-link">Perfil</a>
+      <img src="/assets/images/logo.png" alt="logo">
+    </div>
 
     <div class="main">
       <div id="section-profile" class="profile-section">
         <h1 class="profile-title">Meu Perfil</h1>
 
         <div class="avatar-container">
-          <img src="/assets/images/170_1561.svg" alt="User avatar background" class="avatar-bg">
-          <div class="edit-icon-wrapper">
+          <img src="/assets/images/170_1561.svg" alt="User avatar background" class="avatar-bg" id="avatarImage">
+          <div class="edit-icon-wrapper" id="editButton">
             <img src="/assets/images/170_1570.svg" alt="Edit icon background" class="edit-icon-bg">
             <img src="/assets/images/5c90d859f913fe66471afa1555e28a9e1b82c6f0.png" alt="Edit icon" class="edit-icon-pencil">
           </div>
+          <input type="file" id="fileInput" accept="image/*">
         </div>
 
         <form class="profile-form">
@@ -256,19 +269,19 @@
           <fieldset class="preferences-group">
             <legend class="form-label">Vestibulares de preferência:</legend>
             <div class="preference-item">
-              <img src="/assets/images/205_1014.svg" alt="Checkbox icon">
+              <img src="/assets/images/205_1014.svg" alt="Checkbox icon" class="toggle-btn" data-original="/assets/images/205_1014.svg">
               <span>ENEM</span>
             </div>
             <div class="preference-item">
-              <img src="/assets/images/205_1017.svg" alt="Checkbox icon">
+              <img src="/assets/images/205_1017.svg" alt="Checkbox icon" class="toggle-btn" data-original="/assets/images/205_1017.svg">
               <span>Comvest</span>
             </div>
             <div class="preference-item">
-              <img src="/assets/images/205_1020.svg" alt="Checkbox icon">
+              <img src="/assets/images/205_1020.svg" alt="Checkbox icon" class="toggle-btn" data-original="/assets/images/205_1020.svg">
               <span>Fuvest</span>
             </div>
             <div class="preference-item">
-              <img src="/assets/images/205_932.svg" alt="Checkbox icon">
+              <img src="/assets/images/205_932.svg" alt="Checkbox icon" class="toggle-btn" data-original="/assets/images/205_932.svg">
               <span>Outro</span>
             </div>
           </fieldset>
@@ -277,5 +290,40 @@
       </div>
     </div>
   </div>
+
+  <script>
+    const editButton = document.getElementById("editButton");
+    const fileInput = document.getElementById("fileInput");
+    const avatarImage = document.getElementById("avatarImage");
+
+    editButton.addEventListener("click", () => {
+      fileInput.click();
+    });
+
+    fileInput.addEventListener("change", () => {
+      const file = fileInput.files[0];
+      if (file) {
+        const imageURL = URL.createObjectURL(file);
+        avatarImage.src = imageURL;
+      }
+    });
+
+    // --- Toggle botões de preferências ---
+    const toggleButtons = document.querySelectorAll(".toggle-btn");
+    toggleButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        const simPath = "/assets/images/State=sim.png";
+        if (btn.getAttribute("data-active") === "true") {
+          // volta para o original
+          btn.src = btn.getAttribute("data-original");
+          btn.setAttribute("data-active", "false");
+        } else {
+          // troca para o "sim"
+          btn.src = simPath;
+          btn.setAttribute("data-active", "true");
+        }
+      });
+    });
+  </script>
 </body>
 </html>
