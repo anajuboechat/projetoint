@@ -195,3 +195,41 @@ a {
   color: white;
 }
 
+.mat {
+  background-color: #c8e0a4;
+  width: 400px;
+  height: 75px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0px 4px 8px rgba(0,0,0,0.1);
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.mat:hover {
+  background-color: #7ea16b;
+  color: white;
+}
+
+.mat img {
+  max-height: 100%;
+  width: auto;
+}
+
+.mat span {
+  font-size: 22px;
+  font-weight: bold;
+  color: #3b3f2b;
+}
+
+.mat:hover span {
+  color: white;
+}
+
+.main.simulados .cards .mat:hover {
+  background-color: #7ea16b;
+  color: white;
+}
