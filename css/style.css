@@ -232,9 +232,6 @@ a {
 .main.simulados .cards .mat:hover {
   background-color: #7ea16b;
   color: white;
-<<<<<<< HEAD
-}
-=======
 }
 
 .layout {
@@ -533,23 +530,54 @@ a {
   color: white;
 }
 
-/* --- Inputs e textarea --- */
+/* --- Botão de salvar hover --- */
+.save-button:hover {
+  background-color: #7ea16b;
+}
+
+.formgroup2 {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 25px;
+  width: 100%;        /* ocupa toda largura disponível do form */
+  max-width: 500px;   /* limita a largura máxima */
+  margin-left: auto;  /* centraliza horizontalmente */
+  margin-right: auto;
+}
+
 .input-field input,
 .input-field select,
 .input-field textarea {
-  width: 300%;
+  width: 100%;        /* ocupa 100% do formgroup2 */
   border: none;
   outline: none;
   background: transparent;
   font-size: 16px;
   color: #000000;
   resize: none;
-  padding: 8px 0;
+  padding: 8px 12px;
+  border-radius: 10px;
 }
 
-/* --- Botão de salvar hover --- */
-.save-button:hover {
-  background-color: #7ea16b;
+.flashcard-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;  /* centraliza os conteúdos do form horizontalmente */
+  gap: 20px;
+  width: 100%;
 }
 
->>>>>>> 4dde184 (flashcards)
+.savebutton2 {
+  background-color: var(--button-background);
+  color: var(--button-text);
+  border: none;
+  border-radius: 10px;
+  padding: 12px 20px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 30px;
+  height: 45px;
+  width: 32%;
+  align-self: center;
+}
