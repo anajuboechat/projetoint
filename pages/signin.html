@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MedVest+ - Cadastro</title>
+  <link rel="stylesheet" href="../css/auth.css" />
+</head>
+<body class="auth-page">
+  <div class="auth-container">
+    <img src="../assets/images/logo.png" alt="Logo MedVest+" class="logo">
+
+    <h1 class="app-name">MedVest+</h1>
+    <h2 class="auth-title">Crie uma conta</h2>
+    <p class="auth-subtitle">Insira seu e-mail para começar:</p>
+
+    <form action="#" method="POST">
+      <input type="email" id="email" name="email" required placeholder="E-mail" />
+      <input type="password" id="password" name="password" required placeholder="Senha" />
+      <input type="password" id="confirm-password" name="confirm-password" required placeholder="Confirmar Senha" />
+
+      <button type="submit" class="btn-primary">Continue</button>
+    </form>
+
+    <div class="divider">
+      <span>ou</span>
+    </div>
+
+    <button class="btn-google">
+      <img src="../assets/images/google.png" alt="Google">
+      Continue com Google
+    </button>
+
+    <p class="terms">
+      Ao clicar “continue”, está concordando com nossos 
+      <a href="#">Termos de Serviço</a> e com nossa 
+      <a href="#">Política de Privacidade</a>
+    </p>
+
+    <p class="redirect">
+      Já tem uma conta? <a href="../pages/login.html">Entrar</a>
+    </p>
+  </div>
+
+  <script src="../js/script.js"></script>
+</body>
+</html>
