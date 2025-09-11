@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Novo Flashcard</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="layout">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <h2>MedVest+</h2>
+      <a href="/index.html" class="nav-link">Início</a>
+      <a href="./simulados.html" class="nav-link">Simulados</a>
+      <a href="./flashcards.html" class="nav-link">Flashcards</a>
+      <a href="./notificacoes.html" class="nav-link">Notificações</a>
+      <a href="./novo-flashcard.html" class="nav-link">Novo Flashcard</a>
+      <img src="/assets/images/logo.png" alt="logo">
+    </div>
+
+    <!-- Área principal centralizada -->
+    <div class="main">
+      <h1 class="profile-title">Adicionar Novo Flashcard</h1>
+      <form class="flashcard-form">
+        <div class="form-group">
+          <label for="title" class="form-label">Título do Flashcard:</label>
+          <div class="input-field">
+            <input type="text" id="title" name="title" placeholder="Digite o título">
+          </div>
+        </div>
+      
+        <div class="form-group">
+          <label for="subject" class="form-label">Matéria:</label>
+          <div class="input-field">
+            <select id="subject" name="subject">
+              <option value="quimica">Química</option>
+              <option value="biologia">Biologia</option>
+              <option value="fisica">Física</option>
+            </select>
+          </div>
+        </div>
+      
+        <div class="form-group">
+          <label for="content" class="form-label">Conteúdo:</label>
+          <div class="input-field">
+            <textarea id="content" name="content" rows="5" placeholder="Digite o conteúdo do flashcard"></textarea>
+          </div>
+        </div>
+      
+        <button type="submit" class="save-button">Salvar Flashcard</button>
+      </form>
+    </div>
+  </div>
+</body>
+</html>
