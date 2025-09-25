@@ -31,7 +31,7 @@
     </div>
   
     <!-- Botão de adicionar novo flashcard -->
-    <a href="novoflashcard.html" class="add-flashcard-btn">+ Novo Flashcard</a>
+    <a href="novacategoria.html" class="add-flashcard-btn">+ Nova Categoria</a>
   
 <!-- Categoria Química -->
 <div class="flashcards-category">
@@ -39,9 +39,6 @@
     <h3>Química</h3>
   </div>
   <div class="flashcards-container">
-    <div class="flashcard">Química 1</div>
-    <div class="flashcard">Química 2</div>
-    <div class="flashcard">Química 3</div>
   </div>
 </div>
 
@@ -51,9 +48,6 @@
     <h3>Biologia</h3>
   </div>
   <div class="flashcards-container">
-    <div class="flashcard">Biologia 1</div>
-    <div class="flashcard">Biologia 2</div>
-    <div class="flashcard">Biologia 3</div>
   </div>
 </div>
 
@@ -62,12 +56,56 @@
   <div class="category-header">
     <h3>Física</h3>
   </div>
-  <div class="flashcards-container">
-    <div class="flashcard">Física 1</div>
-    <div class="flashcard">Física 2</div>
-    <div class="flashcard">Física 3</div>
-  </div>
 </div>
+
+  <script>
+    const categorias = JSON.parse(localStorage.getItem("categorias")) || [];
+
+    const tipos = ["quimica", "biologia", "fisica"];
+    const nomes = {
+      quimica: "Química",
+      biologia: "Biologia",
+      fisica: "Física"
+    };
+
+    const page = document.querySelector(".flashcards-page");
+
+    function renderCategorias() {
+      // limpar antes
+      document.querySelectorAll(".flashcards-category").forEach(e => e.remove());
+
+      tipos.forEach(tipo => {
+        const wrapper = document.createElement("div");
+        wrapper.className = "flashcards-category";
+        wrapper.innerHTML = `
+          <div class="category-header"><h3>${nomes[tipo]}</h3></div>
+          <div class="flashcards-container"></div>
+        `;
+        page.appendChild(wrapper);
+
+        const container = wrapper.querySelector(".flashcards-container");
+
+        categorias.filter(c => c.tipo === tipo).forEach(c => {
+          const div = document.createElement("div");
+          div.className = "flashcard";
+          div.textContent = c.titulo;
+          div.addEventListener("click", () => {
+          const loading = document.getElementById("loading");
+          loading.classList.remove("hidden");
+          loading.classList.add("fade-in");
+
+          setTimeout(() => {
+            window.location.href = "categoria.html?nome=" + encodeURIComponent(c.titulo) + "&tipo=" + tipo;
+          }, 800); // pequeno delay para animação aparecer
+        });
+
+          container.appendChild(div);
+        });
+      });
+    }
+
+    renderCategorias();
+</script>
 
 
   <script src="/js/script.js"></script>

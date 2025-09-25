@@ -1,5 +1,5 @@
 const isLoggedIn = sessionStorage.getItem("isLoggedIn") === "true";
-sessionStorage.setItem("isLoggedIn", "false");
+sessionStorage.setItem("isLoggedIn", "true");
 
 window.addEventListener("load", () => {
   const splash = document.querySelector(".splash");

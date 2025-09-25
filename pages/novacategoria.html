@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nova Categoria</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="layout">
+    <div class="sidebar">
+      <h2>MedVest+</h2>
+      <a href="/index.html" class="nav-link">Início</a>
+      <a href="./simulados.html" class="nav-link">Simulados</a>
+      <a href="./flashcards.html" class="nav-link">Flashcards</a>
+      <a href="./notificacoes.html" class="nav-link">Notificações</a>
+      <a href="./perfil.html" class="nav-link">Perfil</a>
+      <img src="/assets/images/logo.png" alt="logo">
+    </div>
+
+    <div class="main">
+      <h1 class="profile-title">Adicionar Nova Categoria</h1>
+      <form id="categoriaForm" class="flashcard-form">
+        <div class="formgroup2">
+          <label for="titulo" class="form-label">Título da Categoria:</label>
+          <div class="input-field">
+            <input type="text" id="titulo" name="titulo" placeholder="Digite o título">
+          </div>
+        </div>
+
+        <div class="formgroup2">
+          <label for="tipo" class="form-label">Tipo:</label>
+          <div class="input-field">
+            <select id="tipo" name="tipo">
+              <option value="quimica">Química</option>
+              <option value="biologia">Biologia</option>
+              <option value="fisica">Física</option>
+            </select>
+          </div>
+        </div>
+
+        <button type="submit" class="savebutton2">Salvar Categoria</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById("categoriaForm");
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const titulo = document.getElementById("titulo").value;
+      const tipo = document.getElementById("tipo").value;
+
+      if (!titulo) {
+        alert("Digite um título para a categoria!");
+        return;
+      }
+
+      const categorias = JSON.parse(localStorage.getItem("categorias")) || [];
+      categorias.push({ titulo, tipo });
+      localStorage.setItem("categorias", JSON.stringify(categorias));
+
+      window.location.href = "flashcards.html";
+    });
+  </script>
+</body>
+</html>

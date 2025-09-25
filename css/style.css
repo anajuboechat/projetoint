@@ -526,7 +526,6 @@ a {
 }
 
 .flashcard:hover {
-  background-color: #7ea16b;
   color: white;
 }
 
@@ -580,4 +579,10 @@ a {
   height: 45px;
   width: 32%;
   align-self: center;
+}
+
+.flashcards-page {
+  max-height: 100vh;
+  overflow-y: auto;
+  padding: 20px;
 }
