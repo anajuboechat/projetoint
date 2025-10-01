@@ -587,13 +587,52 @@ a {
   padding: 20px;
 }
 
-.btn-logout {
-  background-color: #e74c3c;
-  color: white;
+/* Ajuste de estilo para o campo de email */
+.input-field.noborder {
   border: none;
-  padding: 10px 15px;
-  border-radius: 8px;
-  cursor: pointer;
-  margin-top: 20px;
+  background: transparent;
+  padding: 10px 15px;  /* Adiciona padding para o campo de email */
+  width: 100%;         /* Garante que o campo ocupe toda a largura disponível */
+}
+
+/* Ajusta o estilo dos campos de texto e inputs */
+.input-field input {
+  width: 100%;         /* Garante que o input ocupe toda a largura do seu contêiner */
+  padding: 10px;       /* Adiciona um pouco de padding para dar mais espaçamento ao texto */
+  border: 1px solid #ccc;  /* Adiciona borda leve ao input */
+  border-radius: 4px;  /* Cantos arredondados */
+  box-sizing: border-box; /* Certifica que o padding é incluído no tamanho do campo */
+}
+
+/* Quando o input estiver desabilitado (modo "não editável") */
+.input-field input:disabled {
+  border: 1px solid #ddd;  /* Uma borda mais clara para inputs desabilitados */
+  background: #f9f9f9;      /* Fundo mais claro para inputs desabilitados */
+  color: #666;              /* Cor do texto mais suave */
+  font-weight: normal;
+  cursor: not-allowed;      /* Alterar o cursor para indicar que não pode editar */
+}
+
+/* Ajuste do formulário e do layout */
+.form-group {
+  margin-bottom: 20px; /* Adiciona espaçamento entre os campos */
   width: 100%;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+/* Garantir que a seção principal do perfil tenha o espaçamento adequado */
+.mainprofile {
+  max-width: 600px; /* Limita a largura máxima do conteúdo */
+  margin: 0 auto;   /* Centraliza o conteúdo */
+  padding: 20px;    /* Adiciona espaçamento interno */
+}
+
+/* Ajuste no botão de salvar para garantir o espaçamento */
+.save-button {
+  margin-top: 20px; /* Dá mais espaço entre os campos e o botão */
 }

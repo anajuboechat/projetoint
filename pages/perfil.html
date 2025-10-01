@@ -34,20 +34,22 @@
           <input type="file" id="fileInput" accept="image/*">
         </div>
 
-        <form class="profile-form">
-          <div class="form-group">
-            <label for="name" class="form-label">Nome:</label>
-            <div class="input-field">
-              <input type="text" id="name" name="name" placeholder="Digite seu nome:" />
-            </div>
-          </div>
+        <div class="form-group">
+        <label for="name" class="form-label">Nome:</label>
+        <div class="input-field" id="nameContainer">
+          <input type="text" id="name" name="name" placeholder="Digite seu nome:" />
+        </div>
+        <button type="button" id="editNameBtn" class="save-button">Editar Nome</button>
+      </div>
 
-          <div class="form-group">
-            <label for="email" class="form-label">Email:</label>
-            <div class="input-field">
-              <input type="email" id="email" name="email" placeholder="Digite seu email:" />
-            </div>
-          </div>
+
+
+      <div class="form-group">
+        <label class="form-label">Email:</label>
+        <div class="input-field noborder">
+          <span id="emailDisplay">usuario@email.com</span>
+        </div>
+      </div>
 
           <fieldset class="preferences-group">
             <legend class="form-label">Vestibulares de preferência:</legend>
@@ -69,44 +71,89 @@
             </div>
           </fieldset>
           <button type="submit" class="save-button">Salvar</button>
-        </form>
       </div>
     </div>
   </div>
 
   <script>
-    const editButton = document.getElementById("editButton");
-    const fileInput = document.getElementById("fileInput");
-    const avatarImage = document.getElementById("avatarImage");
+  const editButton = document.getElementById("editButton");
+  const fileInput = document.getElementById("fileInput");
+  const avatarImage = document.getElementById("avatarImage");
 
-    editButton.addEventListener("click", () => {
-      fileInput.click();
-    });
+  // --- Carregar avatar salvo ao abrir ---
+  window.addEventListener("load", () => {
+    const savedAvatar = localStorage.getItem("userAvatar");
+    if (savedAvatar) {
+      avatarImage.src = savedAvatar; // restaura imagem do localStorage
+    }
 
-    fileInput.addEventListener("change", () => {
-      const file = fileInput.files[0];
-      if (file) {
-        const imageURL = URL.createObjectURL(file);
-        avatarImage.src = imageURL;
+    const savedName = localStorage.getItem("userName");
+    if (savedName) {
+      nameInput.value = savedName;
+      nameInput.disabled = true;
+      editNameBtn.style.display = "block";
+    }
+  });
+
+  // --- Upload e salvar avatar ---
+  editButton.addEventListener("click", () => {
+    fileInput.click();
+  });
+
+  fileInput.addEventListener("change", () => {
+    const file = fileInput.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const base64 = e.target.result;
+        avatarImage.src = base64;
+        localStorage.setItem("userAvatar", base64); // salva no localStorage
+      };
+      reader.readAsDataURL(file); // converte para Base64
+    }
+  });
+
+  // --- Toggle botões de preferências ---
+  const toggleButtons = document.querySelectorAll(".toggle-btn");
+  toggleButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      const simPath = "/assets/images/State=sim.png";
+      if (btn.getAttribute("data-active") === "true") {
+        btn.src = btn.getAttribute("data-original");
+        btn.setAttribute("data-active", "false");
+      } else {
+        btn.src = simPath;
+        btn.setAttribute("data-active", "true");
       }
     });
+  });
 
-    // --- Toggle botões de preferências ---
-    const toggleButtons = document.querySelectorAll(".toggle-btn");
-    toggleButtons.forEach(btn => {
-      btn.addEventListener("click", () => {
-        const simPath = "/assets/images/State=sim.png";
-        if (btn.getAttribute("data-active") === "true") {
-          // volta para o original
-          btn.src = btn.getAttribute("data-original");
-          btn.setAttribute("data-active", "false");
-        } else {
-          // troca para o "sim"
-          btn.src = simPath;
-          btn.setAttribute("data-active", "true");
-        }
-      });
-    });
-  </script>
+  // --- Salvar e carregar Nome ---
+  const nameInput = document.getElementById("name");
+  const editNameBtn = document.getElementById("editNameBtn");
+  const saveBtn = document.querySelector("button[type='submit']");
+
+  saveBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    const nameValue = nameInput.value.trim();
+    if (nameValue) {
+      localStorage.setItem("userName", nameValue);
+      nameInput.disabled = true;
+      editNameBtn.style.display = "block";
+    }
+  });
+
+  editNameBtn.addEventListener("click", () => {
+    nameInput.disabled = false;
+    nameInput.focus();
+  });
+
+  // --- Exibir email fixo ---
+  document.getElementById("emailDisplay").innerText = "joao.silva@medvest.com"; 
+</script>
+
+
+
+
 </body>
 </html>
