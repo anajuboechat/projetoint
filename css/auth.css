@@ -1,11 +1,23 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background-color: #f7fbe9; /* tom claro parecido */
+  background-color: #f7fbe9;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
+}
+
+.error-message {
+  color: red;
+  font-size: 14px;
+  margin: 5px 0 10px;
+}
+
+.success-message {
+  color: green;
+  font-size: 14px;
+  margin: 5px 0 10px;
 }
 
 .auth-container {

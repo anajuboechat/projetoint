@@ -1,5 +1,11 @@
-const isLoggedIn = sessionStorage.getItem("isLoggedIn") === "true";
-sessionStorage.setItem("isLoggedIn", "true");
+let isLoggedIn = sessionStorage.getItem("isLoggedIn");
+
+if (isLoggedIn === null) {
+  sessionStorage.setItem("isLoggedIn", "false");
+  isLoggedIn = false;
+} else {
+  isLoggedIn = (isLoggedIn === "true");
+}
 
 window.addEventListener("load", () => {
   const splash = document.querySelector(".splash");
@@ -8,18 +14,20 @@ window.addEventListener("load", () => {
   const visited = sessionStorage.getItem("visited");
 
   function redirectAccordingToLogin() {
-    splash.classList.add("hidden");
+  splash.classList.add("hidden");
 
-    if (isLoggedIn) {
-      if (!window.location.pathname.endsWith("index.html")) {
-        window.location.href = "/index.html";
-      }
-    } else {
-      if (!window.location.pathname.endsWith("login.html")) {
-        window.location.href = "./pages/login.html";
-      }
+  if (isLoggedIn) {
+    if (!window.location.pathname.endsWith("index.html") && 
+        !window.location.pathname.endsWith("/")) {
+      window.location.href = "/index.html";
+    }
+  } else {
+    if (!window.location.pathname.endsWith("login.html")) {
+      window.location.href = "./pages/login.html";
     }
   }
+}
+
 
   if (visited) {
     redirectAccordingToLogin();
@@ -31,7 +39,6 @@ window.addEventListener("load", () => {
   }
 });
 
-// Animação de carregamento nos links
 document.querySelectorAll(".nav-link").forEach(link => {
   link.addEventListener("click", function (e) {
     e.preventDefault();
@@ -46,7 +53,6 @@ document.querySelectorAll(".nav-link").forEach(link => {
   });
 });
 
-// Materiais (Química, Bio, Física)
 const materias = {
   quimica: [
     { nome: "Estequiometria", img: "./assets/images/estequiometria.png" },
@@ -76,3 +82,14 @@ document.querySelectorAll(".cards a").forEach(link => {
     window.location.href = "./pages/conteudos.html";
   });
 });
+
+const logoutBtn = document.getElementById("logoutBtn");
+
+if (logoutBtn) {
+  logoutBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    sessionStorage.setItem("isLoggedIn", "false");
+    sessionStorage.removeItem("visited");
+    window.location.href = "./login.html";
+  });
+}
