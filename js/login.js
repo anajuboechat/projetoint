@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+import { getAuth, signInWithEmailAndPassword, getIdToken } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBN2_GgoK-nXfOxefYlCE9i7PupwrNQkrY",
@@ -15,26 +15,38 @@ const auth = getAuth(app);
 
 const submit = document.getElementById("submit");
 
-submit.addEventListener("click", function(event) {
+submit.addEventListener("click", async (event) => {
   event.preventDefault();
 
   document.getElementById("email-error").textContent = "";
   document.getElementById("password-error").textContent = "";
 
-  const email = document.getElementById('email').value;
-  const password = document.getElementById('password').value;
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
 
-  signInWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      sessionStorage.setItem("isLoggedIn", "true");
-      document.getElementById("password-error").className = "success-message";
-      document.getElementById("password-error").textContent = "Login realizado com sucesso!";
+  try {
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
+    const token = await getIdToken(user);
 
-      setTimeout(() => {
-        window.location.href = "../index.html";
-      }, 1000);
-    })
-    .catch((error) => {
-      document.getElementById("password-error").textContent = "Credenciais não correspondentes a algum usuário!";
+    await fetch("http://localhost:3000/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`,
+      },
     });
+
+    sessionStorage.setItem("isLoggedIn", "true");
+    document.getElementById("password-error").className = "success-message";
+    document.getElementById("password-error").textContent = "Login realizado com sucesso!";
+
+    setTimeout(() => {
+      window.location.href = "../index.html";
+    }, 1000);
+  } catch (error) {
+    console.error(error);
+    document.getElementById("password-error").textContent =
+      "Credenciais não correspondentes a algum usuário!";
+  }
 });
