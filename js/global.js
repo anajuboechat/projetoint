@@ -1,5 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, getIdToken } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-database.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBN2_GgoK-nXfOxefYlCE9i7PupwrNQkrY",
@@ -7,11 +8,13 @@ const firebaseConfig = {
   projectId: "medvestplus",
   storageBucket: "medvestplus.firebasestorage.app",
   messagingSenderId: "261146979409",
-  appId: "1:261146979409:web:3388c61d54f7d7f7205c70"
+  appId: "1:261146979409:web:3388c61d54f7d7f7205c70",
+  databaseURL: "https://medvestplus-default-rtdb.firebaseio.com" // 🔹 adicione sua URL do Realtime Database
 };
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const db = getDatabase(app);
 
 const submit = document.getElementById("submit");
 
@@ -39,15 +42,11 @@ submit.addEventListener("click", async (event) => {
   try {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
-    const token = await getIdToken(user);
 
-    await fetch("http://localhost:3000/signup", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`,
-      },
-      body: JSON.stringify({ email }),
+    // Salva o usuário diretamente no Realtime Database
+    await set(ref(db, "usuarios/" + user.uid), {
+      email: email,
+      criadoEm: new Date().toISOString()
     });
 
     document.getElementById("email-error").style.color = "green";

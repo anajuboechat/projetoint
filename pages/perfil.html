@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Generated Page</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Meu Perfil - MedVest+</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/style.css" />
 </head>
 <body>
   <div class="layout">
@@ -17,7 +17,7 @@
       <a href="./simulados.html" class="nav-link">Simulados</a>
       <a href="./flashcards.html" class="nav-link">Flashcards</a>
       <a href="./notificacoes.html" class="nav-link">Notificações</a>
-      <a href="#" class="nav-link">Perfil</a>
+      <a href="#" class="nav-link active">Perfil</a>
       <img src="/assets/images/logo.png" alt="logo">
     </div>
 
@@ -25,135 +25,169 @@
       <div id="section-profile" class="profile-section">
         <h1 class="profile-title">Meu Perfil</h1>
 
+        <!-- Avatar -->
         <div class="avatar-container">
-          <img src="/assets/images/170_1561.svg" alt="User avatar background" class="avatar-bg" id="avatarImage">
+          <img src="/assets/images/170_1561.svg" alt="Avatar" class="avatar-bg" id="avatarImage" />
           <div class="edit-icon-wrapper" id="editButton">
             <img src="/assets/images/170_1570.svg" alt="Edit icon background" class="edit-icon-bg">
             <img src="/assets/images/5c90d859f913fe66471afa1555e28a9e1b82c6f0.png" alt="Edit icon" class="edit-icon-pencil">
           </div>
-          <input type="file" id="fileInput" accept="image/*">
+          <input type="file" id="fileInput" accept="image/*" hidden />
         </div>
 
+        <!-- Nome -->
         <div class="form-group">
-        <label for="name" class="form-label">Nome:</label>
-        <div class="input-field" id="nameContainer">
-          <input type="text" id="name" name="name" placeholder="Digite seu nome:" />
+          <label for="name" class="form-label">Nome:</label>
+          <div class="input-field" id="nameContainer">
+            <input type="text" id="name" name="name" placeholder="Digite seu nome:" />
+          </div>
+          <button type="button" id="editNameBtn" class="save-button">Salvar Nome</button>
         </div>
-        <button type="button" id="editNameBtn" class="save-button">Editar Nome</button>
-      </div>
 
-
-
-      <div class="form-group">
-        <label class="form-label">Email:</label>
-        <div class="input-field noborder">
-          <span id="emailDisplay">usuario@email.com</span>
+        <!-- Email -->
+        <div class="form-group">
+          <label class="form-label">Email:</label>
+          <div class="input-field noborder">
+            <span id="emailDisplay">usuario@email.com</span>
+          </div>
         </div>
-      </div>
 
-          <fieldset class="preferences-group">
-            <legend class="form-label">Vestibulares de preferência:</legend>
-            <div class="preference-item">
-              <img src="/assets/images/205_1014.svg" alt="Checkbox icon" class="toggle-btn" data-original="/assets/images/205_1014.svg">
+        <!-- Vestibulares -->
+        <fieldset class="preferences-group">
+          <legend class="form-label">Vestibulares de preferência:</legend>
+          <div class="checklist">
+            <label>
+              <input type="checkbox" name="vestibulares" value="ENEM">
               <span>ENEM</span>
-            </div>
-            <div class="preference-item">
-              <img src="/assets/images/205_1017.svg" alt="Checkbox icon" class="toggle-btn" data-original="/assets/images/205_1017.svg">
+            </label>
+            <label>
+              <input type="checkbox" name="vestibulares" value="Comvest">
               <span>Comvest</span>
-            </div>
-            <div class="preference-item">
-              <img src="/assets/images/205_1020.svg" alt="Checkbox icon" class="toggle-btn" data-original="/assets/images/205_1020.svg">
+            </label>
+            <label>
+              <input type="checkbox" name="vestibulares" value="Fuvest">
               <span>Fuvest</span>
-            </div>
-            <div class="preference-item">
-              <img src="/assets/images/205_932.svg" alt="Checkbox icon" class="toggle-btn" data-original="/assets/images/205_932.svg">
-              <span>Outro</span>
-            </div>
-          </fieldset>
-          <button type="submit" class="save-button">Salvar</button>
+            </label>
+            <label>
+              <input type="checkbox" name="vestibulares" value="Outros">
+              <span>Outros</span>
+            </label>
+          </div>
+        </fieldset>
+
+        <!-- Botões -->
+        <button type="submit" class="save-button" id="saveAllBtn">Salvar Tudo</button>
+        <button type="button" id="logoutBtn" class="save-button" style="background-color:#b02d2d">Sair da Conta</button>
       </div>
     </div>
   </div>
 
-  <script>
-  const editButton = document.getElementById("editButton");
-  const fileInput = document.getElementById("fileInput");
-  const avatarImage = document.getElementById("avatarImage");
+  <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+  import { getDatabase, ref, get, update } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-database.js";
 
-  // --- Carregar avatar salvo ao abrir ---
-  window.addEventListener("load", () => {
-    const savedAvatar = localStorage.getItem("userAvatar");
-    if (savedAvatar) {
-      avatarImage.src = savedAvatar; // restaura imagem do localStorage
+  const firebaseConfig = {
+    apiKey: "AIzaSyBN2_GgoK-nXfOxefYlCE9i7PupwrNQkrY",
+    authDomain: "medvestplus.firebaseapp.com",
+    projectId: "medvestplus",
+    storageBucket: "medvestplus.firebasestorage.app",
+    messagingSenderId: "261146979409",
+    appId: "1:261146979409:web:3388c61d54f7d7f7205c70",
+    databaseURL: "https://medvestplus-default-rtdb.firebaseio.com"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getDatabase(app);
+
+  const avatarImage = document.getElementById("avatarImage");
+  const fileInput = document.getElementById("fileInput");
+  const nameInput = document.getElementById("name");
+  const emailDisplay = document.getElementById("emailDisplay");
+  const editNameBtn = document.getElementById("editNameBtn");
+  const saveAllBtn = document.getElementById("saveAllBtn");
+  const logoutBtn = document.getElementById("logoutBtn");
+
+  let uid;
+
+  avatarImage.addEventListener("click", () => fileInput.click());
+
+  onAuthStateChanged(auth, async (user) => {
+    if (!user) {
+      window.location.href = "./login.html";
+      return;
     }
 
-    const savedName = localStorage.getItem("userName");
-    if (savedName) {
-      nameInput.value = savedName;
-      nameInput.disabled = true;
-      editNameBtn.style.display = "block";
+    uid = user.uid;
+    emailDisplay.textContent = user.email;
+
+    try {
+      const snap = await get(ref(db, "usuarios/" + uid));
+      if (snap.exists()) {
+        const data = snap.val();
+        if (data.nome) nameInput.value = data.nome;
+        if (data.avatar) avatarImage.src = data.avatar;
+        if (data.vestibulares) {
+          document.querySelectorAll("input[name='vestibulares']").forEach(cb => {
+            if (data.vestibulares.includes(cb.value)) cb.checked = true;
+          });
+        }
+      }
+    } catch (error) {
+      console.error("Erro ao carregar perfil:", error);
     }
   });
 
-  // --- Upload e salvar avatar ---
-  editButton.addEventListener("click", () => {
-    fileInput.click();
+  editNameBtn.addEventListener("click", async () => {
+    if (!uid) return;
+    const nome = nameInput.value.trim();
+    try {
+      await update(ref(db, "usuarios/" + uid), { nome });
+      alert("Nome atualizado!");
+    } catch (error) {
+      console.error("Erro ao salvar nome:", error);
+    }
   });
 
   fileInput.addEventListener("change", () => {
     const file = fileInput.files[0];
-    if (file) {
+    if (file && uid) {
       const reader = new FileReader();
-      reader.onload = (e) => {
+      reader.onload = async (e) => {
         const base64 = e.target.result;
         avatarImage.src = base64;
-        localStorage.setItem("userAvatar", base64); // salva no localStorage
+        try {
+          await update(ref(db, "usuarios/" + uid), { avatar: base64 });
+          alert("Avatar atualizado com sucesso!");
+        } catch (error) {
+          console.error("Erro ao salvar avatar:", error);
+        }
       };
-      reader.readAsDataURL(file); // converte para Base64
+      reader.readAsDataURL(file);
     }
   });
 
-  // --- Toggle botões de preferências ---
-  const toggleButtons = document.querySelectorAll(".toggle-btn");
-  toggleButtons.forEach(btn => {
-    btn.addEventListener("click", () => {
-      const simPath = "/assets/images/State=sim.png";
-      if (btn.getAttribute("data-active") === "true") {
-        btn.src = btn.getAttribute("data-original");
-        btn.setAttribute("data-active", "false");
-      } else {
-        btn.src = simPath;
-        btn.setAttribute("data-active", "true");
-      }
-    });
-  });
+  saveAllBtn.addEventListener("click", async () => {
+    if (!uid) return;
+    const nome = nameInput.value.trim();
+    const vestibulares = Array.from(document.querySelectorAll("input[name='vestibulares']:checked"))
+      .map(cb => cb.value);
 
-  // --- Salvar e carregar Nome ---
-  const nameInput = document.getElementById("name");
-  const editNameBtn = document.getElementById("editNameBtn");
-  const saveBtn = document.querySelector("button[type='submit']");
-
-  saveBtn.addEventListener("click", (e) => {
-    e.preventDefault();
-    const nameValue = nameInput.value.trim();
-    if (nameValue) {
-      localStorage.setItem("userName", nameValue);
-      nameInput.disabled = true;
-      editNameBtn.style.display = "block";
+    try {
+      await update(ref(db, "usuarios/" + uid), { nome, vestibulares });
+      alert("Perfil salvo com sucesso!");
+    } catch (error) {
+      console.error("Erro ao salvar perfil:", error);
     }
   });
 
-  editNameBtn.addEventListener("click", () => {
-    nameInput.disabled = false;
-    nameInput.focus();
+  logoutBtn.addEventListener("click", async () => {
+    await signOut(auth);
+    sessionStorage.setItem("isLoggedIn", "false");
+    sessionStorage.removeItem("visited");
+    window.location.href = "./login.html";
   });
-
-  // --- Exibir email fixo ---
-  document.getElementById("emailDisplay").innerText = "joao.silva@medvest.com"; 
-</script>
-
-
-
-
+  </script>
 </body>
 </html>

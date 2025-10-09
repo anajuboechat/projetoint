@@ -587,35 +587,31 @@ a {
   padding: 20px;
 }
 
-/* Ajuste de estilo para o campo de email */
 .input-field.noborder {
   border: none;
   background: transparent;
-  padding: 10px 15px;  /* Adiciona padding para o campo de email */
-  width: 100%;         /* Garante que o campo ocupe toda a largura disponível */
+  padding: 10px 15px;
+  width: 100%;
 }
 
-/* Ajusta o estilo dos campos de texto e inputs */
 .input-field input {
-  width: 100%;         /* Garante que o input ocupe toda a largura do seu contêiner */
-  padding: 10px;       /* Adiciona um pouco de padding para dar mais espaçamento ao texto */
-  border: 1px solid #ccc;  /* Adiciona borda leve ao input */
-  border-radius: 4px;  /* Cantos arredondados */
-  box-sizing: border-box; /* Certifica que o padding é incluído no tamanho do campo */
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
 }
 
-/* Quando o input estiver desabilitado (modo "não editável") */
 .input-field input:disabled {
-  border: 1px solid #ddd;  /* Uma borda mais clara para inputs desabilitados */
-  background: #f9f9f9;      /* Fundo mais claro para inputs desabilitados */
-  color: #666;              /* Cor do texto mais suave */
+  border: 1px solid #ddd;
+  background: #f9f9f9;
+  color: #666;
   font-weight: normal;
-  cursor: not-allowed;      /* Alterar o cursor para indicar que não pode editar */
+  cursor: not-allowed;
 }
 
-/* Ajuste do formulário e do layout */
 .form-group {
-  margin-bottom: 20px; /* Adiciona espaçamento entre os campos */
+  margin-bottom: 20px;
   width: 100%;
 }
 
@@ -625,14 +621,79 @@ a {
   font-weight: bold;
 }
 
-/* Garantir que a seção principal do perfil tenha o espaçamento adequado */
 .mainprofile {
-  max-width: 600px; /* Limita a largura máxima do conteúdo */
-  margin: 0 auto;   /* Centraliza o conteúdo */
-  padding: 20px;    /* Adiciona espaçamento interno */
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
 }
 
-/* Ajuste no botão de salvar para garantir o espaçamento */
 .save-button {
-  margin-top: 20px; /* Dá mais espaço entre os campos e o botão */
+  margin-top: 20px;
+}
+
+/* === Caixas de seleção personalizadas (círculos grandes) === */
+.checklist {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 12px;
+}
+
+.checklist label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 17px;
+  cursor: pointer;
+  position: relative;
+  color: #2d2d2d;
+}
+
+.checklist input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 26px;
+  height: 26px;
+  border: 2px solid #808080;
+  border-radius: 50%;
+  outline: none;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s ease;
+  background-color: #f7fbe9;
+  box-shadow: 0 0 0 2px rgba(0,0,0,0.05);
+}
+
+.checklist input[type="checkbox"]:checked {
+  background-color: #3b3f2b; /* cor de preenchimento */
+  border-color: #3b3f2b;
+  box-shadow: 0 0 0 3px rgba(59,63,43,0.15);
+}
+
+.checklist input[type="checkbox"]:checked::after {
+  content: "";
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: white;
+  transition: all 0.2s ease;
+}
+
+.checklist input[type="checkbox"]:hover {
+  border-color: #3b3f2b;
+  transform: scale(1.05);
+}
+
+@media (max-width: 480px) {
+  .checklist input[type="checkbox"] {
+    width: 22px;
+    height: 22px;
+  }
+  .checklist label {
+    font-size: 15px;
+  }
 }
