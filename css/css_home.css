@@ -1,0 +1,115 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #c8e0a4;
+    color: #333;
+}
+
+/* Header */
+header {
+    display: flex;
+    align-items: center;
+    padding: 20px 40px;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    font-size:1.5rem;
+
+}
+
+header img {
+    max-width: 180px;
+    width: 7%;
+    height: auto;
+    
+}
+
+
+.hero {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px 20px;
+    background-color: #c8e0a4;
+}
+
+.celular {
+    max-width: 30%;
+    margin-right: 20px;
+}
+
+.hero-text {
+    max-width: 400px;
+    text-align: center;
+}
+
+.hero-text h1 {
+    font-size: 28px;
+    margin-bottom: 15px;
+    color: #004d40;
+}
+
+.hero-text p {
+    margin-bottom: 25px;
+    font-size: 16px;
+}
+
+.hero-text button {
+    display: block;
+    width: 200px;
+    padding: 12px;
+    margin: 10px auto;
+    font-size: 16px;
+    border: none;
+    border-radius: 25px;
+    background-color: #516d43;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.hero-text button:hover {
+    background-color: #7ea16b;;
+}
+
+/* Seção de Benefícios */
+.features {
+    background-color: #516d43;
+    color: white;
+    padding: 40px 20px;
+    text-align: center;
+}
+
+.features h2 {
+    margin-bottom: 5%;
+}
+
+.features-container {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    flex-wrap: wrap;
+}
+
+.feature {
+    max-width: 400px;
+    max-height: 250px;
+}
+
+.feature img {
+    height: 60%;
+    margin-bottom: 10px;
+}
+
+.hero-text p {
+    font-size: 30px;
+}
+
+.textinho {
+    font-weight: bold;
+    font-size: 60px;
+}
+
+.logo {
+     width: 250px;
+
+}
