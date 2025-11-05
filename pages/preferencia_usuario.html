@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Preferências do Usuário</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #eaf4de;
+    }
+
+    h1 {
+      margin-bottom: 50px;
+      color: #2f4f1f;
+      font-size: 2rem;
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      gap: 60px;
+      flex-wrap: wrap;
+      padding: 0 20px;
+    }
+
+    .card {
+      position: relative;
+      background: #c8e0a4;
+      width: 230px;
+      height: 380px;
+      border-radius: 25px;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.2);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: all 0.3s ease;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .card:hover {
+      transform: scale(1.12);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+    }
+
+    .card img {
+      width: 100%;
+      height: 80%;
+      object-fit: cover;
+      border-radius: 25px; /* arredonda tudo, incluindo parte inferior */
+    }
+
+    .card span {
+      padding: 15px 0;
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: #2f4f1f;
+    }
+
+    /* Bolinha de seleção */
+    .check-circle {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      border: 3px solid #4CAF50;
+      background-color: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.3s ease;
+    }
+
+    .check-circle::after {
+      content: "✓";
+      color: white;
+      font-size: 16px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .selected .check-circle {
+      background-color: #4CAF50;
+    }
+
+    .selected .check-circle::after {
+      opacity: 1;
+    }
+
+    .continue-btn {
+      margin-top: 60px;
+      padding: 14px 36px;
+      background: #a8c67a;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 1.2rem;
+      font-weight: bold;
+      transition: background 0.3s, transform 0.2s;
+    }
+
+    .continue-btn:hover {
+      background: #91b268;
+      transform: scale(1.05);
+    }
+
+    @media (max-width: 900px) {
+      .container {
+        gap: 40px;
+      }
+
+      .card {
+        width: 200px;
+        height: 340px;
+      }
+
+      h1 {
+        font-size: 1.7rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Escolha suas preferências de universidade</h1>
+
+  <div class="container">
+    <div class="card">
+      <div class="check-circle"></div>
+      <img src="/assets/images/unicamp2.jpeg" alt="Unicamp">
+      <span>Unicamp</span>
+    </div>
+
+    <div class="card">
+      <div class="check-circle"></div>
+      <img src="/assets/images/usp.jpg" alt="USP">
+      <span>USP</span>
+    </div>
+
+    <div class="card">
+      <div class="check-circle"></div>
+      <img src="/assets/images/enem.jpeg" alt="ENEM">
+      <span>ENEM</span>
+    </div>
+
+    <div class="card">
+      <div class="check-circle"></div>
+      <img src="/assets/images/uerj.jpg" alt="UERJ">
+      <span>UERJ</span>
+    </div>
+  </div>
+
+  <button class="continue-btn" id="continuarBtn">Continuar</button>
+
+  <script>
+    // Redirecionar ao clicar no botão
+    document.getElementById("continuarBtn").addEventListener("click", () => {
+      window.location.href = "index.html";
+    });
+
+    // Seleção de universidades
+    const cards = document.querySelectorAll(".card");
+    cards.forEach(card => {
+      card.addEventListener("click", () => {
+        card.classList.toggle("selected"); // permite múltiplas seleções
+      });
+    });
+  </script>
+</body>
+</html>
