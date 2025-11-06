@@ -245,17 +245,24 @@ async function loadQuestions() {
 
     const data = snapshot.val();
 
-    questions = Object.keys(data)
+    // Converte as questões em array normal
+    let todasQuestoes = Object.keys(data)
       .sort((a, b) => Number(a) - Number(b))
       .map(key => {
         const q = data[key];
         return {
           id: key,
-          enunciado: (q.enunciado || "").replace(/^\d+\.\s*/, ""), // remove numeração duplicada
+          enunciado: (q.enunciado || "").replace(/^\d+\.\s*/, ""),
           alternativas: q.alternativas || {},
           correta: (q.resposta_correta || "").trim()
         };
       });
+
+    // 🔀 Embaralha aleatoriamente
+    todasQuestoes = todasQuestoes.sort(() => Math.random() - 0.5);
+
+    // 🎯 Pega só as 10 primeiras
+    questions = todasQuestoes.slice(0, 10);
 
     answers = Array(questions.length).fill(null);
     createNavButtons();
@@ -266,6 +273,7 @@ async function loadQuestions() {
     questionEl.textContent = "Erro ao carregar questões.";
   }
 }
+
 
 function createNavButtons() {
   navContainer.innerHTML = "";
