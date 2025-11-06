@@ -107,7 +107,7 @@ submit.addEventListener("click", async (event) => {
     sessionStorage.setItem("isLoggedIn", "true");
 
     setTimeout(() => {
-      window.location.href = "../index.html";
+      window.location.href = "./preferencia_usuario.html";
     }, 800);
   } catch (error) {
     console.error(error);

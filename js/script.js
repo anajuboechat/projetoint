@@ -22,8 +22,8 @@ window.addEventListener("load", () => {
       window.location.href = "/index.html";
     }
   } else {
-    if (!window.location.pathname.endsWith("login.html")) {
-      window.location.href = "./pages/login.html";
+    if (!window.location.pathname.endsWith("home.html") && !window.location.pathname.endsWith("login.html")&& !window.location.pathname.endsWith("signin.html")) {
+      window.location.href = "./pages/home.html";
     }
   }
 }
