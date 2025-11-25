@@ -5,13 +5,255 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MedVest+ - Flashcards</title>
   <link rel="stylesheet" href="/css/style.css">
+
+  <style>
+    /* EVITA cards invisíveis */
+    .category-card {
+      width: 260px;
+      height: 170px;
+      border-radius: 16px;
+      background: #c8e0a4 !important;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #3b3f2b;
+      font-weight: 700;
+      font-size: 1.2rem;
+      cursor: pointer;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.18);
+      user-select: none;
+      transition: .25s;
+      position: relative;
+      padding: 12px;
+      text-align: center;
+    }
+    .category-card:hover {
+      background:#9fbf77 !important;
+      color:white;
+      transform: translateY(-6px);
+    }
+
+    /* X dentro de quadrado (categoria) */
+    .delete-x-square {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      width: 30px;
+      height: 30px;
+      border-radius: 6px;
+      border: 2px solid rgba(0,0,0,0.08);
+      background: rgba(255,255,255,0.95);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    }
+
+    .delete-x-square:hover {
+      background: #ffecec;
+      border-color: #f3b3b3;
+      color: #d33;
+    }
+
+    /* Modal confirmação (estilo app, central) */
+    .confirm-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.35);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 99999;
+    }
+    .confirm-backdrop.show { display: flex; }
+
+    .confirm-box {
+      width: 380px;
+      max-width: calc(100% - 40px);
+      background: #f9fff3; /* tom do app */
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+      border: 1px solid rgba(0,0,0,0.04);
+      text-align: center;
+      font-family: Arial, sans-serif;
+    }
+
+    .confirm-title {
+      font-size: 18px;
+      color: #2f3b2a;
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+
+    .confirm-text {
+      font-size: 14px;
+      color: #3b3f2b;
+      margin-bottom: 18px;
+    }
+
+    .confirm-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+    }
+
+    .btn-confirm {
+      background: #a8c67a;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .btn-cancel {
+      background: transparent;
+      color: #3b3f2b;
+      border: 1px solid rgba(0,0,0,0.06);
+      padding: 10px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 700;
+    }
+  </style>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+    import { 
+      getAuth, 
+      onAuthStateChanged 
+    } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+    import { 
+      getDatabase, 
+      ref, 
+      onValue,
+      remove
+    } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBN2_GgoK-nXfOxefYlCE9i7PupwrNQkrY",
+      authDomain: "medvestplus.firebaseapp.com",
+      projectId: "medvestplus",
+      storageBucket: "medvestplus-firebasestorage.app",
+      messagingSenderId: "261146979409",
+      appId: "1:261146979409:web:3388c61d54f7d7f7205c70",
+      databaseURL: "https://medvestplus-default-rtdb.firebaseio.com"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const auth = getAuth(app);
+
+    const tipos = ["quimica", "biologia", "fisica"];
+    const nomes = { quimica:"Química", biologia:"Biologia", fisica:"Física" };
+
+    let UID = null;
+
+    onAuthStateChanged(auth, (user) => {
+      if (!user) return window.location.href = "../login.html";
+      UID = user.uid;
+      carregarCategorias();
+    });
+
+    function carregarCategorias() {
+      onValue(ref(db, `usuarios/${UID}/categorias`), (snapshot) => {
+        const dados = snapshot.val() || {};
+        // transforma em array com id
+        const arr = Object.entries(dados).map(([id, obj]) => ({ _id: id, ...obj }));
+        renderCategorias(arr);
+      });
+    }
+
+    function renderCategorias(categorias) {
+      const page = document.querySelector(".flashcards-page");
+      document.querySelectorAll(".flashcards-category").forEach(x => x.remove());
+
+      tipos.forEach(tipo => {
+        const bloco = document.createElement("div");
+        bloco.className = "flashcards-category";
+        bloco.innerHTML = `
+          <div class='category-header'><h3>${nomes[tipo]}</h3></div>
+          <div class='flashcards-container'></div>
+        `;
+        page.appendChild(bloco);
+
+        const container = bloco.querySelector(".flashcards-container");
+
+        categorias.filter(c => c.tipo === tipo).forEach(c => {
+          const div = document.createElement("div");
+          div.className = "category-card";
+
+          // título
+          const title = document.createElement("div");
+          title.textContent = c.titulo;
+          title.style.pointerEvents = "none";
+
+          // botão X (quadrado)
+          const del = document.createElement("div");
+          del.className = "delete-x-square";
+          del.innerHTML = "✖";
+
+          // clique X -> abrir modal
+          del.addEventListener("click", (ev) => {
+            ev.stopPropagation();
+            openConfirm(`Excluir a categoria "${c.titulo}" e todos os flashcards?`, async () => {
+              // ao confirmar
+              await remove(ref(db, `usuarios/${UID}/categorias/${c._id}`));
+              await remove(ref(db, `usuarios/${UID}/flashcards/${c.titulo}/${c.tipo}`));
+            });
+          });
+
+          div.appendChild(title);
+          div.appendChild(del);
+
+          div.addEventListener("click", () => {
+            window.location.href =
+              "categoria.html?nome=" + encodeURIComponent(c.titulo) +
+              "&tipo=" + encodeURIComponent(c.tipo || tipo);
+          });
+
+          container.appendChild(div);
+        });
+      });
+    }
+
+    // --- Modal confirm control ---
+    function openConfirm(message, onConfirm) {
+      const backdrop = document.getElementById("confirmBackdrop");
+      const txt = document.getElementById("confirmText");
+      txt.textContent = message;
+      backdrop.classList.add("show");
+
+      // attach handlers
+      const btnYes = document.getElementById("confirmYes");
+      const btnNo = document.getElementById("confirmNo");
+
+      const cleanup = () => {
+        backdrop.classList.remove("show");
+        btnYes.onclick = null;
+        btnNo.onclick = null;
+      };
+
+      btnYes.onclick = async () => {
+        try {
+          await onConfirm();
+        } catch (err) {
+          console.error("Erro ao excluir:", err);
+        } finally {
+          cleanup();
+        }
+      };
+
+      btnNo.onclick = () => cleanup();
+    }
+  </script>
 </head>
+
 <body>
-
-  <div id="loading" class="loading hidden">
-    <div class="spinner"></div>
-  </div>
-
   <div class="sidebar">
     <h2>MedVest+</h2>
     <a href="/index.html" class="nav-link">Início</a>
@@ -24,90 +266,35 @@
 
   <div class="flashcards-page">
     <h2>Seus Flashcards</h2>
-  
-    <!-- Barra de pesquisa -->
+
     <div class="search-bar">
-      <input type="text" placeholder="Pesquisar flashcards...">
+      <input type="text" placeholder="Pesquisar flashcards.">
     </div>
-  
-    <!-- Botão de adicionar novo flashcard -->
+
     <a href="novacategoria.html" class="add-flashcard-btn">+ Nova Categoria</a>
-  
-<!-- Categoria Química -->
-<div class="flashcards-category">
-  <div class="category-header">
-    <h3>Química</h3>
   </div>
-  <div class="flashcards-container">
-  </div>
-</div>
 
-<!-- Categoria Biologia -->
-<div class="flashcards-category">
-  <div class="category-header">
-    <h3>Biologia</h3>
+  <!-- Confirm modal (global, shared) -->
+  <div id="confirmBackdrop" class="confirm-backdrop" aria-hidden="true">
+    <div class="confirm-box" role="dialog" aria-modal="true">
+      <div class="confirm-title">Confirmar exclusão</div>
+      <div id="confirmText" class="confirm-text">Tem certeza?</div>
+      <div class="confirm-actions">
+        <button id="confirmNo" class="btn-cancel">Cancelar</button>
+        <button id="confirmYes" class="btn-confirm">Excluir</button>
+      </div>
+    </div>
   </div>
-  <div class="flashcards-container">
-  </div>
-</div>
-
-<!-- Categoria Física -->
-<div class="flashcards-category">
-  <div class="category-header">
-    <h3>Física</h3>
-  </div>
-</div>
 
   <script>
-    const categorias = JSON.parse(localStorage.getItem("categorias")) || [];
-
-    const tipos = ["quimica", "biologia", "fisica"];
-    const nomes = {
-      quimica: "Química",
-      biologia: "Biologia",
-      fisica: "Física"
-    };
-
-    const page = document.querySelector(".flashcards-page");
-
-    function renderCategorias() {
-      // limpar antes
-      document.querySelectorAll(".flashcards-category").forEach(e => e.remove());
-
-      tipos.forEach(tipo => {
-        const wrapper = document.createElement("div");
-        wrapper.className = "flashcards-category";
-        wrapper.innerHTML = `
-          <div class="category-header"><h3>${nomes[tipo]}</h3></div>
-          <div class="flashcards-container"></div>
-        `;
-        page.appendChild(wrapper);
-
-        const container = wrapper.querySelector(".flashcards-container");
-
-        categorias.filter(c => c.tipo === tipo).forEach(c => {
-          const div = document.createElement("div");
-          div.className = "flashcard";
-          div.textContent = c.titulo;
-          div.addEventListener("click", () => {
-          const loading = document.getElementById("loading");
-          loading.classList.remove("hidden");
-          loading.classList.add("fade-in");
-
-          setTimeout(() => {
-            window.location.href = "categoria.html?nome=" + encodeURIComponent(c.titulo) + "&tipo=" + tipo;
-          }, 800); // pequeno delay para animação aparecer
-        });
-
-          container.appendChild(div);
-        });
-      });
+    // fallback: ensure modal exists even if script module loaded earlier
+    if (!document.getElementById('confirmBackdrop')) {
+      const b = document.createElement('div');
+      b.id = 'confirmBackdrop';
+      b.className = 'confirm-backdrop';
+      b.innerHTML = `<div class="confirm-box"><div class="confirm-title">Confirmar</div><div id="confirmText" class="confirm-text"></div><div class="confirm-actions"><button id="confirmNo" class="btn-cancel">Cancelar</button><button id="confirmYes" class="btn-confirm">Excluir</button></div></div>`;
+      document.body.appendChild(b);
     }
-
-    renderCategorias();
-</script>
-
-
-  <script src="/js/script.js"></script>
+  </script>
 </body>
 </html>

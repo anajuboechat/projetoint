@@ -5,7 +5,69 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Nova Categoria</title>
   <link rel="stylesheet" href="/css/style.css">
+
+  <!-- FIREBASE -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+    import { 
+      getAuth, 
+      onAuthStateChanged 
+    } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+    import { 
+      getDatabase, 
+      ref, 
+      push, 
+      set 
+    } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBN2_GgoK-nXfOxefYlCE9i7PupwrNQkrY",
+      authDomain: "medvestplus.firebaseapp.com",
+      projectId: "medvestplus",
+      storageBucket: "medvestplus.firebasestorage.app",
+      messagingSenderId: "261146979409",
+      appId: "1:261146979409:web:3388c61d54f7d7f7205c70",
+      databaseURL: "https://medvestplus-default-rtdb.firebaseio.com"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const auth = getAuth(app);
+
+    let uid = null;
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) uid = user.uid;
+      else window.location.href = "../login.html";
+    });
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const form = document.getElementById("categoriaForm");
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const titulo = document.getElementById("titulo").value.trim();
+        const tipo = document.getElementById("tipo").value;
+
+        if (!titulo) {
+          alert("Digite um título!");
+          return;
+        }
+
+        const novaCategoriaRef = push(ref(db, `usuarios/${uid}/categorias`));
+
+        await set(novaCategoriaRef, {
+          titulo,
+          tipo
+        });
+
+        window.location.href = "flashcards.html";
+      });
+    });
+  </script>
 </head>
+
 <body>
   <div class="layout">
     <div class="sidebar">
@@ -20,18 +82,19 @@
 
     <div class="main">
       <h1 class="profile-title">Adicionar Nova Categoria</h1>
+
       <form id="categoriaForm" class="flashcard-form">
         <div class="formgroup2">
-          <label for="titulo" class="form-label">Título da Categoria:</label>
+          <label for="titulo" class="form-label">Título</label>
           <div class="input-field">
-            <input type="text" id="titulo" name="titulo" placeholder="Digite o título">
+            <input id="titulo" type="text" placeholder="Digite o título">
           </div>
         </div>
 
         <div class="formgroup2">
-          <label for="tipo" class="form-label">Tipo:</label>
+          <label for="tipo" class="form-label">Tipo</label>
           <div class="input-field">
-            <select id="tipo" name="tipo">
+            <select id="tipo">
               <option value="quimica">Química</option>
               <option value="biologia">Biologia</option>
               <option value="fisica">Física</option>
@@ -39,31 +102,9 @@
           </div>
         </div>
 
-        <button type="submit" class="savebutton2">Salvar Categoria</button>
+        <button class="savebutton2">Salvar Categoria</button>
       </form>
     </div>
   </div>
-
-  <script>
-    const form = document.getElementById("categoriaForm");
-
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
-
-      const titulo = document.getElementById("titulo").value;
-      const tipo = document.getElementById("tipo").value;
-
-      if (!titulo) {
-        alert("Digite um título para a categoria!");
-        return;
-      }
-
-      const categorias = JSON.parse(localStorage.getItem("categorias")) || [];
-      categorias.push({ titulo, tipo });
-      localStorage.setItem("categorias", JSON.stringify(categorias));
-
-      window.location.href = "flashcards.html";
-    });
-  </script>
 </body>
 </html>

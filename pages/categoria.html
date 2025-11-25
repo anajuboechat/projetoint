@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Categoria</title>
   <link rel="stylesheet" href="/css/style.css">
+
   <style>
     body {
       display: flex;
@@ -38,10 +39,11 @@
 
     h1 { margin-bottom: 20px; }
 
+    /* ====== FLASHCARD ====== */
     .flashcard {
       width: 450px;
       height: 600px;
-      background: #c8e0a4;
+      background: transparent !important;
       border-radius: 20px;
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
       perspective: 1500px;
@@ -49,6 +51,9 @@
       cursor: grab;
       user-select: none;
       transition: transform 0.4s ease;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      overflow: visible;
     }
 
     .flashcard-inner {
@@ -105,12 +110,8 @@
       100% { transform: translateZ(0) translateY(-50%) scale(1); opacity: 1; }
     }
 
-    .flashcard:hover .hover-icon.right {
-      animation: symbolFromBehind 0.6s forwards;
-    }
-    .flashcard:hover .hover-icon.left {
-      animation: symbolFromBehind 0.6s forwards;
-    }
+    .flashcard:hover .hover-icon.right { animation: symbolFromBehind 0.6s forwards; }
+    .flashcard:hover .hover-icon.left { animation: symbolFromBehind 0.6s forwards; }
 
     .flashcard.left-hover { transform: rotate(-6deg) translateX(-10px); }
     .flashcard.right-hover { transform: rotate(6deg) translateX(10px); }
@@ -122,6 +123,7 @@
       0% { transform: translateX(0) rotate(0deg); opacity: 1; }
       100% { transform: translateX(600px) rotate(20deg); opacity: 0; }
     }
+
     @keyframes throwLeft {
       0% { transform: translateX(0) rotate(0deg); opacity: 1; }
       100% { transform: translateX(-600px) rotate(-20deg); opacity: 0; }
@@ -145,7 +147,6 @@
     }
 
     .arrow:hover { background: #b1d084; }
-    .arrow svg { width: 24px; height: 24px; fill: #333; }
     .arrow.left { left: 60px; }
     .arrow.right { right: 60px; }
 
@@ -160,6 +161,7 @@
       border-radius: 8px;
       transition: background 0.3s;
     }
+
     .add-flashcard-btn:hover { background: #91b268; }
 
     .scoreboard {
@@ -185,9 +187,94 @@
     }
     .score-circle.correct { background: #4CAF50; }
     .score-circle.wrong { background: #E74C3C; }
+
+    /* delete button (square X) for flashcard */
+    .delete-x-square-flash {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      border: 2px solid rgba(0,0,0,0.06);
+      background: rgba(255,255,255,0.95);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      cursor: pointer;
+      z-index: 5;
+    }
+    .delete-x-square-flash:hover {
+      background: #ffecec;
+      color: #d33;
+      border-color: #f3b3b3;
+    }
+
+    /* modal (shared) */
+    .confirm-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.35);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 99999;
+    }
+    .confirm-backdrop.show { display: flex; }
+
+    .confirm-box {
+      width: 380px;
+      max-width: calc(100% - 40px);
+      background: #f9fff3;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+      border: 1px solid rgba(0,0,0,0.04);
+      text-align: center;
+      font-family: Arial, sans-serif;
+    }
+
+    .confirm-title {
+      font-size: 18px;
+      color: #2f3b2a;
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+    .confirm-text {
+      font-size: 14px;
+      color: #3b3f2b;
+      margin-bottom: 18px;
+    }
+    .confirm-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+    }
+    .btn-confirm {
+      background: #a8c67a;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 700;
+    }
+    .btn-cancel {
+      background: transparent;
+      color: #3b3f2b;
+      border: 1px solid rgba(0,0,0,0.06);
+      padding: 10px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 700;
+    }
   </style>
+
 </head>
 <body>
+
+  <!-- SIDEBAR -->
   <div class="sidebar">
     <h2>MedVest+</h2>
     <a href="/index.html" class="nav-link">Início</a>
@@ -198,9 +285,11 @@
     <img src="/assets/images/logo.png" alt="logo">
   </div>
 
+  <!-- MAIN -->
   <div class="main">
     <h1 id="categoryTitle"></h1>
-    <a href="#" id="addFlashcardBtn" class="add-flashcard-btn">+ Novo Flashcard</a>
+    <a id="addFlashcardBtn" class="add-flashcard-btn">+ Novo Flashcard</a>
+
     <div id="flashcardContainer"></div>
 
     <div class="arrow left" id="prevBtn">
@@ -222,32 +311,112 @@
     </div>
   </div>
 
-  <script>
+  <!-- Confirm modal (shared) -->
+  <div id="confirmBackdrop" class="confirm-backdrop" aria-hidden="true">
+    <div class="confirm-box" role="dialog" aria-modal="true">
+      <div class="confirm-title">Confirmar exclusão</div>
+      <div id="confirmText" class="confirm-text">Tem certeza?</div>
+      <div class="confirm-actions">
+        <button id="confirmNo" class="btn-cancel">Cancelar</button>
+        <button id="confirmYes" class="btn-confirm">Excluir</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCRIPT -> Firebase + Render -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+    import { getDatabase, ref, onValue, remove } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBN2_GgoK-nXfOxefYlCE9i7PupwrNQkrY",
+      authDomain: "medvestplus.firebaseapp.com",
+      projectId: "medvestplus",
+      storageBucket: "medvestplus.firebasestorage.app",
+      messagingSenderId: "261146979409",
+      appId: "1:261146979409:web:3388c61d54f7d7f7205c70",
+      databaseURL: "https://medvestplus-default-rtdb.firebaseio.com"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const auth = getAuth(app);
+
     const params = new URLSearchParams(window.location.search);
     const nome = params.get("nome");
     const tipo = params.get("tipo");
-    const storageKey = "flashcards_" + nome + "_" + tipo;
-
     document.getElementById("categoryTitle").textContent = nome;
 
-    const flashcards = JSON.parse(localStorage.getItem(storageKey)) || [];
+    const addBtn = document.getElementById("addFlashcardBtn");
+    addBtn.href = `novoflashcard.html?nome=${encodeURIComponent(nome)}&tipo=${encodeURIComponent(tipo)}`;
+
     const container = document.getElementById("flashcardContainer");
-    const correctCountEl = document.getElementById("correctCount");
-    const wrongCountEl = document.getElementById("wrongCount");
+    let flashcards = [];
     let currentIndex = 0;
-    let correctCount = 0;
-    let wrongCount = 0;
+
+    let correct = 0;
+    let wrong = 0;
+
+    let UID = null;
+
+    onAuthStateChanged(auth, (user) => {
+      if (!user) return;
+      UID = user.uid;
+
+      const refCards = ref(db, `usuarios/${UID}/flashcards/${nome}/${tipo}`);
+
+      onValue(refCards, (snap) => {
+        const data = snap.val() || {};
+        // guardar id para exclusão
+        flashcards = Object.entries(data).map(([id, item]) => ({ _id: id, ...item }));
+
+        currentIndex = 0;
+        renderFlashcard(currentIndex);
+      });
+    });
+
+    // modal helper
+    function openConfirm(message, onConfirm) {
+      const backdrop = document.getElementById("confirmBackdrop");
+      const txt = document.getElementById("confirmText");
+      txt.textContent = message;
+      backdrop.classList.add("show");
+
+      const yes = document.getElementById("confirmYes");
+      const no = document.getElementById("confirmNo");
+
+      const cleanup = () => {
+        backdrop.classList.remove("show");
+        yes.onclick = null;
+        no.onclick = null;
+      };
+
+      yes.onclick = async () => {
+        try {
+          await onConfirm();
+        } catch (err) {
+          console.error(err);
+        } finally {
+          cleanup();
+        }
+      };
+      no.onclick = cleanup;
+    }
 
     function renderFlashcard(index) {
       container.innerHTML = "";
+
       if (flashcards.length === 0) {
         container.innerHTML = "<p>Não há flashcards nesta categoria.</p>";
         return;
       }
 
       const fc = flashcards[index];
+
       const div = document.createElement("div");
       div.className = "flashcard";
+
       div.innerHTML = `
         <div class="flashcard-inner">
           <div class="flashcard-front">${fc.front}</div>
@@ -257,24 +426,45 @@
         <div class="hover-icon right">✔</div>
       `;
 
+      // botão X quadrado
+      const del = document.createElement("div");
+      del.className = "delete-x-square-flash";
+      del.innerHTML = "✖";
+      del.addEventListener("click", (e) => {
+        e.stopPropagation();
+        openConfirm("Excluir este flashcard?", async () => {
+          await remove(ref(db, `usuarios/${UID}/flashcards/${nome}/${tipo}/${fc._id}`));
+          // atualizar array local
+          flashcards.splice(currentIndex, 1);
+          if (flashcards.length === 0) {
+            container.innerHTML = "<p>Não há flashcards nesta categoria.</p>";
+            return;
+          }
+          // ajusta índice e renderiza
+          currentIndex = currentIndex % flashcards.length;
+          renderFlashcard(currentIndex);
+        });
+      });
+
+      div.appendChild(del);
+
       div.addEventListener("click", (e) => {
         if (Math.abs(e.offsetX - div.offsetWidth / 2) < 200) {
           div.classList.toggle("is-flipped");
         }
       });
 
-      // 🔹 Alteração: o meio não inclina mais
+      // tilt
       div.addEventListener("mousemove", (e) => {
         const rect = div.getBoundingClientRect();
         const mid = rect.left + rect.width / 2;
         const diff = e.clientX - mid;
         const maxTilt = 8;
-        const distanceFromCenter = Math.abs(diff);
 
-        // O centro permanece neutro (sem rotação até 100px do meio)
         let tilt = 0;
-        if (distanceFromCenter > 100) {
-          const factor = (distanceFromCenter - 100) / (rect.width / 2 - 100);
+        const dist = Math.abs(diff);
+        if (dist > 100) {
+          const factor = (dist - 100) / (rect.width / 2 - 100);
           tilt = Math.sign(diff) * Math.min(maxTilt, factor * maxTilt);
         }
 
@@ -285,45 +475,47 @@
         div.style.transform = "rotate(0deg)";
       });
 
+      // swipe
       let startX = 0;
-      let isDragging = false;
+      let dragging = false;
 
       div.addEventListener("mousedown", (e) => {
+        dragging = true;
         startX = e.clientX;
-        isDragging = true;
         div.style.transition = "none";
       });
 
       document.addEventListener("mouseup", (e) => {
-        if (!isDragging) return;
-        isDragging = false;
-        div.style.transition = "transform 0.3s ease";
+        if (!dragging) return;
+        dragging = false;
+        div.style.transition = "transform 0.3s";
 
-        const diff = e.clientX - startX;
-        if (diff > 100) {
+        const dx = e.clientX - startX;
+
+        if (dx > 100) {
           div.classList.add("throw-right");
           setTimeout(() => {
-            correctCount++;
-            correctCountEl.textContent = correctCount;
+            correct++;
+            document.getElementById("correctCount").textContent = correct;
             nextFlashcard();
-          }, 400);
-        } else if (diff < -100) {
+          }, 300);
+        } else if (dx < -100) {
           div.classList.add("throw-left");
           setTimeout(() => {
-            wrongCount++;
-            wrongCountEl.textContent = wrongCount;
+            wrong++;
+            document.getElementById("wrongCount").textContent = wrong;
             nextFlashcard();
-          }, 400);
+          }, 300);
         } else {
           div.style.transform = "translateX(0) rotate(0)";
         }
       });
 
       document.addEventListener("mousemove", (e) => {
-        if (!isDragging) return;
-        const diff = e.clientX - startX;
-        const tilt = Math.max(-10, Math.min(10, diff / 15));
-        div.style.transform = `translateX(${diff}px) rotate(${tilt}deg)`;
+        if (!dragging) return;
+        const dx = e.clientX - startX;
+        const tilt = Math.max(-10, Math.min(10, dx / 15));
+        div.style.transform = `translateX(${dx}px) rotate(${tilt}deg)`;
       });
 
       container.appendChild(div);
@@ -343,10 +535,7 @@
 
     document.getElementById("nextBtn").addEventListener("click", nextFlashcard);
 
-    const addBtn = document.getElementById("addFlashcardBtn");
-    addBtn.href = "novoflashcard.html?nome=" + encodeURIComponent(nome) + "&tipo=" + encodeURIComponent(tipo);
-
-    renderFlashcard(currentIndex);
   </script>
+
 </body>
 </html>

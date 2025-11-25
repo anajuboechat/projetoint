@@ -1,11 +1,67 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Novo Flashcard</title>
   <link rel="stylesheet" href="/css/style.css">
+
+  <!-- Firebase -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+    import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBN2_GgoK-nXfOxefYlCE9i7PupwrNQkrY",
+      authDomain: "medvestplus.firebaseapp.com",
+      projectId: "medvestplus",
+      storageBucket: "medvestplus.firebasestorage.app",
+      messagingSenderId: "261146979409",
+      appId: "1:261146979409:web:3388c61d54f7d7f7205c70",
+      databaseURL: "https://medvestplus-default-rtdb.firebaseio.com"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getDatabase(app);
+
+    const params = new URLSearchParams(window.location.search);
+    const nome = params.get("nome");
+    const tipo = params.get("tipo");
+
+    const form = document.getElementById("flashcardForm");
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const frente = document.getElementById("front").value;
+      const verso = document.getElementById("back").value;
+
+      if (!frente || !verso) {
+        alert("Preencha frente e verso!");
+        return;
+      }
+
+      onAuthStateChanged(auth, (user) => {
+        if (!user) return alert("Você precisa estar logado!");
+
+        const refCards = ref(db, `usuarios/${user.uid}/flashcards/${nome}/${tipo}`);
+        const novo = push(refCards);
+
+        set(novo, {
+          front: frente,
+          back: verso,
+          criadoEm: new Date().toISOString()
+        }).then(() => {
+          window.location.href = `categoria.html?nome=${nome}&tipo=${tipo}`;
+        });
+      });
+    });
+  </script>
 </head>
+
 <body>
   <div class="layout">
     <div class="sidebar">
@@ -20,6 +76,7 @@
 
     <div class="main">
       <h1 class="profile-title">Adicionar Novo Flashcard</h1>
+
       <form id="flashcardForm" class="flashcard-form">
         <div class="formgroup2">
           <label for="front" class="form-label">Frente:</label>
@@ -39,31 +96,6 @@
       </form>
     </div>
   </div>
-
-  <script>
-    const params = new URLSearchParams(window.location.search);
-    const nome = params.get("nome");
-    const tipo = params.get("tipo");
-    const storageKey = "flashcards_" + nome + "_" + tipo;
-
-    const form = document.getElementById("flashcardForm");
-
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const front = document.getElementById("front").value;
-      const back = document.getElementById("back").value;
-
-      if (!front || !back) {
-        alert("Preencha frente e verso!");
-        return;
-      }
-
-      const flashcards = JSON.parse(localStorage.getItem(storageKey)) || [];
-      flashcards.push({ front, back });
-      localStorage.setItem(storageKey, JSON.stringify(flashcards));
-
-      window.location.href = "categoria.html?nome=" + encodeURIComponent(nome) + "&tipo=" + encodeURIComponent(tipo);
-    });
-  </script>
 </body>
+
 </html>
