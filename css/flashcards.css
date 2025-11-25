@@ -1,0 +1,112 @@
+/* EVITA cards invisíveis */
+    .category-card {
+      width: 260px;
+      height: 170px;
+      border-radius: 16px;
+      background: #c8e0a4 !important;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #3b3f2b;
+      font-weight: 700;
+      font-size: 1.2rem;
+      cursor: pointer;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.18);
+      user-select: none;
+      transition: .25s;
+      position: relative;
+      padding: 12px;
+      text-align: center;
+    }
+    .category-card:hover {
+      background:#9fbf77 !important;
+      color:white;
+      transform: translateY(-6px);
+    }
+
+    /* X dentro de quadrado (categoria) */
+    .delete-x-square {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      width: 30px;
+      height: 30px;
+      border-radius: 6px;
+      border: 2px solid rgba(0,0,0,0.08);
+      background: rgba(255,255,255,0.95);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    }
+
+    .delete-x-square:hover {
+      background: #ffecec;
+      border-color: #f3b3b3;
+      color: #d33;
+    }
+
+    /* Modal confirmação (estilo app, central) */
+    .confirm-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.35);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 99999;
+    }
+    .confirm-backdrop.show { display: flex; }
+
+    .confirm-box {
+      width: 380px;
+      max-width: calc(100% - 40px);
+      background: #f9fff3; /* tom do app */
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+      border: 1px solid rgba(0,0,0,0.04);
+      text-align: center;
+      font-family: Arial, sans-serif;
+    }
+
+    .confirm-title {
+      font-size: 18px;
+      color: #2f3b2a;
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+
+    .confirm-text {
+      font-size: 14px;
+      color: #3b3f2b;
+      margin-bottom: 18px;
+    }
+
+    .confirm-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+    }
+
+    .btn-confirm {
+      background: #a8c67a;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .btn-cancel {
+      background: transparent;
+      color: #3b3f2b;
+      border: 1px solid rgba(0,0,0,0.06);
+      padding: 10px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 700;
+    }
