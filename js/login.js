@@ -5,7 +5,7 @@ import {
   GoogleAuthProvider, 
   signInWithPopup 
 } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
-import { getDatabase, ref, update, set } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-database.js";
+import { getDatabase, ref, update } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-database.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBN2_GgoK-nXfOxefYlCE9i7PupwrNQkrY",
@@ -21,7 +21,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getDatabase(app);
 
-// 🔹 LOGIN COM EMAIL E SENHA
+// LOGIN COM EMAIL E SENHA
 const submit = document.getElementById("submit");
 
 submit.addEventListener("click", async (event) => {
@@ -37,7 +37,7 @@ submit.addEventListener("click", async (event) => {
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
 
-    // Atualiza último login
+    // Apenas ATUALIZA, não apaga!
     await update(ref(db, "usuarios/" + user.uid), {
       ultimoLogin: new Date().toISOString()
     });
@@ -58,7 +58,7 @@ submit.addEventListener("click", async (event) => {
   }
 });
 
-// 🔹 LOGIN COM GOOGLE
+// LOGIN COM GOOGLE
 const googleBtn = document.querySelector(".btn-google");
 
 if (googleBtn) {
@@ -76,21 +76,20 @@ if (googleBtn) {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
 
-      // Cria ou atualiza o registro do usuário no Realtime Database
       const userRef = ref(db, "usuarios/" + user.uid);
-      await set(userRef, {
+
+      // CORRIGIDO: substituído set() → update()
+      await update(userRef, {
         email: user.email,
         nome: user.displayName || "",
         avatar: user.photoURL || "",
         ultimoLogin: new Date().toISOString()
       });
 
-      // Mostra mensagem de sucesso
       passwordError.className = "success-message";
       passwordError.style.color = "green";
       passwordError.textContent = "Login com Google realizado com sucesso!";
 
-      // Define o login ativo e redireciona
       sessionStorage.setItem("isLoggedIn", "true");
 
       setTimeout(() => {
