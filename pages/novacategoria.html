@@ -8,64 +8,70 @@
 
   <!-- FIREBASE -->
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
-    import { 
-      getAuth, 
-      onAuthStateChanged 
-    } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
-    import { 
-      getDatabase, 
-      ref, 
-      push, 
-      set 
-    } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-database.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-database.js";
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyBN2_GgoK-nXfOxefYlCE9i7PupwrNQkrY",
-      authDomain: "medvestplus.firebaseapp.com",
-      projectId: "medvestplus",
-      storageBucket: "medvestplus.firebasestorage.app",
-      messagingSenderId: "261146979409",
-      appId: "1:261146979409:web:3388c61d54f7d7f7205c70",
-      databaseURL: "https://medvestplus-default-rtdb.firebaseio.com"
-    };
+const firebaseConfig = {
+  apiKey: "AIzaSyBN2_GgoK-nXfOxefYlCE9i7PupwrNQkrY",
+  authDomain: "medvestplus.firebaseapp.com",
+  projectId: "medvestplus",
+  storageBucket: "medvestplus.firebasestorage.app",
+  messagingSenderId: "261146979409",
+  appId: "1:261146979409:web:3388c61d54f7d7f7205c70",
+  databaseURL: "https://medvestplus-default-rtdb.firebaseio.com"
+};
 
-    const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
-    const auth = getAuth(app);
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+const auth = getAuth(app);
 
-    let uid = null;
+let uid = null;
 
-    onAuthStateChanged(auth, (user) => {
-      if (user) uid = user.uid;
-      else window.location.href = "../login.html";
+onAuthStateChanged(auth, (user) => {
+  if (user) uid = user.uid;
+  else window.location.href = "../login.html";
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.getElementById("categoriaForm");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const materia = document.getElementById("titulo").value.trim().toLowerCase();
+    const disciplina = document.getElementById("tipo").value;
+
+    if (!materia) {
+      alert("Digite um nome para a Matéria!");
+      return;
+    }
+
+    // caminho raiz da materia
+    const materiaRef = ref(
+      db,
+      `usuarios/${uid}/categoria/${disciplina}/${materia}`
+    );
+
+    // criar idMateria
+    const idMateriaRef = push(materiaRef);
+
+    await set(idMateriaRef, {
+      id: idMateriaRef.key,
+      criadoEm: new Date().toISOString()
     });
 
-    document.addEventListener("DOMContentLoaded", () => {
-      const form = document.getElementById("categoriaForm");
+    // cria pasta flashcards vazia
+    await set(
+      ref(db, `usuarios/${uid}/categoria/${disciplina}/${materia}/flashcards`),
+      {}
+    );
 
-      form.addEventListener("submit", async (e) => {
-        e.preventDefault();
+    window.location.href = "flashcards.html";
+  });
+});
+</script>
 
-        const titulo = document.getElementById("titulo").value.trim();
-        const tipo = document.getElementById("tipo").value;
-
-        if (!titulo) {
-          alert("Digite um título!");
-          return;
-        }
-
-        const novaCategoriaRef = push(ref(db, `usuarios/${uid}/categorias`));
-
-        await set(novaCategoriaRef, {
-          titulo,
-          tipo
-        });
-
-        window.location.href = "flashcards.html";
-      });
-    });
-  </script>
 </head>
 
 <body>
@@ -81,18 +87,18 @@
     </div>
 
     <div class="main">
-      <h1 class="profile-title">Adicionar Nova Categoria</h1>
+      <h1 class="profile-title">Adicionar Nova Matéria</h1>
 
       <form id="categoriaForm" class="flashcard-form">
         <div class="formgroup2">
-          <label for="titulo" class="form-label">Título</label>
+          <label for="titulo" class="form-label">Matéria</label>
           <div class="input-field">
-            <input id="titulo" type="text" placeholder="Digite o título">
+            <input id="titulo" type="text" placeholder="Ex.: Citologia, Cinemática...">
           </div>
         </div>
 
         <div class="formgroup2">
-          <label for="tipo" class="form-label">Tipo</label>
+          <label for="tipo" class="form-label">Disciplina</label>
           <div class="input-field">
             <select id="tipo">
               <option value="quimica">Química</option>
@@ -102,7 +108,7 @@
           </div>
         </div>
 
-        <button class="savebutton2">Salvar Categoria</button>
+        <button class="savebutton2">Salvar Matéria</button>
       </form>
     </div>
   </div>
