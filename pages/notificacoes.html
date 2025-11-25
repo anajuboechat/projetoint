@@ -1,32 +1,222 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MedVest+ - Notificações</title>
+  <title>Notificações</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inria+Sans:wght@400&family=Inter:wght@400;500;700&family=Roboto:wght@400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/css/style.css">
+
+  <style>
+
+/* RESET */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background-color: #f0f0f0;
+}
+
+#section-main {
+  width: 100%;
+  height: 100vh;
+  background: #f7fbe9;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.main-content {
+  width: 100%;
+  max-width: 500px;
+  height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+  background: #f7fbe9;
+  padding: 20px;
+}
+
+/* TÍTULO FIXO */
+.page-title {
+  text-align: center;
+  font-size: 24px;
+  font-weight: 400;
+  margin: 0;
+  padding: 10px 0 20px 0;
+
+  position: sticky;
+  top: 0;
+  background: #f7fbe9;
+  z-index: 10;
+}
+
+/* ÁREA ROLÁVEL ENTRE O TÍTULO E O BOTÃO */
+.notification-container {
+  flex: 1;
+  overflow-y: auto;
+
+  padding-right: 8px;
+  scrollbar-width: thin;
+  scrollbar-color: #6d9657 #f7fbe9;
+}
+
+.notification-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* CARDS */
+.notification-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+  background-color: rgba(126, 161, 107, 0.08);
+  border: 4px solid #6d9657;
+  border-radius: 20px;
+
+  min-height: 67px;
+  padding: 10px 45px 10px 10px;
+}
+
+.notification-icon {
+  width: 55px;
+  height: 55px;
+  flex-shrink: 0;
+}
+
+.notification-title {
+  font-family: 'Inria Sans', sans-serif;
+  font-size: 16px;
+  margin: 0;
+}
+
+.notification-date {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 8px;
+}
+
+.delete-btn {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  width: 22px;
+  height: 22px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.close-icon {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.close-icon::before,
+.close-icon::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 1.5px;
+  background-color: #000;
+}
+
+.close-icon::before {
+  transform: rotate(45deg);
+}
+
+.close-icon::after {
+  transform: rotate(-45deg);
+}
+
+/* BOTÃO FIXO NO FINAL */
+.clear-button {
+  width: 100%;
+  height: 45px;
+
+  background-color: #3b3f2b;
+  color: #e6e6e6;
+  border-radius: 8px;
+  border: none;
+  margin-top: 20px;
+
+  font-size: 16px;
+  cursor: pointer;
+
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+}
+
+  </style>
 </head>
+
 <body>
 
-  <div id="loading" class="loading hidden">
-    <div class="spinner"></div>
-  </div>
+    <div class="layout">
+    <div class="sidebar">
+      <h2>MedVest+</h2>
+      <a href="/index.html" class="nav-link">Início</a>
+      <a href="./simulados.html" class="nav-link">Simulados</a>
+      <a href="./flashcards.html" class="nav-link">Flashcards</a>
+      <a href="#" class="nav-link">Notificações</a>
+      <a href="./perfil.html" class="nav-link active">Perfil</a>
+      <img src="/assets/images/logo.png" alt="logo">
+    </div>
+  <section id="section-main">
+    <main class="main-content">
 
-  <div class="sidebar">
-    <h2>MedVest+</h2>
-    <a href="/index.html" class="nav-link">Início</a>
-    <a href="./simulados.html" class="nav-link">Simulados</a>
-    <a href="./flashcards.html" class="nav-link">Flashcards</a>
-    <a href="#" >Notificações</a>
-    <a href="./perfil.html" class="nav-link">Perfil</a>
-    <img src="/assets/images/logo.png" alt="logo">
-  </div>
+      <!-- TÍTULO FIXO -->
+      <h1 class="page-title">Notificações</h1>
 
-  <div class="main">
-    <h1>Notificações</h1>
-    <p>Veja suas notificações recentes.</p>
-  </div>
+      <!-- ÁREA ROLÁVEL CENTRAL -->
+      <div class="notification-container">
+        <div class="notification-list">
 
-  <script src="/js/script.js"></script>
+          <div class="notification-card">
+            <img class="notification-icon" src="/assets/images/chat.png">
+            <p class="notification-title">Novo simulado já disponível</p>
+            <span class="notification-date">31/05/2025</span>
+            <button class="delete-btn"><div class="close-icon"></div></button>
+          </div>
+
+          <div class="notification-card">
+            <img class="notification-icon" src="/assets/images/notes.png">
+            <p class="notification-title">Gabarito comentado divulgado</p>
+            <span class="notification-date">25/05/2025</span>
+            <button class="delete-btn"><div class="close-icon"></div></button>
+          </div>
+
+          <div class="notification-card">
+            <img class="notification-icon" src="/assets/images/dingobell.png">
+            <p class="notification-title">Mais notificações</p>
+            <span class="notification-date">05/05/2025</span>
+            <button class="delete-btn"><div class="close-icon"></div></button>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- BOTÃO FIXO NO RODAPÉ DA ÁREA -->
+      <button class="clear-button">Mais notificações</button>
+
+    </main>
+  </section>
+    </div>
+  </div>
 </body>
 </html>
