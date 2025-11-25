@@ -8,60 +8,42 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inria+Sans:wght@400&family=Inter:wght@400;500;700&family=Roboto:wght@400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/css/style.css">
-  <link rel="stylesheet" href="../css/notificacoes.css">
+  <link rel="stylesheet" href="/css/notificacoes.css">
 </head>
+
 <body>
 
-    <div class="layout">
-    <div class="sidebar">
-      <h2>MedVest+</h2>
-      <a href="/index.html" class="nav-link">Início</a>
-      <a href="./simulados.html" class="nav-link">Simulados</a>
-      <a href="./flashcards.html" class="nav-link">Flashcards</a>
-      <a href="#" class="nav-link">Notificações</a>
-      <a href="./perfil.html" class="nav-link active">Perfil</a>
-      <img src="/assets/images/logo.png" alt="logo">
-    </div>
+<div class="layout">
+  <div class="sidebar">
+    <h2>MedVest+</h2>
+    <a href="/index.html" class="nav-link">Início</a>
+    <a href="./simulados.html" class="nav-link">Simulados</a>
+    <a href="./flashcards.html" class="nav-link">Flashcards</a>
+    <a href="#" class="nav-link active">Notificações</a>
+    <a href="./perfil.html" class="nav-link">Perfil</a>
+    <img src="/assets/images/logo.png" alt="logo">
+  </div>
+
   <section id="section-main">
     <main class="main-content">
 
-      <!-- TÍTULO FIXO -->
       <h1 class="page-title">Notificações</h1>
 
-      <!-- ÁREA ROLÁVEL CENTRAL -->
       <div class="notification-container">
-        <div class="notification-list">
-
-          <div class="notification-card">
-            <img class="notification-icon" src="/assets/images/chat.png">
-            <p class="notification-title">Novo simulado já disponível</p>
-            <span class="notification-date">31/05/2025</span>
-            <button class="delete-btn"><div class="close-icon"></div></button>
-          </div>
-
-          <div class="notification-card">
-            <img class="notification-icon" src="/assets/images/notes.png">
-            <p class="notification-title">Gabarito comentado divulgado</p>
-            <span class="notification-date">25/05/2025</span>
-            <button class="delete-btn"><div class="close-icon"></div></button>
-          </div>
-
-          <div class="notification-card">
-            <img class="notification-icon" src="/assets/images/dingobell.png">
-            <p class="notification-title">Mais notificações</p>
-            <span class="notification-date">05/05/2025</span>
-            <button class="delete-btn"><div class="close-icon"></div></button>
-          </div>
-
-        </div>
+        <div class="notification-list" id="notificationList"></div>
       </div>
 
-      <!-- BOTÃO FIXO NO RODAPÉ DA ÁREA -->
-      <button class="clear-button">Mais notificações</button>
+      <button class="clear-button" id="closeAllBtn">Fechar todas as notificações</button>
 
     </main>
   </section>
-    </div>
-  </div>
+</div>
+
+<!-- ============================ -->
+<!--   FIREBASE + NOTIFICAÇÕES    -->
+<!-- ============================ -->
+
+<script type="module" src="../js/notificacoes.js"></script>
+
 </body>
 </html>
