@@ -11,46 +11,35 @@
   <h1>Escolha suas preferências de universidade</h1>
 
   <div class="container">
-    <div class="card">
+
+    <div class="card" data-name="Unicamp">
       <div class="check-circle"></div>
       <img src="/assets/images/unicamp2.jpeg" alt="Unicamp">
       <span>Unicamp</span>
     </div>
 
-    <div class="card">
+    <div class="card" data-name="USP">
       <div class="check-circle"></div>
       <img src="/assets/images/usp.jpg" alt="USP">
       <span>USP</span>
     </div>
 
-    <div class="card">
+    <div class="card" data-name="ENEM">
       <div class="check-circle"></div>
       <img src="/assets/images/enem.jpeg" alt="ENEM">
       <span>ENEM</span>
     </div>
 
-    <div class="card">
+    <div class="card" data-name="UERJ">
       <div class="check-circle"></div>
       <img src="/assets/images/uerj.jpg" alt="UERJ">
       <span>UERJ</span>
     </div>
+
   </div>
 
   <button class="continue-btn" id="continuarBtn">Continuar</button>
 
-  <script>
-    // Redirecionar ao clicar no botão
-    document.getElementById("continuarBtn").addEventListener("click", () => {
-      window.location.href = "../index.html";
-    });
-
-    // Seleção de universidades
-    const cards = document.querySelectorAll(".card");
-    cards.forEach(card => {
-      card.addEventListener("click", () => {
-        card.classList.toggle("selected"); // permite múltiplas seleções
-      });
-    });
-  </script>
+  <script type="module" src="../js/preferencia_usuario.js"></script>
 </body>
 </html>
