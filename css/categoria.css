@@ -295,6 +295,13 @@ body {
               font-size: 1.5rem;
             }
 
-
-            
+            .logoo {
+              font-size: 2rem;
+            }
         }
+
+@media screen and (min-width: 1024px ) and (max-width:1400px) {
+              .logoo{
+                font-size: 1.8rem;
+              }
+}

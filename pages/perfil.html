@@ -10,16 +10,21 @@
   <link rel="stylesheet" href="/css/style.css" />
 </head>
 <body>
+
+  <div id="loading" class="loading hidden">
+    <div class="spinner"></div>
+  </div>
+  
   <div class="layout">
     <div class="sidebar">
-      <h2>MedVest+</h2>
-      <a href="/index.html" class="nav-link">Início</a>
-      <a href="./simulados.html" class="nav-link">Simulados</a>
-      <a href="./flashcards.html" class="nav-link">Flashcards</a>
-      <a href="./notificacoes.html" class="nav-link">Notificações</a>
-      <a href="#" class="nav-link active">Perfil</a>
-      <img src="/assets/images/logo.png" alt="logo">
-    </div>
+    <h2><span class="logoo" style="color: #33ac49;">Med</span><span class="logoo">Vest</span><span class="logoo" style="color: red;">+</span></h2>
+    <a href="/index.html" class="nav-link"><span>Início</span></a>
+    <a href="./simulados.html" class="nav-link"><span>Simulados</span></a>
+    <a href="./flashcards.html" class="nav-link"><span>Flashcards</span></a>
+    <a href="./notificacoes.html" class="nav-link"><span>Notificações</span></a>
+    <a href="./perfil.html"><span>Perfil</span></a>
+    <img class="imagenzinha_da_logo" src="/assets/images/logo.png" alt="logo">
+  </div>
 
     <div class="mainprofile">
       <div id="section-profile" class="profile-section">
@@ -83,5 +88,6 @@
   </div>
 
   <script type="module" src="../js/perfil.js"></script>
+  <script src="../js/script.js"></script>
 </body>
 </html>
