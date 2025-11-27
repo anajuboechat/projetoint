@@ -59,46 +59,66 @@ a {
   100% { transform: rotate(360deg); }
 }
 
+
+
+
 .sidebar {
-  width: 15%;
-  height: 100vh;
-  background-color: #c8e0a4;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px 0;
-  padding-left: 0.125%;
-  box-shadow: 2px 0 8px rgba(0,0,0,0.1);
-  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-}
+      width: 15%;
+      height: 100vh;
+      background-color: #c8e0a4;
+      padding: 2%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    }
 
-.sidebar h2 {
-  color: #3b3f2b;
-  margin-bottom: 30px;
-}
-
+    .logoo {
+      font-size: 2.3rem;
+    }
+    
+    span {
+      font-size: 1.3rem;
+    }
 .sidebar a {
-  text-decoration: none;
-  color: #3b3f2b;
-  margin: 15px 0;
-  font-size: 16px;
-  font-weight: bold;
-  transition: 0.3s;
+    text-decoration: none;
+    color: #3b3f2b;
+    margin: 15px 0;
+    font-size: 16px;
+    font-weight: bold;
+    transition: 0.3s;
 }
 
 .sidebar a:hover {
   color: #7ea16b;
 }
 
-.sidebar img {
-  max-width: 50%;
-  height: auto;
-  margin-top: auto;
-  align-self: center;
-  padding: 20px 0;
-  margin-bottom: 15%;
+.sidebar h2 {
+    color: #3b3f2b;
+    margin-bottom: 30px;
 }
 
+.sidebar img {
+    max-width: 60%;
+    height: auto;
+    margin-top: auto;
+    align-self: center;
+    padding: 20px 0;
+    margin-bottom: 15%;
+}
+
+@media screen and (min-width: 2100px) {
+    * {
+        font-size: 2.2rem;
+    }
+    span {
+              font-size: 1.5rem;
+            }
+    .imagenzinha_da_logo {
+              min-width: 11rem;
+            }
+}
 
 .main {
   flex: 1;

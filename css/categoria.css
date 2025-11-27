@@ -1,42 +1,38 @@
 body {
       display: flex;
       flex-direction: row;
-      height: 100vh;
+      height: 100%;
       margin: 0;
       font-family: Arial, sans-serif;
-      background: #f9fff3;
+      background: #f7fbe9;
       overflow: hidden;
     }
 
-    .sidebar {
-      width: 220px;
-      background-color: #c8e0a4;
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: space-between;
-    }
 
     .main {
       flex-grow: 1;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: space-evenly;
       position: relative;
       padding: 20px;
+      width: 85%;
     }
 
-    h1 { margin-bottom: 20px; }
+    #categoryTitle {
+      margin: 0px;
+    }
+
 
     /* ====== FLASHCARD ====== */
     .flashcard {
-      width: 450px;
-      height: 600px;
+      min-width: 25rem;
+      max-width: 50rem;
+      min-height: 36rem;
+      max-height: 55rem;
       background: transparent !important;
-      border-radius: 20px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      border-radius: 1.2rem;
       perspective: 1500px;
       position: relative;
       cursor: grab;
@@ -66,15 +62,16 @@ body {
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.3rem;
+      font-size: 1.8rem;
       padding: 30px;
       backface-visibility: hidden;
-      border-radius: 20px;
+      border-radius: 1.2rem;
       box-sizing: border-box;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
     }
 
     .flashcard-front { background: #c8e0a4; }
-    .flashcard-back { background: #a8c67a; transform: rotateY(180deg); }
+    .flashcard-back { background: #c8e0a4; transform: rotateY(180deg); }
 
     .hover-icon {
       position: absolute;
@@ -92,8 +89,8 @@ body {
       z-index: 1;
     }
 
-    .hover-icon.right { right: -100px; background: #4CAF50; }
-    .hover-icon.left { left: -100px; background: #E74C3C; }
+    .hover-icon.right { right: -7rem; background: #4CAF50; }
+    .hover-icon.left { left: -7rem; background: #E74C3C; }
 
     @keyframes symbolFromBehind {
       0% { opacity: 0; transform: translateZ(-120px) translateY(-50%) scale(0.5); }
@@ -124,8 +121,10 @@ body {
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
-      width: 50px;
-      height: 50px;
+      min-width: 3rem;
+      max-width: 5rem;
+      min-height: 3rem;
+      max-height: 5rem;
       background: #c8e0a4;
       border-radius: 50%;
       display: flex;
@@ -138,27 +137,31 @@ body {
     }
 
     .arrow:hover { background: #b1d084; }
-    .arrow.left { left: 60px; }
-    .arrow.right { right: 60px; }
+    .arrow.left { left: 6%; }
+    .arrow.right { right: 6%; }
+
 
     .add-flashcard-btn {
       position: absolute;
-      top: 20px;
-      right: 40px;
+      top: 2%;
+      right: 2%;
       background: #a8c67a;
-      color: #fff;
+      color: rgba(0, 0, 0, 0.795);
       text-decoration: none;
       padding: 10px 16px;
       border-radius: 8px;
       transition: background 0.3s;
+      min-width: 5rem;
+      max-width: 10rem;
     }
+    
 
     .add-flashcard-btn:hover { background: #91b268; }
 
     .scoreboard {
-      position: absolute;
-      bottom: 20px;
+      margin-top: 10px;
       display: flex;
+      bottom: 10px;
       gap: 30px;
       font-size: 1.2rem;
       align-items: center;
@@ -167,32 +170,35 @@ body {
 
     .score-item { display: flex; align-items: center; gap: 8px; }
     .score-circle {
-      width: 30px;
-      height: 30px;
+      
+      width: 1.75rem;
+      height: 1.75rem;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       color: white;
-      font-size: 18px;
+      font-size: 1.35rem;
     }
-    .score-circle.correct { background: #4CAF50; }
+    .score-circle.correct { background: #4CAF50;}
     .score-circle.wrong { background: #E74C3C; }
 
     /* delete button (square X) for flashcard */
     .delete-x-square-flash {
       position: absolute;
-      top: 12px;
-      right: 12px;
-      width: 34px;
-      height: 34px;
-      border-radius: 8px;
+      top: 1rem;
+      right: 1rem;
+      min-width: 2rem;
+      max-width: 3rem;
+      min-height: 2rem;
+      max-height: 3rem;
+      border-radius: 0.9rem;
       border: 2px solid rgba(0,0,0,0.06);
       background: rgba(255,255,255,0.95);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 16px;
+      font-size: 1.2rem;
       cursor: pointer;
       z-index: 5;
     }
@@ -260,3 +266,35 @@ body {
       cursor: pointer;
       font-weight: 700;
     }
+
+    @media screen and (min-width: 2100px) {
+            * {
+                font-size: 2.2rem;
+            }
+            .add-flashcard-btn {
+              min-width: 10rem;
+              max-width: 17rem;
+              font-size: 1.5rem;
+              min-height: 1rem;
+              max-height: 3rem;
+              border-radius: 1rem;
+            }
+            .flashcard-front,.flashcard,.flashcard-back {
+              border-radius: 1rem;
+            }
+            
+            .hover-icon.left {
+              width: 3rem;
+              height: 3rem;
+              font-size: 1.5rem;
+            }
+
+            .hover-icon.right {
+              width: 3rem;
+              height: 3rem;
+              font-size: 1.5rem;
+            }
+
+
+            
+        }
