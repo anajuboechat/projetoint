@@ -17,9 +17,26 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getDatabase(app);
 
+// ------- POPUP CENTRAL -------
+function showToast(message) {
+  const overlay = document.getElementById("toastOverlay");
+  const toastMessage = document.getElementById("toastMessage");
+
+  toastMessage.textContent = message;
+
+  overlay.classList.remove("hidden");
+
+  setTimeout(() => overlay.classList.add("show"), 15);
+
+  setTimeout(() => {
+    overlay.classList.remove("show");
+    setTimeout(() => overlay.classList.add("hidden"), 300);
+  }, 2500);
+}
+
 const avatarImage = document.getElementById("avatarImage");
 const fileInput = document.getElementById("fileInput");
-const editButton = document.getElementById("editButton"); // <-- botão do lápis
+const editButton = document.getElementById("editButton");
 const nameInput = document.getElementById("name");
 const emailDisplay = document.getElementById("emailDisplay");
 const editNameBtn = document.getElementById("editNameBtn");
@@ -28,10 +45,7 @@ const logoutBtn = document.getElementById("logoutBtn");
 
 let uid;
 
-// --------- REMOVIDO: o avatar não abre mais o seletor ---------
-// avatarImage.addEventListener("click", () => fileInput.click());
-
-// --------- ADICIONADO: apenas o lápis abre o seletor ----------
+// Botão de editar foto
 editButton.addEventListener("click", () => fileInput.click());
 
 // Carregar dados do usuário
@@ -54,7 +68,6 @@ onAuthStateChanged(auth, async (user) => {
 
       if (data.preferencias && data.preferencias.universidades) {
         const escolhidas = data.preferencias.universidades;
-
         document.querySelectorAll("input[name='vestibulares']").forEach(cb => {
           cb.checked = escolhidas.includes(cb.value);
         });
@@ -73,7 +86,7 @@ editNameBtn.addEventListener("click", async () => {
 
   try {
     await update(ref(db, "usuarios/" + uid), { nome });
-    alert("Nome atualizado!");
+    showToast("Nome atualizado!");
   } catch (error) {
     console.error("Erro ao salvar nome:", error);
   }
@@ -90,7 +103,7 @@ fileInput.addEventListener("change", () => {
 
       try {
         await update(ref(db, "usuarios/" + uid), { avatar: base64 });
-        alert("Avatar atualizado com sucesso!");
+        showToast("Avatar atualizado!");
       } catch (error) {
         console.error("Erro ao salvar avatar:", error);
       }
@@ -116,7 +129,7 @@ saveAllBtn.addEventListener("click", async () => {
       universidades: vestibulares
     });
 
-    alert("Perfil salvo com sucesso!");
+    showToast("Perfil salvo com sucesso!");
   } catch (error) {
     console.error("Erro ao salvar perfil:", error);
   }

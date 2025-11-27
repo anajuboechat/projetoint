@@ -1,54 +1,54 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Notificações</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inria+Sans:wght@400&family=Inter:wght@400;500;700&family=Roboto:wght@400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/css/style.css">
-  <link rel="stylesheet" href="/css/notificacoes.css">
-</head>
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notificações</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inria+Sans:wght@400&family=Inter:wght@400;500;700&family=Roboto:wght@400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/notificacoes.css">
+  </head>
 
-<body> 
+  <body> 
 
-  <div id="loading" class="loading hidden">
-    <div class="spinner"></div>
+    <div id="loading" class="loading hidden">
+      <div class="spinner"></div>
+    </div>
+
+  <div class="layout">
+    <div class="sidebar">
+      <h2><span class="logoo" style="color: #33ac49;">Med</span><span class="logoo">Vest</span><span class="logoo" style="color: red;">+</span></h2>
+      <a href="/index.html" class="nav-link"><span>Início</span></a>
+      <a href="./simulados.html" class="nav-link"><span>Simulados</span></a>
+      <a href="./flashcards.html" class="nav-link"><span>Flashcards</span></a>
+      <a href="./notificacoes.html"><span>Notificações</span></a>
+      <a href="./perfil.html" class="nav-link"><span>Perfil</span></a>
+      <img class="imagenzinha_da_logo" src="/assets/images/logo.png" alt="logo">
+    </div>
+
+    <section id="section-main">
+      <main class="main-content">
+
+        <h1 class="page-title">Notificações</h1>
+
+        <div class="notification-container">
+          <div class="notification-list" id="notificationList"></div>
+        </div>
+
+        <button class="clear-button" id="closeAllBtn">Fechar todas as notificações</button>
+
+      </main>
+    </section>
   </div>
 
-<div class="layout">
-  <div class="sidebar">
-    <h2><span class="logoo" style="color: #33ac49;">Med</span><span class="logoo">Vest</span><span class="logoo" style="color: red;">+</span></h2>
-    <a href="/index.html" class="nav-link"><span>Início</span></a>
-    <a href="./simulados.html" class="nav-link"><span>Simulados</span></a>
-    <a href="./flashcards.html" class="nav-link"><span>Flashcards</span></a>
-    <a href="./notificacoes.html"><span>Notificações</span></a>
-    <a href="./perfil.html" class="nav-link"><span>Perfil</span></a>
-    <img class="imagenzinha_da_logo" src="/assets/images/logo.png" alt="logo">
-  </div>
+  <!-- ============================ -->
+  <!--   FIREBASE + NOTIFICAÇÕES    -->
+  <!-- ============================ -->
 
-  <section id="section-main">
-    <main class="main-content">
+  <script type="module" src="../js/notificacoes.js"></script>
+  <script src="../js/script.js"></script>
 
-      <h1 class="page-title">Notificações</h1>
-
-      <div class="notification-container">
-        <div class="notification-list" id="notificationList"></div>
-      </div>
-
-      <button class="clear-button" id="closeAllBtn">Fechar todas as notificações</button>
-
-    </main>
-  </section>
-</div>
-
-<!-- ============================ -->
-<!--   FIREBASE + NOTIFICAÇÕES    -->
-<!-- ============================ -->
-
-<script type="module" src="../js/notificacoes.js"></script>
-<script src="../js/script.js"></script>
-
-</body>
-</html>
+  </body>
+  </html>

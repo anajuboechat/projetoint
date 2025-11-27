@@ -73,6 +73,8 @@ a {
       justify-content: space-between;
       font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
       box-sizing: border-box;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.3);
+      z-index: 11;
     }
 
     .logoo {
