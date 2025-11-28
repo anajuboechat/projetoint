@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Questões</title>
+  <link rel="stylesheet" href="../css/style.css">
+
+  <style>
+    .questao-box {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      max-width: 850px;
+      margin-top: 20px;
+    }
+
+    .alternativa {
+      margin: 10px 0;
+      padding: 12px;
+      background: #f3f3f3;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .alternativa:hover {
+      background: #e6e6e6;
+    }
+
+    .alternativa.selecionada {
+      background: #c8e8c6;
+      border: 2px solid #33ac49;
+    }
+
+    .controle {
+      margin-top: 20px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    button {
+      padding: 12px 18px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: 0.3s;
+    }
+
+    #btnConfirmar {
+      background: #33ac49;
+      color: white;
+    }
+
+    #btnConfirmar:hover {
+      background: #2b8e3d;
+    }
+
+    #btnAnterior, #btnProxima {
+      background: #ddd;
+    }
+
+    #btnAnterior:hover, #btnProxima:hover {
+      background: #ccc;
+    }
+
+    /* Área de progresso */
+    #progresso {
+      margin-top: 15px;
+      font-size: 1.1rem;
+      font-weight: bold;
+    }
+
+    #historico {
+      margin-top: 20px;
+      font-size: 1.8rem;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="sidebar">
+    <h2><span class="logoo" style="color:#33ac49;">Med</span><span class="logoo">Vest</span><span class="logoo" style="color:red;">+</span></h2>
+    <a href="/index.html" class="nav-link"><span>Início</span></a>
+    <a href="./simulados.html" class="nav-link"><span>Simulados</span></a>
+    <a href="./flashcards.html" class="nav-link"><span>Flashcards</span></a>
+    <a href="./notificacoes.html" class="nav-link"><span>Notificações</span></a>
+    <a href="./perfil.html" class="nav-link"><span>Perfil</span></a>
+    <img class="imagenzinha_da_logo" src="/assets/images/logo.png" alt="logo">
+  </div>
+
+  <div class="main">
+    <div class="title">
+      <h1 id="tituloTopico">Questões</h1>
+      <p id="progresso">Carregando...</p>
+    </div>
+
+    <div class="questao-box">
+      <h2 id="textoQuestao">Carregando questão...</h2>
+      <div id="alternativas"></div>
+
+      <div class="controle">
+        <button id="btnAnterior">Anterior</button>
+        <button id="btnConfirmar">Confirmar Resposta</button>
+        <button id="btnProxima">Próxima</button>
+      </div>
+
+      <div id="resultadoResposta" style="margin-top:15px; font-size:1.1rem;"></div>
+
+      <div id="historico"></div>
+
+    </div>
+  </div>
+
+  <!-- FIREBASE -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBN2_GgoK-nXfOxefYlCE9i7PupwrNQkrY",
+  authDomain: "medvestplus.firebaseapp.com",
+  databaseURL: "https://medvestplus-default-rtdb.firebaseio.com",
+  projectId: "medvestplus",
+  storageBucket: "medvestplus.appspot.com",
+  messagingSenderId: "261146979409",
+  appId: "1:261146979409:web:3388c61d54f7d7f7205c70"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+const params = new URLSearchParams(window.location.search);
+const topico = params.get("topico");
+document.getElementById("tituloTopico").innerText = topico;
+
+let questoes = [];
+let index = 0;
+let alternativaSelecionada = null;
+
+let acertos = 0;
+let erros = 0;
+let historicoRespostas = [];
+
+const letras = ["A", "B", "C", "D", "E"];
+
+const mapLetraParaNumero = {
+  "A": 0,
+  "B": 1,
+  "C": 2,
+  "D": 3,
+  "E": 4
+};
+
+async function carregar() {
+  const snapshot = await get(ref(db, `questoes/quimica/${topico}`));
+
+  if (!snapshot.exists()) {
+    document.getElementById("textoQuestao").innerText = "Nenhuma questão encontrada.";
+    return;
+  }
+
+  questoes = Object.values(snapshot.val()).map(q => (typeof q === "object" ? q : {}));
+
+  atualizarProgresso();
+  mostrarQuestao();
+}
+
+function atualizarProgresso() {
+  const total = questoes.length;
+  document.getElementById("progresso").innerText =
+    `Questão ${index + 1} de ${total} — ✔ ${acertos} | ✘ ${erros}`;
+}
+
+function mostrarQuestao() {
+  alternativaSelecionada = null;
+
+  const q = questoes[index];
+  document.getElementById("textoQuestao").innerText = `${index + 1}) ${q.enunciado}`;
+
+  const area = document.getElementById("alternativas");
+  area.innerHTML = "";
+
+  document.getElementById("resultadoResposta").innerHTML = "";
+
+  q.alternativas.forEach((texto, i) => {
+    const div = document.createElement("div");
+    div.className = "alternativa";
+    div.innerText = `${letras[i]}) ${texto}`;
+    div.onclick = () => selecionarAlternativa(i, div);
+    area.appendChild(div);
+  });
+
+  atualizarProgresso();
+}
+
+function selecionarAlternativa(i, elemento) {
+  alternativaSelecionada = i;
+  document.querySelectorAll(".alternativa").forEach(a => a.classList.remove("selecionada"));
+  elemento.classList.add("selecionada");
+}
+
+document.getElementById("btnProxima").onclick = () => {
+  if (index < questoes.length - 1) {
+    index++;
+    mostrarQuestao();
+  }
+};
+
+document.getElementById("btnAnterior").onclick = () => {
+  if (index > 0) {
+    index--;
+    mostrarQuestao();
+  }
+};
+
+// CONFIRMAR RESPOSTA
+document.getElementById("btnConfirmar").onclick = () => {
+  if (alternativaSelecionada === null) {
+    alert("Selecione uma alternativa antes de confirmar.");
+    return;
+  }
+
+  let correta = questoes[index].correta ?? questoes[index].gabarito ?? questoes[index].resp;
+
+  if (!correta) {
+    document.getElementById("resultadoResposta").innerHTML =
+      "<p style='color:red; font-weight:bold;'>❗ Erro: A questão não possui campo 'correta'.</p>";
+    return;
+  }
+
+  if (isNaN(parseInt(correta))) {
+    correta = mapLetraParaNumero[correta.toUpperCase()];
+  } else {
+    correta = parseInt(correta);
+  }
+
+  const divResultado = document.getElementById("resultadoResposta");
+
+  if (alternativaSelecionada === correta) {
+    acertos++;
+    historicoRespostas.push("✔");
+    divResultado.innerHTML = `
+      <p style="color: green; font-weight: bold;">
+        ✔ Você acertou!
+        <br>Gabarito: ${letras[correta]}
+      </p>
+    `;
+  } else {
+    erros++;
+    historicoRespostas.push("✘");
+    divResultado.innerHTML = `
+      <p style="color: red; font-weight: bold;">
+        ✘ Você errou.
+        <br>Gabarito correto: ${letras[correta]}
+      </p>
+    `;
+  }
+
+  atualizarProgresso();
+  atualizarHistorico();
+};
+
+function atualizarHistorico() {
+  document.getElementById("historico").innerHTML =
+    historicoRespostas.map(r => `<span>${r}</span>`).join(" ");
+}
+
+carregar();
+</script>
+
+</body>
+</html>

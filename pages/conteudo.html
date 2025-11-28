@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Conteúdo do Tópico</title>
+  <link rel="stylesheet" href="../css/style.css">
+
+  <style>
+    .conteudo-box {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      margin-top: 20px;
+      max-width: 850px;
+    }
+
+    .btn {
+      margin-top: 25px;
+      background: #33ac49;
+      padding: 14px 22px;
+      color: white;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      font-size: 1.1rem;
+      transition: 0.3s;
+      display: inline-block;
+    }
+
+    .btn:hover {
+      background: #2b8e3d;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="sidebar">
+    <h2>
+      <span class="logoo" style="color: #33ac49;">Med</span>
+      <span class="logoo">Vest</span>
+      <span class="logoo" style="color: red;">+</span>
+    </h2>
+    <a href="/index.html" class="nav-link"><span>Início</span></a>
+    <a href="./simulados.html" class="nav-link"><span>Simulados</span></a>
+    <a href="./flashcards.html" class="nav-link"><span>Flashcards</span></a>
+    <a href="./notificacoes.html" class="nav-link"><span>Notificações</span></a>
+    <a href="./perfil.html" class="nav-link"><span>Perfil</span></a>
+    <img class="imagenzinha_da_logo" src="/assets/images/logo.png">
+  </div>
+
+  <div class="main">
+    <div class="title">
+      <h1 id="tituloTopico">Carregando...</h1>
+      <p>Conteúdos do subtópico selecionado:</p>
+    </div>
+
+    <div class="conteudo-box">
+      <h2>Conteúdo</h2>
+      <p id="textoTopico">Carregando conteúdo...</p>
+
+      <button class="btn" id="btnQuestoes">Ver questões desse subtópico</button>
+    </div>
+  </div>
+
+  <!-- FIREBASE -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBN2_GgoK-nXfOxefYlCE9i7PupwrNQkrY",
+      authDomain: "medvestplus.firebaseapp.com",
+      databaseURL: "https://medvestplus-default-rtdb.firebaseio.com",
+      projectId: "medvestplus",
+      storageBucket: "medvestplus.appspot.com",
+      messagingSenderId: "261146979409",
+      appId: "1:261146979409:web:3388c61d54f7d7f7205c70"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    // Lê o tópico da URL
+    const params = new URLSearchParams(window.location.search);
+    const topico = params.get("topico");
+
+    document.getElementById("tituloTopico").innerText = topico;
+
+    // 🔥 Lê o conteúdo do banco
+    get(ref(db, `conteudos/quimica/${topico}`))
+      .then(snapshot => {
+        if (snapshot.exists()) {
+          document.getElementById("textoTopico").innerText = snapshot.val();
+        } else {
+          document.getElementById("textoTopico").innerText = "Conteúdo ainda não disponível.";
+        }
+      });
+
+    // 🔥 Botão para questões
+    document.getElementById("btnQuestoes").onclick = () => {
+      window.location.href = `questoes.html?topico=${encodeURIComponent(topico)}`;
+    };
+  </script>
+
+</body>
+</html>

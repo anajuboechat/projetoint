@@ -6,9 +6,15 @@
   <title>Conteúdos</title>
   <link rel="stylesheet" href="../css/style.css">
 </head>
+
 <body>
+
   <div class="sidebar">
-    <h2><span class="logoo" style="color: #33ac49;">Med</span><span class="logoo">Vest</span><span class="logoo" style="color: red;">+</span></h2>
+    <h2>
+      <span class="logoo" style="color: #33ac49;">Med</span>
+      <span class="logoo">Vest</span>
+      <span class="logoo" style="color: red;">+</span>
+    </h2>
     <a href="/index.html" class="nav-link"><span>Início</span></a>
     <a href="./simulados.html" class="nav-link"><span>Simulados</span></a>
     <a href="./flashcards.html" class="nav-link"><span>Flashcards</span></a>
@@ -17,26 +23,70 @@
     <img class="imagenzinha_da_logo" src="/assets/images/logo.png" alt="logo">
   </div>
 
-  <div class="main">
+  <div class="main simulados">
     <div class="title">
-      <h1>Conteúdos</h1>
+      <h1>Conteúdos de Química</h1>
+      <p>Escolha um conteúdo para estudar:</p>
     </div>
-    <div class="cards" id="conteudos"></div>
+
+    <div class="cards" id="cards-container">
+      <!-- GERADO PELO FIREBASE -->
+    </div>
   </div>
 
-  <script>
-    const materias = JSON.parse(localStorage.getItem("materiasSelecionadas")) || [];
-    const container = document.getElementById("conteudos");
+  <!-- FIREBASE EXACTAMENTE IGUAL AO SEU OUTRO ARQUIVO -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
-    materias.forEach(m => {
-      const card = document.createElement("div");
-      card.className = "mat";
-      card.innerHTML = `
-        <span>${m.nome}</span>
-        <img src="${m.img}" alt="${m.nome}">
-      `;
-      container.appendChild(card);
-    });
+    const firebaseConfig = {
+      apiKey: "AIzaSyBN2_GgoK-nXfOxefYlCE9i7PupwrNQkrY",
+      authDomain: "medvestplus.firebaseapp.com",
+      databaseURL: "https://medvestplus-default-rtdb.firebaseio.com",
+      projectId: "medvestplus",
+      storageBucket: "medvestplus.appspot.com",
+      messagingSenderId: "261146979409",
+      appId: "1:261146979409:web:3388c61d54f7d7f7205c70"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    const container = document.getElementById("cards-container");
+
+    async function carregarConteudos() {
+      try {
+        const snapshot = await get(ref(db, "questoes/quimica"));
+
+        if (!snapshot.exists()) {
+          container.innerHTML = "<p style='color:red;'>Nenhum conteúdo encontrado.</p>";
+          return;
+        }
+
+        const data = snapshot.val();
+        const subtopicos = Object.keys(data);
+
+        subtopicos.forEach(nome => {
+          const card = document.createElement("div");
+          card.className = "card";
+          card.innerHTML = `<span>${nome}</span>`;
+
+          // 👉 Agora redireciona para conteudo.html passando o tópico
+          card.onclick = () => {
+            window.location.href = `conteudo.html?topico=${encodeURIComponent(nome)}`;
+          };
+
+          container.appendChild(card);
+        });
+
+      } catch (err) {
+        console.error("Erro ao carregar conteúdos:", err);
+        container.innerHTML = "<p style='color:red;'>Erro ao carregar.</p>";
+      }
+    }
+
+    carregarConteudos();
   </script>
+
 </body>
 </html>
