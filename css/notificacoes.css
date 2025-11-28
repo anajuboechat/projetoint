@@ -1,8 +1,80 @@
+@font-face {
+    font-family: 'Montserrat';
+    src: url('../assets/fontes/Montserrat-Regular.ttf') format('truetype');
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: 'Montserrat';
+    src: url('../assets/fontes/Montserrat-Medium.ttf') format('truetype');
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: 'Montserrat';
+    src: url('../assets/fontes/Montserrat-Light.ttf') format('truetype');
+    font-weight: 300;
+}
+
+/* ========================= */
+/*        GLOBAL             */
+/* ========================= */
+
 body {
   margin: 0;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
   background-color: #f0f0f0;
 }
+
+/* ========================= */
+/*        NAVBAR             */
+/* ========================= */
+
+/* --- Sidebar --- */
+.sidebar {
+  width: 15%;
+  height: 100vh;
+  background-color: #c8e0a4;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  font-family: 'Montserrat', sans-serif;
+  box-sizing: border-box;
+  font-weight: 300;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.3);
+  z-index: 11;
+}
+
+.logoo {
+  font-size: 2.4rem;
+}
+
+.sidebar a {
+  text-decoration: none;
+  color: #3b3f2b;
+  margin: 15px 0;
+  font-size: 1rem;
+  font-weight: bold;
+  transition: 0.3s;
+}
+.sidebar a:hover {
+  color: #7ea16b;
+}
+
+.sidebar img {
+  min-width: 5rem;
+  max-width: 10rem;
+  height: auto;
+  margin-top: auto;
+  align-self: center;
+  padding: 20px 0;
+}
+/* ========================= */
+/*        MAIN SECTION       */
+/* ========================= */
 
 #section-main {
   width: 85%;
@@ -22,37 +94,55 @@ body {
   flex-direction: column;
   background: #f7fbe9;
   padding: 20px;
+  box-sizing: border-box;
 }
 
-/* TÍTULO FIXO */
+/* ========================= */
+/*       PAGE TITLE          */
+/* ========================= */
+
 .page-title {
   text-align: center;
-  font-size: 2rem;
-  font-weight: 400;
+  font-size: 2.4rem;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
   margin: 0;
+  margin-bottom: 25px;
   padding: 10px 0 20px 0;
   position: sticky;
   top: 1rem;
   background: #f7fbe9;
   z-index: 10;
+  letter-spacing: 0.5px;
+  color: #3b3f2b;
 }
 
-/* ÁREA ROLÁVEL */
+/* ========================= */
+/*     NOTIFICATION AREA     */
+/* ========================= */
+
+/* Aqui aumentei o padding-bottom para evitar que o botão sticky cubra a última notificação */
 .notification-container {
   flex: 1;
   overflow-y: auto;
   padding-right: 8px;
+  padding-bottom: 140px; /* <-- espaço extra para o botão */
   scrollbar-width: thin;
   scrollbar-color: #6d9657 #f7fbe9;
 }
 
+/* Segurança extra: garantir espaçamento interno na lista */
 .notification-list {
   display: flex;
   flex-direction: column;
   gap: 20px;
+  padding-bottom: 20px;
 }
 
-/* CARDS */
+/* ========================= */
+/*           CARDS           */
+/* ========================= */
+
 .notification-card {
   position: relative;
   display: flex;
@@ -63,6 +153,7 @@ body {
   border-radius: 20px;
   min-height: 67px;
   padding: 10px 45px 10px 10px;
+  box-sizing: border-box;
 }
 
 .notification-icon {
@@ -84,6 +175,7 @@ body {
   font-size: 8px;
 }
 
+/* botão X */
 .delete-btn {
   position: absolute;
   bottom: 12px;
@@ -115,7 +207,11 @@ body {
 .close-icon::before { transform: rotate(45deg); }
 .close-icon::after { transform: rotate(-45deg); }
 
-/* BOTÃO FIXO */
+/* ========================= */
+/*     CLEAR ALL BUTTON      */
+/* ========================= */
+
+/* mantive sticky; o padding-bottom acima garante visibilidade das notificações */
 .clear-button {
   width: 100%;
   height: 3rem;
@@ -135,7 +231,10 @@ body {
   background-color: #585e3f;
 }
 
-/* MENSAGEM VAZIA */
+/* ========================= */
+/*     EMPTY MESSAGE         */
+/* ========================= */
+
 .empty-message {
   text-align: center;
   color: #000;
@@ -144,10 +243,14 @@ body {
   margin-top: 40px;
 }
 
+/* ========================= */
+/*         MEDIA QUERIES     */
+/* ========================= */
+
 @media screen and (min-width: 1024px ) and (max-width:1400px) {
-  .logoo{
+  .logoo {
     font-size: 1.8rem;
-}
+  }
 }
 
 @media screen and (min-width: 2100px) and (min-height: 1448px) {
@@ -156,7 +259,7 @@ body {
   }
   .logoo {
     font-size: 2rem;
-}
+  }
   .clear-button {
     font-size: 1rem;
     border-radius: 0.5rem;
@@ -164,4 +267,17 @@ body {
   .empty-message {
     font-size: 1rem;
   }
+}
+
+/* ========================= */
+/*   extras/resets (opcional)*/
+/* ========================= */
+
+/* melhore contraste do scrollbar (apenas para navegadores compatíveis) */
+.notification-container::-webkit-scrollbar {
+  width: 10px;
+}
+.notification-container::-webkit-scrollbar-thumb {
+  background: #6d9657;
+  border-radius: 10px;
 }
