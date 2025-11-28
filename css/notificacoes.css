@@ -32,46 +32,7 @@ body {
 /* ========================= */
 
 /* --- Sidebar --- */
-.sidebar {
-  width: 15%;
-  height: 100vh;
-  background-color: #c8e0a4;
-  padding: 2rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  font-family: 'Montserrat', sans-serif;
-  box-sizing: border-box;
-  font-weight: 300;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.3);
-  z-index: 11;
-}
 
-.logoo {
-  font-size: 2.4rem;
-}
-
-.sidebar a {
-  text-decoration: none;
-  color: #3b3f2b;
-  margin: 15px 0;
-  font-size: 1rem;
-  font-weight: bold;
-  transition: 0.3s;
-}
-.sidebar a:hover {
-  color: #7ea16b;
-}
-
-.sidebar img {
-  min-width: 5rem;
-  max-width: 10rem;
-  height: auto;
-  margin-top: auto;
-  align-self: center;
-  padding: 20px 0;
-}
 /* ========================= */
 /*        MAIN SECTION       */
 /* ========================= */
