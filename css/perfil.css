@@ -1,7 +1,30 @@
 .input-field.noborder {
-    border: 1px solid #ccc;
+    border: 1px solid #ccc !important;   /* igual ao input de nome */
+    padding: 10px 14px;
+    border-radius: 6px;
+    background: #fff;
+    background-color: #F7FBE9;
+}
+
+.form-group .input-field,
+.form-group .input-field.noborder {
+    width: 35.5rem;        /* mesmo valor que você já usa no nome */
+    max-width: 100%;       /* evita quebrar a tela */
+    box-sizing: border-box;
+}
+
+#emailDisplay {
+    display: block;
+    width: 100%;
+    font-size: 1rem;
+    overflow-wrap: break-word;
+    background-color: #F7FBE9;
+}
+
+/* botão do nome ocupa largura igual */
+#editNameBtn {
     width: 35.5rem;
-    box-shadow: inset 0 0 3px rgba(0,0,0,0.1);
+    max-width: 100%;
 }
 
 .toast {
@@ -99,4 +122,40 @@
 /* Oculto */
 #toastOverlay.hidden {
   display: none;
+}
+
+.layout {
+  display: flex;
+  height: 100vh;   /* limite vertical real */
+}
+
+.mainprofile {
+  flex: 1;
+  display: flex; 
+  flex-direction: column; /* importante para evitar colapso de margin */
+  /* não precisa height aqui porque .layout já controla */
+  box-sizing: border-box;
+}
+
+.profile-section {
+  flex: 1;               /* ocupa todo o espaço disponível dentro de .mainprofile */    /* o scroll acontece aqui */
+  padding-bottom: 24px;  /* evita que o último elemento fique colado na borda */
+  box-sizing: border-box;
+}
+
+.profile-section > *:last-child {
+  margin-bottom: 0;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* impede scroll da página */
+}
+
+.content {
+    flex: 1;
+    overflow-y: auto; /* permite scroll apenas na área de conteúdo */
+    box-sizing: border-box;
+    
 }
