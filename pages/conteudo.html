@@ -83,14 +83,15 @@
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
-    // Lê o tópico da URL
+    // --- LÊ OS PARÂMETROS DA URL ---
     const params = new URLSearchParams(window.location.search);
     const topico = params.get("topico");
+    const area = params.get("area"); // << agora funciona para biologia/química/etc
 
     document.getElementById("tituloTopico").innerText = topico;
 
-    // 🔥 Lê o conteúdo do banco
-    get(ref(db, `conteudos/quimica/${topico}`))
+    // --- LÊ O CONTEÚDO DO BANCO ---
+    get(ref(db, `conteudos/${area}/${topico}`))
       .then(snapshot => {
         if (snapshot.exists()) {
           document.getElementById("textoTopico").innerText = snapshot.val();
@@ -99,9 +100,9 @@
         }
       });
 
-    // 🔥 Botão para questões
+    // --- BOTÃO PARA VER QUESTÕES ---
     document.getElementById("btnQuestoes").onclick = () => {
-      window.location.href = `questoes.html?topico=${encodeURIComponent(topico)}`;
+      window.location.href = `questoes.html?topico=${encodeURIComponent(topico)}&area=${encodeURIComponent(area)}`;
     };
   </script>
 

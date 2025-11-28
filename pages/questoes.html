@@ -66,7 +66,6 @@
       background: #ccc;
     }
 
-    /* Área de progresso */
     #progresso {
       margin-top: 15px;
       font-size: 1.1rem;
@@ -100,6 +99,7 @@
 
     <div class="questao-box">
       <h2 id="textoQuestao">Carregando questão...</h2>
+
       <div id="alternativas"></div>
 
       <div class="controle">
@@ -111,7 +111,6 @@
       <div id="resultadoResposta" style="margin-top:15px; font-size:1.1rem;"></div>
 
       <div id="historico"></div>
-
     </div>
   </div>
 
@@ -135,44 +134,34 @@ const db = getDatabase(app);
 
 const params = new URLSearchParams(window.location.search);
 const topico = params.get("topico");
+const area = params.get("area");  // <<<<<<<<<< AGORA PEGA QUIMICA OU BIOLOGIA
+
 document.getElementById("tituloTopico").innerText = topico;
 
 let questoes = [];
 let index = 0;
 let alternativaSelecionada = null;
-
 let acertos = 0;
 let erros = 0;
 let historicoRespostas = [];
 
 const letras = ["A", "B", "C", "D", "E"];
 
-const mapLetraParaNumero = {
-  "A": 0,
-  "B": 1,
-  "C": 2,
-  "D": 3,
-  "E": 4
-};
-
 async function carregar() {
-  const snapshot = await get(ref(db, `questoes/quimica/${topico}`));
+  const caminho = `questoes/${area}/${topico}`;
+
+  console.log("📌 Buscando em:", caminho);
+
+  const snapshot = await get(ref(db, caminho));
 
   if (!snapshot.exists()) {
     document.getElementById("textoQuestao").innerText = "Nenhuma questão encontrada.";
     return;
   }
 
-  questoes = Object.values(snapshot.val()).map(q => (typeof q === "object" ? q : {}));
-
-  atualizarProgresso();
+  questoes = Object.values(snapshot.val());
   mostrarQuestao();
-}
-
-function atualizarProgresso() {
-  const total = questoes.length;
-  document.getElementById("progresso").innerText =
-    `Questão ${index + 1} de ${total} — ✔ ${acertos} | ✘ ${erros}`;
+  atualizarProgresso();
 }
 
 function mostrarQuestao() {
@@ -181,32 +170,29 @@ function mostrarQuestao() {
   const q = questoes[index];
   document.getElementById("textoQuestao").innerText = `${index + 1}) ${q.enunciado}`;
 
-  const area = document.getElementById("alternativas");
-  area.innerHTML = "";
-
-  document.getElementById("resultadoResposta").innerHTML = "";
+  const areaAlt = document.getElementById("alternativas");
+  areaAlt.innerHTML = "";
 
   q.alternativas.forEach((texto, i) => {
     const div = document.createElement("div");
     div.className = "alternativa";
     div.innerText = `${letras[i]}) ${texto}`;
     div.onclick = () => selecionarAlternativa(i, div);
-    area.appendChild(div);
+    areaAlt.appendChild(div);
   });
-
-  atualizarProgresso();
 }
 
-function selecionarAlternativa(i, elemento) {
+function selecionarAlternativa(i, div) {
   alternativaSelecionada = i;
   document.querySelectorAll(".alternativa").forEach(a => a.classList.remove("selecionada"));
-  elemento.classList.add("selecionada");
+  div.classList.add("selecionada");
 }
 
 document.getElementById("btnProxima").onclick = () => {
   if (index < questoes.length - 1) {
     index++;
     mostrarQuestao();
+    atualizarProgresso();
   }
 };
 
@@ -214,59 +200,46 @@ document.getElementById("btnAnterior").onclick = () => {
   if (index > 0) {
     index--;
     mostrarQuestao();
+    atualizarProgresso();
   }
 };
 
-// CONFIRMAR RESPOSTA
 document.getElementById("btnConfirmar").onclick = () => {
   if (alternativaSelecionada === null) {
-    alert("Selecione uma alternativa antes de confirmar.");
+    alert("Selecione uma alternativa!");
     return;
   }
 
-  let correta = questoes[index].correta ?? questoes[index].gabarito ?? questoes[index].resp;
+  let correta = questoes[index].correta;
 
-  if (!correta) {
-    document.getElementById("resultadoResposta").innerHTML =
-      "<p style='color:red; font-weight:bold;'>❗ Erro: A questão não possui campo 'correta'.</p>";
-    return;
+  if (typeof correta === "string") {
+    correta = letras.indexOf(correta.toUpperCase());
   }
 
-  if (isNaN(parseInt(correta))) {
-    correta = mapLetraParaNumero[correta.toUpperCase()];
-  } else {
-    correta = parseInt(correta);
-  }
-
-  const divResultado = document.getElementById("resultadoResposta");
+  const div = document.getElementById("resultadoResposta");
 
   if (alternativaSelecionada === correta) {
     acertos++;
     historicoRespostas.push("✔");
-    divResultado.innerHTML = `
-      <p style="color: green; font-weight: bold;">
-        ✔ Você acertou!
-        <br>Gabarito: ${letras[correta]}
-      </p>
-    `;
+    div.innerHTML = `<p style="color:green">✔ Acertou! (${letras[correta]})</p>`;
   } else {
     erros++;
     historicoRespostas.push("✘");
-    divResultado.innerHTML = `
-      <p style="color: red; font-weight: bold;">
-        ✘ Você errou.
-        <br>Gabarito correto: ${letras[correta]}
-      </p>
-    `;
+    div.innerHTML = `<p style="color:red">✘ Errou! (${letras[correta]})</p>`;
   }
 
   atualizarProgresso();
   atualizarHistorico();
 };
 
+function atualizarProgresso() {
+  document.getElementById("progresso").innerText =
+    `Questão ${index + 1} de ${questoes.length} — ✔ ${acertos} | ✘ ${erros}`;
+}
+
 function atualizarHistorico() {
   document.getElementById("historico").innerHTML =
-    historicoRespostas.map(r => `<span>${r}</span>`).join(" ");
+    historicoRespostas.join(" ");
 }
 
 carregar();

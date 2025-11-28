@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Conteúdos - Química</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+
+  <div class="sidebar">
+    <h2><span class="logoo" style="color:#33ac49;">Med</span><span class="logoo">Vest</span><span class="logoo" style="color:red;">+</span></h2>
+    <a href="/index.html" class="nav-link"><span>Início</span></a>
+    <a href="./simulados.html" class="nav-link"><span>Simulados</span></a>
+    <a href="./flashcards.html" class="nav-link"><span>Flashcards</span></a>
+    <a href="./notificacoes.html" class="nav-link"><span>Notificações</span></a>
+    <a href="./perfil.html" class="nav-link"><span>Perfil</span></a>
+    <img class="imagenzinha_da_logo" src="/assets/images/logo.png">
+  </div>
+
+  <div class="main simulados">
+    <div class="title">
+      <h1>Conteúdos de Química</h1>
+      <p>Escolha um conteúdo:</p>
+    </div>
+
+    <div class="cards" id="cards-container"></div>
+  </div>
+
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBN2_GgoK-nXfOxefYlCE9i7PupwrNQkrY",
+  authDomain: "medvestplus.firebaseapp.com",
+  databaseURL: "https://medvestplus-default-rtdb.firebaseio.com",
+  projectId: "medvestplus",
+  storageBucket: "medvestplus.appspot.com",
+  messagingSenderId: "261146979409",
+  appId: "1:261146979409:web:3388c61d54f7d7f7205c70"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+const container = document.getElementById("cards-container");
+
+async function carregarConteudos() {
+  const snapshot = await get(ref(db, "questoes/quimica"));
+
+  if (!snapshot.exists()) {
+    container.innerHTML = "<p style='color:red;'>Nenhum conteúdo encontrado.</p>";
+    return;
+  }
+
+  const data = snapshot.val();
+
+  Object.keys(data).forEach(nome => {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `<span>${nome}</span>`;
+    card.onclick = () => {
+      window.location.href = `conteudo.html?topico=${nome}&area=quimica`;
+    };
+    container.appendChild(card);
+  });
+}
+
+carregarConteudos();
+</script>
+
+</body>
+</html>
