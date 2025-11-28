@@ -1,8 +1,20 @@
+@font-face {
+    font-family: 'Montserrat';
+    src: url('../assets/fontes/Montserrat-Regular.ttf') format('truetype');
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: 'Montserrat';
+    src: url('../assets/fontes/Montserrat-Medium.ttf') format('truetype');
+    font-weight: 500;
+}
+
 body {
     margin: 0;
-    font-family: Arial, sans-serif;
+    font-family: 'Montserrat', sans-serif;
     background-color: #c8e0a4;
-    color: #333;
+    color: #3b3f2b;
 }
 
 /* Header */
@@ -10,20 +22,18 @@ header {
     display: flex;
     align-items: center;
     padding: 20px 40px;
-    font-family: Arial, sans-serif;
+    font-family: 'Montserrat', sans-serif;
     font-weight: bold;
-    font-size:1.5rem;
-
+    font-size: 1.5rem;
 }
 
 header img {
     max-width: 180px;
     width: 7%;
     height: auto;
-    
 }
 
-
+/* HERO */
 .hero {
     display: flex;
     justify-content: center;
@@ -38,26 +48,35 @@ header img {
 }
 
 .hero-text {
-    max-width: 400px;
+    max-width: 500px;
     text-align: center;
 }
 
-.hero-text h1 {
-    font-size: 28px;
-    margin-bottom: 15px;
-    color: #004d40;
-}
-
+/* Texto padrão dentro do hero */
 .hero-text p {
     margin-bottom: 25px;
-    font-size: 16px;
+    font-size: 14px;
+    font-weight: 200;
 }
 
+.hero-text .textinho {
+    font-size: 45px;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+.hero-text h2 {
+    font-size: 25px;
+    font-weight: 400;
+    margin-bottom: 25px;
+}
+
+
+/* Botão */
 .hero-text button {
     display: block;
     width: 200px;
-    padding: 12px;
-    margin: 10px auto;
+    padding: 15px;
+    margin: 15px auto;
     font-size: 16px;
     border: none;
     border-radius: 25px;
@@ -68,10 +87,10 @@ header img {
 }
 
 .hero-text button:hover {
-    background-color: #7ea16b;;
+    background-color: #7ea16b;
 }
 
-/* Seção de Benefícios */
+/* FEATURES */
 .features {
     background-color: #516d43;
     color: white;
@@ -100,16 +119,6 @@ header img {
     margin-bottom: 10px;
 }
 
-.hero-text p {
-    font-size: 30px;
-}
-
-.textinho {
-    font-weight: bold;
-    font-size: 60px;
-}
-
 .logo {
-     width: 250px;
-
+    width: 250px;
 }
