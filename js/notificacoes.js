@@ -51,21 +51,52 @@ onAuthStateChanged(auth, async (user) => {
   const closedRef = ref(db, `usuarios/${uid}/notificacoesFechadas`);
 
   try {
-    // Carregar notificações
     const [notifSnap, closedSnap] = await Promise.all([
       get(notifRef),
       get(closedRef)
     ]);
 
     const closedNotifications = closedSnap.exists() ? closedSnap.val() : {};
-
     const notifications = notifSnap.exists() ? notifSnap.val() : {};
     const list = document.getElementById("notificationList");
 
-    Object.keys(notifications).forEach((id) => {
-      if (closedNotifications[id]) return; // notificação já fechada
+    /* ================================ */
+    /*  ORDENAR NOTIFICAÇÕES POR DATA  */
+    /* ================================ */
 
+    const sortedNotifications = Object.keys(notifications).sort((a, b) => {
+      const nA = notifications[a];
+      const nB = notifications[b];
+
+      const [dA, mA, yA] = nA.data.split("/").map(Number);
+      const [dB, mB, yB] = nB.data.split("/").map(Number);
+
+      const dateA = new Date(yA, mA - 1, dA);
+      const dateB = new Date(yB, mB - 1, dB);
+
+      return dateB - dateA; // MAIS RECENTE → ANTIGO
+    });
+
+    /* ================================ */
+    /*  BLOQUEAR NOTIFICAÇÕES FUTURAS  */
+    /* ================================ */
+
+    const now = new Date();
+    now.setHours(0, 0, 0, 0); // Zerar horas para comparar só o dia
+
+    sortedNotifications.forEach((id) => {
       const n = notifications[id];
+
+      const [d, m, y] = n.data.split("/").map(Number);
+      const notifDate = new Date(y, m - 1, d);
+      notifDate.setHours(0, 0, 0, 0);
+
+      // 🔥 SE A DATA É DO FUTURO → NÃO EXIBIR
+      if (notifDate > now) return;
+
+      // 🔥 Se já foi fechada → não exibir
+      if (closedNotifications[id]) return;
+
       const iconSrc = iconMap[n.icon] || iconMap[1];
 
       const card = document.createElement("div");
