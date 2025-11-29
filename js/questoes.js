@@ -114,7 +114,7 @@ function mostrarQuestao() {
 
     div.innerHTML = `
       <div class="bolinha">${letras[i]}</div>
-      <span>${texto}</span>
+      <span class="textinho">${texto}</span>
     `;
 
     div.onclick = () => selecionarAlternativa(i, div);
