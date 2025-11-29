@@ -241,3 +241,139 @@ body {
     box-sizing: border-box;
     
 }
+.profile-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 24px 20px;
+  width: 100%;
+  height: 100%;
+}
+
+.avatar-container {
+  position: relative;
+  width: 130px;
+  height: 135px;
+  margin-bottom: 20px;
+}
+
+.avatar-bg {
+  width: 130px;
+  height: 135px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.edit-icon-wrapper {
+  position: absolute;
+  right: -3.5px;
+  bottom: -1px;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+}
+
+.edit-icon-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.edit-icon-pencil {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 24px;
+  height: 24px;
+}
+
+.profile-form {
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 25px;
+}
+
+.form-label {
+  font-size: 18px;
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+
+.input-field {
+  background-color: var(--input-background);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 0;
+  height: auto;
+  display: flex;
+  align-items: center;
+}
+
+.input-field input {
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  padding: 12px 18px;
+  font-size: 16px;
+  color: var(--text-primary);
+}
+
+.preferences-group {
+  border: none;
+  padding: 0;
+  margin: 30px 0 0 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-self: flex-start;
+}
+
+.preferences-group legend {
+  margin-bottom: 12px;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.preference-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+}
+
+.preference-item img {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+}
+
+.preference-item span {
+  font-size: 16px;
+  line-height: 22px;
+}
+
+.save-button {
+  background-color: var(--button-background);
+  color: var(--button-text);
+  border: none;
+  border-radius: 10px;
+  padding: 12px 20px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 30px;
+  height: 45px;
+  width: 100%;
+  align-self: center;
+}

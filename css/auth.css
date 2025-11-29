@@ -1,6 +1,5 @@
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
   background-color: #f7fbe9;
   display: flex;
   justify-content: center;
@@ -32,48 +31,55 @@ body {
   margin-bottom: -30px;
 }
 
-.app-name {
-  font-size: 24px;
+.title {
+  font-size: 26px;
   font-weight: bold;
-  margin-bottom: 20px;
   color: #2f2f1f;
+  margin-bottom: 10px;
 }
 
-.auth-title {
+.auth-container h2 {
   font-size: 18px;
-  margin: 5px 0;
   font-weight: bold;
-  color: #2f2f1f;
+  margin-bottom: 5px;
 }
 
-.auth-subtitle {
+.auth-container p {
   font-size: 14px;
   color: #555;
   margin-bottom: 20px;
 }
 
-input {
+/* 🔥 PADRÃO DE LARGURA IGUAL */
+input,
+.btn-primary,
+.btn-google {
   width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
   padding: 12px;
-  margin: 8px 0;
-  border: 1px solid #ccc;
   border-radius: 8px;
   font-size: 14px;
 }
 
-.btn-primary {
-  width: 100%;
-  background-color: #3c3d2f;
-  color: white;
-  padding: 12px;
-  border: none;
-  border-radius: 8px;
-  font-size: 15px;
-  font-weight: bold;
-  margin-top: 10px;
-  cursor: pointer;
+/* Inputs */
+input {
+  border: 1px solid #ccc;
+  margin: 8px 0;
 }
 
+/* Botão Continue */
+.btn-primary {
+  background-color: #3c3d2f;
+  color: white;
+  border: none;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+/* Divider */
 .divider {
   display: flex;
   align-items: center;
@@ -96,16 +102,13 @@ input {
   margin-left: 10px;
 }
 
+/* Botão Google */
 .btn-google {
-  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid #ccc;
   background: white;
-  border-radius: 8px;
-  padding: 12px;
-  font-size: 14px;
+  border: 1px solid #ccc;
   font-weight: bold;
   cursor: pointer;
 }
@@ -135,8 +138,4 @@ input {
   color: #2f2f1f;
   font-weight: bold;
   text-decoration: none;
-}
-
-.logomark {
-  margin-bottom: 30px;
 }

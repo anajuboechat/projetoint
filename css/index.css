@@ -92,16 +92,8 @@ span {
   box-sizing: border-box;
 }
 
-/* --- Título --- */
-.title {
-  text-align: center;
-  margin-bottom: 50px;
-  font-weight: 400;
-  font-family:'Montserrat', sans-serif;
-}
 
 .title h1 {
-  color: #3b3f2b;
   font-size: 40px;
   margin-bottom: 10px;
 }
@@ -115,7 +107,6 @@ span {
   width: 100%;
   padding-bottom: 60px;
   box-sizing: border-box;
-  font-family: 'Inter', sans-serif;
 }
 
 /* --- Card --- */

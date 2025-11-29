@@ -9,7 +9,7 @@
       align-items: center;
       color: #3b3f2b;
       font-weight: 700;
-      font-size: 1.5rem;
+      font-size: 1.4rem;
       cursor: pointer;
       box-shadow: 0 6px 16px rgba(0,0,0,0.18);
       user-select: none;
@@ -51,15 +51,8 @@
       box-shadow: 0 20px 40px rgba(0,0,0,0.2);
       border: 1px solid rgba(0,0,0,0.04);
       text-align: center;
-      font-family: Arial, sans-serif;
     }
 
-    .confirm-title {
-      font-size: 18px;
-      color: #2f3b2a;
-      margin-bottom: 10px;
-      font-weight: 700;
-    }
 
     .confirm-text {
       font-size: 14px;
@@ -100,6 +93,48 @@
     justify-content: center;
 }
 
+.flashcard-inner{
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.8s;
+}
+
+.flashcard.is-flipped .flashcard-inner {
+  transform: rotateY(180deg);
+}
+
+.flashcard-front,
+.flashcard-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 15px;
+  background-color: #c8e0a4;
+  box-shadow: none;          /* remove qualquer sombra interna */
+}
+
+.flashcard-front {
+  background-color: #c8e0a4; /* Frente */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flashcard-back {
+  background-color: #c8e0a4; /* Verso */
+  transform: rotateY(180deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flashcard:hover {
+  color: white;
+}
+
 .delete-x-square {
       position: absolute;
       top: 1rem;
@@ -132,6 +167,8 @@
     cursor: pointer;
     margin-bottom: 30px;
     transition: 0.3s;
+    width: 20%;
+    text-align: center;
 }
 
 
@@ -157,24 +194,11 @@ a {
 }
 
 
-
 .flashcards-category h3 {
-    font-size: 2rem;
+    font-size: 1.6rem;
     color: #3b3f2b;
     font-weight: bold;
     letter-spacing: 1px;
-}
-
-:root {
-    --background-color: #f7fbe9;
-    --text-primary: #000000;
-    --text-secondary: #828282;
-    --button-background: #3b3f2b;
-    --button-text: #e6e6e6;
-    --avatar-background: #c1e3c5;
-    --border-color: #e0e0e0;
-    --input-background: rgba(247, 251, 233, 0.6);
-    --active-tab-background: #d9d9d9;
 }
 
 .flashcards-page {
@@ -186,13 +210,6 @@ a {
     max-height: 100vh;
     overflow-y: auto;
     padding: 20px;
-}
-
-body {
-    margin: 0;
-    background-color: #f7fbe9;
-    display: flex;
-    overflow: hidden;
 }
 
 .search-bar {
@@ -234,11 +251,6 @@ body {
     font-size: 2.5rem;
   }
 
-  .add-flashcard-btn {
-    font-size: 1.5rem;
-    border-radius: 0.6rem;
-  }
-
   .search-bar {
     min-width: 25rem;
     max-width: 40rem;
@@ -255,11 +267,8 @@ body {
     font-size: 2.8rem;
   }
   
-  .logoo {
-    font-size: 2rem;
-  }
-
 }
+
 
 @media screen and (min-width: 1024px ) and (max-width:1400px) {
   .logoo{
