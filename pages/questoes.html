@@ -7,15 +7,22 @@
   <link rel="stylesheet" href="../css/style.css">
 
   <style>
+    .title{
+        margin-bottom: 15px;
+    }
+
     .questao-box {
       background: white;
       padding: 20px;
       border-radius: 12px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
       max-width: 850px;
-      margin-top: 20px;
     }
 
+    #textoQuestao {        /* 🔥 ADICIONADO — fonte normal */
+      font-size: 1.2rem;
+    }
+    
     .alternativa {
       margin: 10px 0;
       padding: 12px;
@@ -72,7 +79,6 @@
       font-weight: bold;
     }
 
-
   </style>
 </head>
 
@@ -95,7 +101,7 @@
     </div>
 
     <div class="questao-box">
-      <h2 id="textoQuestao">Carregando questão...</h2>
+      <div id="textoQuestao">Carregando questão...</div> <!-- agora aceita HTML -->
 
       <div id="alternativas"></div>
 
@@ -130,7 +136,7 @@ const db = getDatabase(app);
 
 const params = new URLSearchParams(window.location.search);
 const topico = params.get("topico");
-const area = params.get("area");  // <<<<<<<<<< AGORA PEGA QUIMICA OU BIOLOGIA
+const area = params.get("area");
 
 document.getElementById("tituloTopico").innerText = topico;
 
@@ -143,10 +149,20 @@ let historicoRespostas = [];
 
 const letras = ["A", "B", "C", "D", "E"];
 
+function processarEnunciado(texto) {
+  const regexImagem = /!\[\]\((https:\/\/enem\.dev\/[^\)]+)\)/g;
+
+  return texto.replace(regexImagem, (match, url) => {
+    return `
+      <br>
+      <img src="${url}" alt="Imagem da questão" style="max-width: 100%; margin: 12px 0;">
+      <br>
+    `;
+  });
+}
+
 async function carregar() {
   const caminho = `questoes/${area}/${topico}`;
-
-  console.log("📌 Buscando em:", caminho);
 
   const snapshot = await get(ref(db, caminho));
 
@@ -164,7 +180,10 @@ function mostrarQuestao() {
   alternativaSelecionada = null;
 
   const q = questoes[index];
-  document.getElementById("textoQuestao").innerText = `${index + 1}) ${q.enunciado}`;
+
+  const enunciadoHTML = processarEnunciado(q.enunciado); // 🔥 ADICIONADO
+
+  document.getElementById("textoQuestao").innerHTML = `${index + 1}) ${enunciadoHTML}`;
 
   const areaAlt = document.getElementById("alternativas");
   areaAlt.innerHTML = "";
@@ -180,7 +199,9 @@ function mostrarQuestao() {
 
 function selecionarAlternativa(i, div) {
   alternativaSelecionada = i;
-  document.querySelectorAll(".alternativa").forEach(a => a.classList.remove("selecionada"));
+  document.querySelectorAll(".alternativa").forEach(a =>
+    a.classList.remove("selecionada")
+  );
   div.classList.add("selecionada");
 }
 
@@ -225,17 +246,11 @@ document.getElementById("btnConfirmar").onclick = () => {
   }
 
   atualizarProgresso();
-  atualizarHistorico();
 };
 
 function atualizarProgresso() {
   document.getElementById("progresso").innerText =
     `Questão ${index + 1} de ${questoes.length} — ✔ ${acertos} | ✘ ${erros}`;
-}
-
-function atualizarHistorico() {
-  document.getElementById("historico").innerHTML =
-    historicoRespostas.join(" ");
 }
 
 carregar();
