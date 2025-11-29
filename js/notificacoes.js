@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
-import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-database.js";
+import { getDatabase, ref, get, set, update } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-database.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBN2_GgoK-nXfOxefYlCE9i7PupwrNQkrY",
@@ -23,11 +23,6 @@ const iconMap = {
   3: "/assets/images/dingobell.png"
 };
 
-/* Notificações fechadas localmente */
-const closedNotifications = JSON.parse(localStorage.getItem("closedNotifications") || "[]");
-
-/* ================================ */
-/*   FUNÇÃO: Mostrar mensagem vazia */
 /* ================================ */
 function updateEmptyMessage() {
   const list = document.getElementById("notificationList");
@@ -50,29 +45,63 @@ function updateEmptyMessage() {
 /* ================================ */
 onAuthStateChanged(auth, async (user) => {
   if (!user) return;
+  const uid = user.uid;
 
   const notifRef = ref(db, "notificacoes");
+  const closedRef = ref(db, `usuarios/${uid}/notificacoesFechadas`);
 
   try {
-    const snapshot = await get(notifRef);
-    if (!snapshot.exists()) {
-      updateEmptyMessage();
-      return;
-    }
+    const [notifSnap, closedSnap] = await Promise.all([
+      get(notifRef),
+      get(closedRef)
+    ]);
 
-    const notifications = snapshot.val();
+    const closedNotifications = closedSnap.exists() ? closedSnap.val() : {};
+    const notifications = notifSnap.exists() ? notifSnap.val() : {};
     const list = document.getElementById("notificationList");
 
-    Object.keys(notifications).forEach((id) => {
+    /* ================================ */
+    /*  ORDENAR NOTIFICAÇÕES POR DATA  */
+    /* ================================ */
+
+    const sortedNotifications = Object.keys(notifications).sort((a, b) => {
+      const nA = notifications[a];
+      const nB = notifications[b];
+
+      const [dA, mA, yA] = nA.data.split("/").map(Number);
+      const [dB, mB, yB] = nB.data.split("/").map(Number);
+
+      const dateA = new Date(yA, mA - 1, dA);
+      const dateB = new Date(yB, mB - 1, dB);
+
+      return dateB - dateA; // MAIS RECENTE → ANTIGO
+    });
+
+    /* ================================ */
+    /*  BLOQUEAR NOTIFICAÇÕES FUTURAS  */
+    /* ================================ */
+
+    const now = new Date();
+    now.setHours(0, 0, 0, 0); // Zerar horas para comparar só o dia
+
+    sortedNotifications.forEach((id) => {
       const n = notifications[id];
 
-      if (closedNotifications.includes(id)) return;
+      const [d, m, y] = n.data.split("/").map(Number);
+      const notifDate = new Date(y, m - 1, d);
+      notifDate.setHours(0, 0, 0, 0);
+
+      // 🔥 SE A DATA É DO FUTURO → NÃO EXIBIR
+      if (notifDate > now) return;
+
+      // 🔥 Se já foi fechada → não exibir
+      if (closedNotifications[id]) return;
+
+      const iconSrc = iconMap[n.icon] || iconMap[1];
 
       const card = document.createElement("div");
       card.classList.add("notification-card");
       card.setAttribute("data-id", id);
-
-      const iconSrc = iconMap[n.icon] || iconMap[1];
 
       card.innerHTML = `
         <img class="notification-icon" src="${iconSrc}">
@@ -81,10 +110,14 @@ onAuthStateChanged(auth, async (user) => {
         <button class="delete-btn"><div class="close-icon"></div></button>
       `;
 
-      card.querySelector(".delete-btn").addEventListener("click", () => {
+      // Botão fechar
+      card.querySelector(".delete-btn").addEventListener("click", async () => {
         card.remove();
-        closedNotifications.push(id);
-        localStorage.setItem("closedNotifications", JSON.stringify(closedNotifications));
+
+        await update(closedRef, {
+          [id]: true
+        });
+
         updateEmptyMessage();
       });
 
@@ -102,19 +135,21 @@ onAuthStateChanged(auth, async (user) => {
 /* ================================ */
 /*   FECHAR TODAS AS NOTIFICAÇÕES  */
 /* ================================ */
+document.getElementById("closeAllBtn").addEventListener("click", async () => {
+  const user = auth.currentUser;
+  if (!user) return;
 
-document.getElementById("closeAllBtn").addEventListener("click", () => {
+  const uid = user.uid;
+  const closedRef = ref(db, `usuarios/${uid}/notificacoesFechadas`);
   const list = document.getElementById("notificationList");
 
-  while (list.firstChild) {
-    const id = list.firstChild.getAttribute("data-id");
-    if (id && !closedNotifications.includes(id)) {
-      closedNotifications.push(id);
-    }
-    list.removeChild(list.firstChild);
+  const updates = {};
+  for (const card of Array.from(list.children)) {
+    const id = card.getAttribute("data-id");
+    updates[id] = true;
+    card.remove();
   }
 
-  localStorage.setItem("closedNotifications", JSON.stringify(closedNotifications));
-
+  await update(closedRef, updates);
   updateEmptyMessage();
 });
