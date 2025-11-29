@@ -34,9 +34,7 @@ onAuthStateChanged(auth, (user) => {
   }
 });
 
-// -----------------------------
-//     ⭐ SISTEMA DE TOAST ⭐
-// -----------------------------
+// TOAST
 function showToast(message) {
   const overlay = document.getElementById("toastOverlay");
   const toastMessage = document.getElementById("toastMessage");
@@ -44,7 +42,6 @@ function showToast(message) {
   toastMessage.textContent = message;
 
   overlay.classList.remove("hidden");
-
   setTimeout(() => overlay.classList.add("show"), 15);
 
   setTimeout(() => {
@@ -52,7 +49,6 @@ function showToast(message) {
     setTimeout(() => overlay.classList.add("hidden"), 300);
   }, 2500);
 }
-// -----------------------------
 
 const params = new URLSearchParams(window.location.search);
 const topico = params.get("topico");
@@ -65,8 +61,6 @@ let index = 0;
 let alternativaSelecionada = null;
 let acertos = 0;
 let erros = 0;
-
-let jaContabilizadaAgora = false;  // ⭐ NOVO FLAG — evita contar múltiplas vezes sem trocar de questão
 
 const letras = ["A", "B", "C", "D", "E"];
 
@@ -105,7 +99,6 @@ async function carregar() {
 
 function mostrarQuestao() {
   alternativaSelecionada = null;
-  jaContabilizadaAgora = false; // ⭐ RESETA AO TROCAR DE QUESTÃO
 
   const q = questoes[index];
   const enunciadoHTML = processarEnunciado(q.enunciado);
@@ -118,7 +111,12 @@ function mostrarQuestao() {
   q.alternativas.forEach((texto, i) => {
     const div = document.createElement("div");
     div.className = "alternativa";
-    div.innerText = `${letras[i]}) ${texto}`;
+
+    div.innerHTML = `
+      <div class="bolinha">${letras[i]}</div>
+      <span>${texto}</span>
+    `;
+
     div.onclick = () => selecionarAlternativa(i, div);
     areaAlt.appendChild(div);
   });
@@ -167,29 +165,21 @@ document.getElementById("btnConfirmar").onclick = async () => {
   const acertou = alternativaSelecionada === corretaIndice;
   const div = document.getElementById("resultadoResposta");
 
-  // ⭐⭐ CONTAGEM CONTROLADA ⭐⭐
-  if (!jaContabilizadaAgora) {
-    if (acertou) acertos++;
-    else erros++;
-
-    jaContabilizadaAgora = true; // impede contagem dupla sem mudar de questão
+  if (acertou) {
+    acertos++;
+    div.innerHTML = `<p style="color:green">✔ Acertou! (${corretaLetra})</p>`;
+  } else {
+    erros++;
+    div.innerHTML = `<p style="color:red">✘ Errou! (${corretaLetra})</p>`;
   }
 
   atualizarProgresso();
 
-  if (acertou) {
-    div.innerHTML = `<p style="color:green">✔ Acertou! (${corretaLetra})</p>`;
-  } else {
-    div.innerHTML = `<p style="color:red">✘ Errou! (${corretaLetra})</p>`;
-  }
-
-  // Se já respondeu antes → não salva novamente
   if (jaRespondida.exists()) {
     div.innerHTML += `<p style="color:#555; margin-top:6px;">⚠ Você já respondeu esta questão antes.</p>`;
     return;
   }
 
-  // Primeira resposta salva no Firebase
   await set(ref(db, caminhoResposta), {
     acertou,
     alternativa: letras[alternativaSelecionada],

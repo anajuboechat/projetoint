@@ -1,80 +1,111 @@
 .title{
-        margin-bottom: 15px;
-    }
+  margin-bottom: 15px;
+}
 
-    .questao-box {
-      background: white;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      max-width: 850px;
-    }
+.questao-box {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  max-width: 850px;
+}
 
-    #textoQuestao {        /* 🔥 ADICIONADO — fonte normal */
-      font-size: 1.2rem;
-    }
-    
-    .alternativa {
-      margin: 10px 0;
-      padding: 12px;
-      background: #f3f3f3;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: 0.2s;
-    }
+#textoQuestao {
+  font-size: 1.2rem;
+}
 
-    .alternativa:hover {
-      background: #e6e6e6;
-    }
+/* 🔥 ALTERNATIVAS COM BOLINHA (A–E) */
+.alternativa {
+  margin: 10px 0;
+  padding: 12px;
 
-    .alternativa.selecionada {
-      background: #c8e8c6;
-      border: 2px solid #33ac49;
-    }
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 1.05rem;
+}
 
-    .controle {
-      margin-top: 20px;
-      display: flex;
-      justify-content: space-between;
-    }
+.alternativa:hover {
+  background: #e6e6e6;
+}
 
-    button {
-      padding: 12px 18px;
-      border-radius: 8px;
-      border: none;
-      cursor: pointer;
-      font-size: 1rem;
-      transition: 0.3s;
-    }
+/* 🔵 BOLINHA DA LETRA */
+.bolinha {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid #33ac49;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1.1rem;
+  background: white;
+  transition: 0.2s;
+}
 
-    #btnConfirmar {
-      background: #33ac49;
-      color: white;
-    }
+.alternativa:hover .bolinha {
+  background: #dff3df;
+}
 
-    #btnConfirmar:hover {
-      background: #2b8e3d;
-    }
+/* 🔥 ESTILO DE SELECIONADA */
+.alternativa.selecionada {
+  background: #c8e8c6;
+  border: 2px solid #33ac49;
+}
 
-    #btnAnterior, #btnProxima {
-      background: #ddd;
-    }
+.alternativa.selecionada .bolinha {
+  background: #33ac49;
+  color: white;
+  border-color: #2d923f;
+}
 
-    #btnAnterior:hover, #btnProxima:hover {
-      background: #ccc;
-    }
+.controle {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+}
 
-    #progresso {
-      margin-top: 15px;
-      font-size: 1.1rem;
-      font-weight: bold;
-    }
+button {
+  padding: 12px 18px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: 0.3s;
+}
 
-    .main {
-      padding: 20px
-    }
+#btnConfirmar {
+  background: #33ac49;
+  color: white;
+}
 
-    /* TOAST SUPERIOR */
+#btnConfirmar:hover {
+  background: #2b8e3d;
+}
+
+#btnAnterior, #btnProxima {
+  background: #ddd;
+}
+
+#btnAnterior:hover, #btnProxima:hover {
+  background: #ccc;
+}
+
+#progresso {
+  margin-top: 15px;
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+.main {
+  padding: 20px
+}
+
+/* TOAST */
 .toast {
   position: fixed;
   top: -80px;
