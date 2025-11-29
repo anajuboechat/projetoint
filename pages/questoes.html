@@ -5,88 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Questões</title>
   <link rel="stylesheet" href="../css/style.css">
-
-  <style>
-    .title{
-        margin-bottom: 15px;
-    }
-
-    .questao-box {
-      background: white;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      max-width: 850px;
-    }
-
-    #textoQuestao {        /* 🔥 ADICIONADO — fonte normal */
-      font-size: 1.2rem;
-    }
-    
-    .alternativa {
-      margin: 10px 0;
-      padding: 12px;
-      background: #f3f3f3;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: 0.2s;
-    }
-
-    .alternativa:hover {
-      background: #e6e6e6;
-    }
-
-    .alternativa.selecionada {
-      background: #c8e8c6;
-      border: 2px solid #33ac49;
-    }
-
-    .controle {
-      margin-top: 20px;
-      display: flex;
-      justify-content: space-between;
-    }
-
-    button {
-      padding: 12px 18px;
-      border-radius: 8px;
-      border: none;
-      cursor: pointer;
-      font-size: 1rem;
-      transition: 0.3s;
-    }
-
-    #btnConfirmar {
-      background: #33ac49;
-      color: white;
-    }
-
-    #btnConfirmar:hover {
-      background: #2b8e3d;
-    }
-
-    #btnAnterior, #btnProxima {
-      background: #ddd;
-    }
-
-    #btnAnterior:hover, #btnProxima:hover {
-      background: #ccc;
-    }
-
-    #progresso {
-      margin-top: 15px;
-      font-size: 1.1rem;
-      font-weight: bold;
-    }
-
-    .main {
-      padding: 20px
-    }
-
-  </style>
+  <link rel="stylesheet" href="../css/questoes.css">
 </head>
 
 <body>
+
+  <!-- TOAST SUPERIOR -->
+<div id="toastOverlay" class="toast hidden">
+  <div id="toastMessage"></div>
+</div>
+
 
   <div class="sidebar">
     <h2><span class="logoo" style="color:#33ac49;">Med</span><span class="logoo">Vest</span><span class="logoo" style="color:red;">+</span></h2>
@@ -121,144 +49,7 @@
   </div>
 
   <!-- FIREBASE -->
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyBN2_GgoK-nXfOxefYlCE9i7PupwrNQkrY",
-  authDomain: "medvestplus.firebaseapp.com",
-  databaseURL: "https://medvestplus-default-rtdb.firebaseio.com",
-  projectId: "medvestplus",
-  storageBucket: "medvestplus.appspot.com",
-  messagingSenderId: "261146979409",
-  appId: "1:261146979409:web:3388c61d54f7d7f7205c70"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
-
-const params = new URLSearchParams(window.location.search);
-const topico = params.get("topico");
-const area = params.get("area");
-
-document.getElementById("tituloTopico").innerText = topico;
-
-let questoes = [];
-let index = 0;
-let alternativaSelecionada = null;
-let acertos = 0;
-let erros = 0;
-let historicoRespostas = [];
-
-const letras = ["A", "B", "C", "D", "E"];
-
-function processarEnunciado(texto) {
-  const regexImagem = /!\[\]\((https:\/\/enem\.dev\/[^\)]+)\)/g;
-
-  return texto.replace(regexImagem, (match, url) => {
-    return `
-      <br>
-      <img src="${url}" alt="Imagem da questão" style="max-width: 100%; margin: 12px 0;">
-      <br>
-    `;
-  });
-}
-
-async function carregar() {
-  const caminho = `questoes/${area}/${topico}`;
-
-  const snapshot = await get(ref(db, caminho));
-
-  if (!snapshot.exists()) {
-    document.getElementById("textoQuestao").innerText = "Nenhuma questão encontrada.";
-    return;
-  }
-
-  questoes = Object.values(snapshot.val());
-  mostrarQuestao();
-  atualizarProgresso();
-}
-
-function mostrarQuestao() {
-  alternativaSelecionada = null;
-
-  const q = questoes[index];
-
-  const enunciadoHTML = processarEnunciado(q.enunciado); // 🔥 ADICIONADO
-
-  document.getElementById("textoQuestao").innerHTML = `${index + 1}) ${enunciadoHTML}`;
-
-  const areaAlt = document.getElementById("alternativas");
-  areaAlt.innerHTML = "";
-
-  q.alternativas.forEach((texto, i) => {
-    const div = document.createElement("div");
-    div.className = "alternativa";
-    div.innerText = `${letras[i]}) ${texto}`;
-    div.onclick = () => selecionarAlternativa(i, div);
-    areaAlt.appendChild(div);
-  });
-}
-
-function selecionarAlternativa(i, div) {
-  alternativaSelecionada = i;
-  document.querySelectorAll(".alternativa").forEach(a =>
-    a.classList.remove("selecionada")
-  );
-  div.classList.add("selecionada");
-}
-
-document.getElementById("btnProxima").onclick = () => {
-  if (index < questoes.length - 1) {
-    index++;
-    mostrarQuestao();
-    atualizarProgresso();
-  }
-};
-
-document.getElementById("btnAnterior").onclick = () => {
-  if (index > 0) {
-    index--;
-    mostrarQuestao();
-    atualizarProgresso();
-  }
-};
-
-document.getElementById("btnConfirmar").onclick = () => {
-  if (alternativaSelecionada === null) {
-    alert("Selecione uma alternativa!");
-    return;
-  }
-
-  let correta = questoes[index].correta;
-
-  if (typeof correta === "string") {
-    correta = letras.indexOf(correta.toUpperCase());
-  }
-
-  const div = document.getElementById("resultadoResposta");
-
-  if (alternativaSelecionada === correta) {
-    acertos++;
-    historicoRespostas.push("✔");
-    div.innerHTML = `<p style="color:green">✔ Acertou! (${letras[correta]})</p>`;
-  } else {
-    erros++;
-    historicoRespostas.push("✘");
-    div.innerHTML = `<p style="color:red">✘ Errou! (${letras[correta]})</p>`;
-  }
-
-  atualizarProgresso();
-};
-
-function atualizarProgresso() {
-  document.getElementById("progresso").innerText =
-    `Questão ${index + 1} de ${questoes.length} — ✔ ${acertos} | ✘ ${erros}`;
-}
-
-carregar();
-</script>
+<script type="module" src="../js/questoes.js"></script>
 
 </body>
 </html>
