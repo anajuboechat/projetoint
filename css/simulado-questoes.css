@@ -162,3 +162,24 @@
         order: -1;
       }
     }
+
+    @media screen and (min-width: 2100px) and (min-height: 1448px) {
+    * {
+        font-size: 2.2rem;
+    }
+}
+
+    @media screen and (max-width: 1024px) {
+      .question-container {
+        width: 45rem;
+      }
+
+      .question-menu {
+        min-width: 1rem;
+      }
+
+      .question-buttons button {
+        width: 0.1rem;
+      }
+
+    }
