@@ -133,3 +133,18 @@ button {
 .textinho {
     max-width: 85.4%;
 }
+
+@media screen and (min-width: 2100px) and (min-height: 1448px) {
+    * {
+        font-size: 2.2rem;
+    }
+
+    .questao-box {
+      width: 50rem;
+      max-width: 500rem;
+    }
+    .bolinha {
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+}
