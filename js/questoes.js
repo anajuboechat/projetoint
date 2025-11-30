@@ -62,6 +62,9 @@ let alternativaSelecionada = null;
 let acertos = 0;
 let erros = 0;
 
+// ⛔ NOVO: controle local para não contar duas vezes a mesma questão
+let respondidasLocal = {};
+
 const letras = ["A", "B", "C", "D", "E"];
 
 function getIndiceCorreto(correta) {
@@ -165,11 +168,17 @@ document.getElementById("btnConfirmar").onclick = async () => {
   const acertou = alternativaSelecionada === corretaIndice;
   const div = document.getElementById("resultadoResposta");
 
+  // ⛔ NOVO: só conta acerto/erro uma única vez por questão
+  if (!respondidasLocal[idQuestao]) {
+    if (acertou) acertos++;
+    else erros++;
+
+    respondidasLocal[idQuestao] = true;
+  }
+
   if (acertou) {
-    acertos++;
     div.innerHTML = `<p style="color:green">✔ Acertou! (${corretaLetra})</p>`;
   } else {
-    erros++;
     div.innerHTML = `<p style="color:red">✘ Errou! (${corretaLetra})</p>`;
   }
 
