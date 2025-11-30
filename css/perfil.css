@@ -377,3 +377,66 @@ body {
   width: 100%;
   align-self: center;
 }
+
+@media screen and (min-width: 2100px) and (min-height: 1448px) {
+    * {
+        font-size: 2.2rem;
+    }
+    .profile-section{
+      min-width: 2rem;
+    }
+    .mainprofile {
+      min-width: 30rem;
+      min-height: 50rem;
+    }
+    .profile-section button{
+      font-size: 1.5rem;
+      height: 3rem;
+    }
+
+    .preferences-group legend {
+      font-size: 2rem;
+    }
+    .input-field {
+      height: 4rem;
+    }
+
+    .input-field input {
+      font-size: 2rem;
+    }
+
+    #emailDisplay {
+      font-size: 1.5rem;
+    }
+
+    .form-label {
+      font-size: 1.5rem;
+    }
+
+    .avatar-container {
+      width: 8rem;
+      height: 8rem;
+    }
+
+    .avatar-bg {
+      width: 8rem;
+      height: 8rem;
+    }
+
+    .edit-icon-wrapper {
+      width: 2rem;
+      height: 2rem;
+    }
+
+    .checklist input[type="checkbox"] {
+      width: 2rem;
+      height: 2rem;
+    }
+
+    .checklist input[type="checkbox"]:checked::after {
+      width: 0.9rem;
+      height: 0.9rem;
+      left: 0.51rem;
+      top: 0.5rem;
+    }
+}   
