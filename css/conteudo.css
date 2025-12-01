@@ -1,0 +1,76 @@
+.conteudo-box {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      margin-top: 20px;
+      max-width: 850px;
+    }
+.btn {
+    margin-top: 25px;
+    background: #33ac49;
+    padding: 14px 22px;
+    color: white;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: 0.3s;
+    display: inline-block;
+}
+
+.btn:hover {
+    background: #2b8e3d;
+
+}
+
+
+
+
+
+/* Espaçamento geral do conteúdo */
+#textoTopico {
+    line-height: 1.6;
+    font-size: 1.1rem;
+}
+
+/* Parágrafos */
+#textoTopico p {
+    margin: 12px 0;
+}
+
+/* Títulos */
+#textoTopico h1 {
+    margin: 25px 0 15px;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+#textoTopico h2 {
+    margin: 20px 0 10px;
+    font-size: 1.6rem;
+    font-weight: bold;
+}
+
+#textoTopico h3 {
+    margin: 18px 0 8px;
+    font-size: 1.3rem;
+    font-weight: bold;
+}
+
+/* Listas */
+#textoTopico ul {
+    margin: 12px 0 12px 22px;
+    line-height: 1.6;
+}
+
+#textoTopico li {
+    margin-bottom: 6px;
+}
+
+/* Linha horizontal */
+#textoTopico hr {
+    margin: 25px 0;
+    border: none;
+    border-top: 2px solid #ccc;
+}
