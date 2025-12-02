@@ -63,9 +63,17 @@ onAuthStateChanged(auth, async (user) => {
     if (snap.exists()) {
       const data = snap.val();
 
-      if (data.nome) nameInput.value = data.nome;
+      // 🔥 Carrega username OU nome antigo
+      if (data.username) {
+        nameInput.value = data.username;
+      } else if (data.nome) {
+        nameInput.value = data.nome;
+      }
+
+      // Avatar
       if (data.avatar) avatarImage.src = data.avatar;
 
+      // Preferências
       if (data.preferencias && data.preferencias.universidades) {
         const escolhidas = data.preferencias.universidades;
         document.querySelectorAll("input[name='vestibulares']").forEach(cb => {
@@ -78,15 +86,15 @@ onAuthStateChanged(auth, async (user) => {
   }
 });
 
-// Salvar nome
+// Salvar nome de usuário
 editNameBtn.addEventListener("click", async () => {
   if (!uid) return;
 
   const nome = nameInput.value.trim();
 
   try {
-    await update(ref(db, "usuarios/" + uid), { nome });
-    showToast("Nome atualizado!");
+    await update(ref(db, "usuarios/" + uid), { username: nome });
+    showToast("Nome de usuário atualizado!");
   } catch (error) {
     console.error("Erro ao salvar nome:", error);
   }
@@ -123,8 +131,10 @@ saveAllBtn.addEventListener("click", async () => {
   ).map(cb => cb.value);
 
   try {
-    await update(ref(db, "usuarios/" + uid), { nome });
+    // 🔥 Salvar username
+    await update(ref(db, "usuarios/" + uid), { username: nome });
 
+    // 🔥 Salvar universidades
     await update(ref(db, "usuarios/" + uid + "/preferencias"), {
       universidades: vestibulares
     });

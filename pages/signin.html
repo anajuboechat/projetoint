@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
@@ -7,22 +7,35 @@
   <link rel="stylesheet" href="/css/style.css">
   <link rel="stylesheet" href="../css/auth.css" />
   <script type="module" src="../js/global.js" defer></script>
+  <script type="module" src="../js/cadastro.js" defer></script>
 </head>
+
 <body class="auth-page">
   <div class="auth-container">
     <img src="../assets/images/logo.png" alt="Logo MedVest+" class="logo">
     <h1 class="app-name">MedVest+</h1>
     <h2 class="auth-title">Crie uma conta</h2>
-    <p class="auth-subtitle">Insira seu e-mail para começar:</p>
+    <p class="auth-subtitle">Preencha os dados abaixo:</p>
 
     <form>
+
+      <input type="text" id="username" required placeholder="Nome de usuário" />
+      <p id="username-error" class="error-message"></p>
+
       <input type="email" id="email" required placeholder="E-mail" />
       <p id="email-error" class="error-message"></p>
+
       <input type="password" id="password" required placeholder="Senha" />
       <p id="password-error" class="error-message"></p>
+
       <input type="password" id="confirm-password" required placeholder="Confirmar Senha" />
       <p id="confirm-error" class="error-message"></p>
+
+      <!-- 🔥 TODAS AS MENSAGENS GERAIS APARECEM AQUI -->
+      <p id="global-message" class="error-message"></p>
+
       <button type="submit" id="submit" class="btn-primary">Continue</button>
+
     </form>
 
     <div class="divider"><span>ou</span></div>
@@ -33,7 +46,7 @@
     </button>
 
     <p class="terms">
-      Ao clicar “continue”, está concordando com nossos 
+      Ao clicar “continue”, você concorda com nossos 
       <a href="#">Termos de Serviço</a> e com nossa 
       <a href="#">Política de Privacidade</a>
     </p>
