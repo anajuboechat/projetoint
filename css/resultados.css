@@ -1,0 +1,50 @@
+/* Botão superior direito */
+.botao-resultados {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+
+  padding: 10px 20px;
+  background-color: #33ac49;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+
+  font-weight: bold;
+  font-size: 16px;
+  transition: 0.3s;
+}
+
+.botao-resultados:hover {
+  background-color: #278c3b;
+}
+
+/* Lista de Resultados */
+.resultados-lista {
+  margin-top: 20px;
+  background: #f1f7ef;
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  display: flex;
+}
+
+.item-resultado {
+  background: white;
+  padding: 15px;
+  border-radius: 12px;
+  border-left: 6px solid #33ac49;
+  margin: 1rem;
+}
+
+/* Gráfico */
+.grafico-container {
+  margin-top: 30px;
+  background: white;
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  width: 30rem;
+  height: 16rem;
+}

@@ -1,6 +1,6 @@
-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import { getDatabase, ref, get, set } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBN2_GgoK-nXfOxefYlCE9i7PupwrNQkrY",
@@ -14,12 +14,21 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
+const auth = getAuth();
 
+// PEGAR O ID DO SIMULADO DA URL
+const params = new URLSearchParams(window.location.search);
+const simuladoId = params.get("id") || "S1"; // fallback caso falhe
+
+console.log("📌 Simulado selecionado:", simuladoId);
+
+// ELEMENTOS
 const questionEl = document.getElementById("question");
 const optionsEl = document.getElementById("options");
 const nextBtn = document.getElementById("nextBtn");
 const prevBtn = document.getElementById("prevBtn");
 const navContainer = document.getElementById("questionNav");
+const finishBtn = document.getElementById("finishBtn");
 const overlay = document.getElementById("overlay");
 const overlayText = document.getElementById("overlayText");
 
@@ -29,7 +38,8 @@ let answers = [];
 
 async function loadQuestions() {
   try {
-    const snapshot = await get(ref(db, "Simulados/S1"));
+    const snapshot = await get(ref(db, `Simulados/${simuladoId}`)); // <-- AGORA DINÂMICO
+
     if (!snapshot.exists()) {
       questionEl.textContent = "Nenhuma questão encontrada.";
       return;
@@ -48,7 +58,7 @@ async function loadQuestions() {
           numero: q.numero || 0
         };
       })
-      .sort(() => Math.random() - 0.5); /* embaralhar */
+      .sort(() => Math.random() - 0.5);
 
     questions = todasQuestoes;
 
@@ -77,11 +87,11 @@ function renderQuestion() {
   questionEl.textContent = `${index + 1}. ${q.enunciado}`;
 
   const letras = Object.keys(q.alternativas);
+  const mapABCD = ["A", "B", "C", "D", "E"];
 
   if (letras.length === 0) {
     optionsEl.innerHTML = "<p style='color:red;'>Sem alternativas cadastradas</p>";
   } else {
-    const mapABCD = ["A", "B", "C", "D", "E"];
     optionsEl.innerHTML = letras.map((letra, idx) => `
       <label style="min-width:300px;"> 
         <input type="radio" name="answer" value="${mapABCD[idx]}" ${answers[index] === mapABCD[idx] ? "checked" : ""}>
@@ -121,29 +131,56 @@ prevBtn.addEventListener("click", () => {
   }
 });
 
+finishBtn.addEventListener("click", () => {
+  saveAnswer();
+  enviarRespostas();
+});
+
 function goToQuestion(i) {
   saveAnswer();
   index = i;
   renderQuestion();
 }
 
-function enviarRespostas() {
+async function enviarRespostas() {
   overlay.classList.remove("hidden");
   overlayText.textContent = "Calculando desempenho...";
 
-  setTimeout(() => {
+  setTimeout(async () => {
     let acertos = 0;
+
     questions.forEach((q, i) => {
       if (answers[i] && answers[i].toUpperCase() === q.correta.toUpperCase()) {
         acertos++;
       }
     });
 
-    overlayText.innerHTML = `✅ Você acertou <strong>${acertos}</strong> de <strong>${questions.length}</strong> questões!<br><br>Voltando à tela inicial...`;
+    const erros = questions.length - acertos;
+
+    overlayText.innerHTML = `
+      ✅ Você acertou <strong>${acertos}</strong> de <strong>${questions.length}</strong> questões!
+      <br>Salvando no seu histórico...
+    `;
+
+    // PEGAR UID
+    let uid = sessionStorage.getItem("uid");
+    if (!uid && auth.currentUser) uid = auth.currentUser.uid;
+
+    if (uid) {
+      const resultRef = ref(db, `usuarios/${uid}/resultados_simulados/${simuladoId}`);
+
+      await set(resultRef, {
+        data: new Date().toISOString(),
+        totalQuestoes: questions.length,
+        acertos,
+        erros
+      });
+    }
 
     setTimeout(() => {
       window.location.href = "../index.html";
     }, 3500);
+
   }, 1500);
 }
 

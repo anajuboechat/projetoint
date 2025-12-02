@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MedVest+ - Resultados</title>
+
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/resultados.css">
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+  <div id="loading" class="loading hidden">
+    <div class="spinner"></div>
+  </div>
+
+  <div class="sidebar">
+    <h2><span class="logoo" style="color: #33ac49;">Med</span><span class="logoo">Vest</span><span class="logoo" style="color: red;">+</span></h2>
+
+    <a href="/index.html" class="nav-link"><span>Início</span></a>
+    <a href="./simulados.html" class="nav-link"><span>Simulados</span></a>
+    <a href="./flashcards.html" class="nav-link"><span>Flashcards</span></a>
+    <a href="./notificacoes.html" class="nav-link"><span>Notificações</span></a>
+    <a href="./perfil.html" class="nav-link"><span>Perfil</span></a>
+
+    <img class="imagenzinha_da_logo" src="../assets/images/logo.png" alt="logo">
+  </div>
+
+  <div class="main">
+    <div class="title">
+      <h1>Resultados dos Simulados</h1>
+      <p class="escrita">Confira seu desempenho recente:</p>
+    </div>
+
+    <!-- LISTA -->
+    <div class="resultados-lista" id="listaResultados"></div>
+
+    <!-- GRÁFICO -->
+    <div class="grafico-container">
+      <canvas id="graficoResultados"></canvas>
+    </div>
+  </div>
+
+  <script type="module" src="../js/results.js"></script>
+
+</body>
+</html>
