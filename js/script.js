@@ -7,17 +7,15 @@ if (isLoggedIn === null) {
   isLoggedIn = (isLoggedIn === "true");
 }
 
-// Detecta QUAL ÁREA o usuário escolheu
+
 document.querySelectorAll(".cards a").forEach(link => {
   link.addEventListener("click", function (e) {
     e.preventDefault();
 
-    const area = this.getAttribute("data-area"); // quimica / biologia / fisica
+    const area = this.getAttribute("data-area");
 
-    // ARMAZENA PARA AS OUTRAS PÁGINAS
     localStorage.setItem("areaSelecionada", area);
 
-    // REDIRECIONA PARA A PÁGINA DA ÁREA
     window.location.href = `./pages/conteudos_${area}.html`;
   });
 });

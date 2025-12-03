@@ -35,7 +35,6 @@
     <a href="novacategoria.html" class="add-flashcard-btn">+ Nova Matéria</a>
   </div>
 
-  <!-- Confirm modal (global, shared) -->
   <div id="confirmBackdrop" class="confirm-backdrop" aria-hidden="true">
     <div class="confirm-box" role="dialog" aria-modal="true">
       <div class="confirm-title">Confirmar exclusão</div>
@@ -48,7 +47,6 @@
   </div>
 
   <script>
-    // fallback: ensure modal exists even if script module loaded earlier
     if (!document.getElementById('confirmBackdrop')) {
       const b = document.createElement('div');
       b.id = 'confirmBackdrop';

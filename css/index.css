@@ -10,7 +10,7 @@
     font-weight: 300;
 }
 
-/* --- Gerais --- */
+
 body {
   margin: 0;
   background-color: #f7fbe9;
@@ -26,7 +26,7 @@ span {
   font-size: 1.3rem;
 }
 
-/* --- Splash Screen --- */
+
 .splash {
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
@@ -47,7 +47,7 @@ span {
   to { transform: scale(1); opacity: 1; }
 }
 
-/* --- Loading --- */
+
 .loading {
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
@@ -79,7 +79,7 @@ span {
 }
 
 
-/* --- Main Área --- */
+
 .main {
   flex: 1;
   display: flex;
@@ -98,7 +98,7 @@ span {
   margin-bottom: 10px;
 }
 
-/* --- Cards Container --- */
+
 .cards {
   display: flex;
   flex-direction: column;
@@ -109,7 +109,7 @@ span {
   box-sizing: border-box;
 }
 
-/* --- Card --- */
+
 .card {
   background-color: #c8e0a4;
   width: 400px;

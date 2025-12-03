@@ -16,13 +16,12 @@ const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 const auth = getAuth();
 
-// PEGAR O ID DO SIMULADO DA URL
+
 const params = new URLSearchParams(window.location.search);
-const simuladoId = params.get("id") || "S1"; // fallback caso falhe
+const simuladoId = params.get("id") || "S1";
 
 console.log("📌 Simulado selecionado:", simuladoId);
 
-// ELEMENTOS
 const questionEl = document.getElementById("question");
 const optionsEl = document.getElementById("options");
 const nextBtn = document.getElementById("nextBtn");
@@ -38,7 +37,7 @@ let answers = [];
 
 async function loadQuestions() {
   try {
-    const snapshot = await get(ref(db, `Simulados/${simuladoId}`)); // <-- AGORA DINÂMICO
+    const snapshot = await get(ref(db, `Simulados/${simuladoId}`));
 
     if (!snapshot.exists()) {
       questionEl.textContent = "Nenhuma questão encontrada.";
@@ -162,7 +161,6 @@ async function enviarRespostas() {
       <br>Salvando no seu histórico...
     `;
 
-    // PEGAR UID
     let uid = sessionStorage.getItem("uid");
     if (!uid && auth.currentUser) uid = auth.currentUser.uid;
 

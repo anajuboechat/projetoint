@@ -50,7 +50,6 @@ const container = document.getElementById("cards-container");
 
 async function carregarConteudos() {
   
-  // 🔥 CORRIGIDO — AGORA LÊ FÍSICA NO BANCO
   const snapshot = await get(ref(db, "questoes/fisica"));
 
   if (!snapshot.exists()) {

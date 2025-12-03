@@ -14,7 +14,7 @@
   font-size: 1.2rem;
 }
 
-/* 🔥 ALTERNATIVAS COM BOLINHA (A–E) */
+
 .alternativa {
   margin: 10px 0;
   padding: 12px;
@@ -32,7 +32,7 @@
   background: #e6e6e6;
 }
 
-/* 🔵 BOLINHA DA LETRA */
+
 .bolinha {
   width: 36px;
   height: 36px;
@@ -51,7 +51,7 @@
   background: #dff3df;
 }
 
-/* 🔥 ESTILO DE SELECIONADA */
+
 .alternativa.selecionada {
   background: #c8e8c6;
   border: 2px solid #33ac49;
@@ -105,7 +105,7 @@ button {
   padding: 20px
 }
 
-/* TOAST */
+
 .toast {
   position: fixed;
   top: -80px;

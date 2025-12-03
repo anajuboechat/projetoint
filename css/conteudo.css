@@ -26,20 +26,17 @@
 
 
 
-
-
-/* Espaçamento geral do conteúdo */
 #textoTopico {
     line-height: 1.6;
     font-size: 1.1rem;
 }
 
-/* Parágrafos */
+
 #textoTopico p {
     margin: 12px 0;
 }
 
-/* Títulos */
+
 #textoTopico h1 {
     margin: 25px 0 15px;
     font-size: 2rem;
@@ -58,7 +55,7 @@
     font-weight: bold;
 }
 
-/* Listas */
+
 #textoTopico ul {
     margin: 12px 0 12px 22px;
     line-height: 1.6;
@@ -68,7 +65,7 @@
     margin-bottom: 6px;
 }
 
-/* Linha horizontal */
+
 #textoTopico hr {
     margin: 25px 0;
     border: none;

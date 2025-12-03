@@ -1,5 +1,3 @@
-// results.js — Puxando dados igual perfil.js
-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
 import { 
   getAuth, 
@@ -11,7 +9,7 @@ import {
   get 
 } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-database.js";
 
-// --------------- FIREBASE CONFIG ---------------
+
 const firebaseConfig = {
   apiKey: "AIzaSyBN2_GgoK-nXfOxefYlCE9i7PupwrNQkrY",
   authDomain: "medvestplus.firebaseapp.com",
@@ -26,19 +24,15 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getDatabase(app);
 
-// ---------------- ELEMENTOS ----------------
+
 const lista = document.getElementById("listaResultados");
 const ctx = document.getElementById("graficoResultados");
 
-// ---------------- LOADING ----------------
+
 function mostrarLoading(show) {
   document.getElementById("loading").classList.toggle("hidden", !show);
 }
 
-// ======================================================
-//        🔥 AGORA PUXANDO DO CAMINHO CORRETO 🔥
-//        (resultados_simulados — exatamente como no DB)
-// ======================================================
 
 onAuthStateChanged(auth, async (user) => {
   if (!user) {
@@ -50,7 +44,6 @@ onAuthStateChanged(auth, async (user) => {
 
   const uid = user.uid;
 
-  // CAMINHO CORRETO DO SEU BANCO
   const resultadosRef = ref(db, `usuarios/${uid}/resultados_simulados`);
 
   try {
@@ -64,7 +57,6 @@ onAuthStateChanged(auth, async (user) => {
 
     const dados = snap.val();
 
-    // Limpar lista
     lista.innerHTML = "";
 
     const labels = [];
@@ -74,7 +66,6 @@ onAuthStateChanged(auth, async (user) => {
 
       const r = dados[id];
 
-      // PREVENÇÃO PARA CAMPOS QUE PODEM NÃO EXISTIR
       const nomeSimulado = r.nomeSimulado || id;
       const nota = r.nota || r.acertos || 0;
       const data = r.data || "Sem data";
@@ -91,7 +82,6 @@ onAuthStateChanged(auth, async (user) => {
       values.push(nota);
     });
 
-    // ---------------- GRÁFICO ----------------
     new Chart(ctx, {
       type: "line",
       data: {

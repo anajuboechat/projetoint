@@ -7,7 +7,7 @@
   margin-top: 20px;
 }
 
-/* === Caixas de seleção personalizadas (círculos grandes) === */
+
 .checklist {
   display: flex;
   flex-direction: column;
@@ -42,7 +42,7 @@
 }
 
 .checklist input[type="checkbox"]:checked {
-  background-color: #3b3f2b; /* cor de preenchimento */
+  background-color: #3b3f2b;
   border-color: #3b3f2b;
   box-shadow: 0 0 0 3px rgba(59,63,43,0.15);
 }
@@ -75,7 +75,7 @@
 }
 
 .input-field.noborder {
-    border: 1px solid #ccc !important;   /* igual ao input de nome */
+    border: 1px solid #ccc !important;
     padding: 10px 14px;
     border-radius: 6px;
     background: #fff;
@@ -84,8 +84,8 @@
 
 .form-group .input-field,
 .form-group .input-field.noborder {
-    width: 35.5rem;        /* mesmo valor que você já usa no nome */
-    max-width: 100%;       /* evita quebrar a tela */
+    width: 35.5rem;
+    max-width: 100%;
     box-sizing: border-box;
 }
 
@@ -97,7 +97,7 @@
     background-color: #F7FBE9;
 }
 
-/* botão do nome ocupa largura igual */
+
 #editNameBtn {
     width: 35.5rem;
     max-width: 100%;
@@ -128,7 +128,7 @@
   display: none;
 }
 
-/* Fundo escuro atrás do aviso */
+
 .toast-overlay {
   position: fixed;
   top: 0;
@@ -150,7 +150,7 @@
   pointer-events: all;
 }
 
-/* Caixa central */
+
 .toast-center {
   background: var(--button-background);
   color: white;
@@ -167,16 +167,16 @@
   transform: scale(1);
 }
 
-/* Oculto por padrão */
+
 .hidden {
   display: none;
 }
 
 
-/* === TOAST GLOBAL === */
+
 #toastOverlay {
   position: fixed;
-  top: -100px;  /* começa fora da tela */
+  top: -100px;
   left: 50%;
   transform: translateX(-50%);
   background: #3b3f2b;
@@ -189,20 +189,20 @@
   z-index: 9999;
 }
 
-/* Quando aparece */
+
 #toastOverlay.show {
-  top: 30px;         /* DESCE A PARTIR DO TOPO */
+  top: 30px;
   opacity: 1;
 }
 
-/* Oculto */
+
 #toastOverlay.hidden {
   display: none;
 }
 
 .layout {
   display: flex;
-  height: 100vh;   /* limite vertical real */
+  height: 100vh;
 }
 
 .mainprofile {
@@ -214,14 +214,13 @@
 .mainprofile {
   flex: 1;
   display: flex; 
-  flex-direction: column; /* importante para evitar colapso de margin */
-  /* não precisa height aqui porque .layout já controla */
+  flex-direction: column;
   box-sizing: border-box;
 }
 
 .profile-section {
-  flex: 1;               /* ocupa todo o espaço disponível dentro de .mainprofile */    /* o scroll acontece aqui */
-  padding-bottom: 24px;  /* evita que o último elemento fique colado na borda */
+  flex: 1;
+  padding-bottom: 24px;
   box-sizing: border-box;
 }
 
@@ -232,12 +231,12 @@
 body {
     margin: 0;
     padding: 0;
-    overflow: hidden; /* impede scroll da página */
+    overflow: hidden;
 }
 
 .content {
     flex: 1;
-    overflow-y: auto; /* permite scroll apenas na área de conteúdo */
+    overflow-y: auto;
     box-sizing: border-box;
     
 }

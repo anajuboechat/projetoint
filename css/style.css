@@ -189,13 +189,13 @@ a {
   height: 75px;
   display: flex;
   align-items: center;
-  justify-content: center;   /* <-- CENTRALIZA */
+  justify-content: center;
   padding: 20px;
   border-radius: 15px;
   box-shadow: 0px 4px 8px rgba(0,0,0,0.1);
   cursor: pointer;
   transition: 0.3s;
-  text-align: center;         /* <-- CENTRALIZA TEXTO */
+  text-align: center;
 }
 
 .mat:hover {
@@ -243,7 +243,6 @@ a {
   overflow: hidden;
 }
 
-/* --- Profile --- */
 
 
 .profile-title {
@@ -328,11 +327,11 @@ a {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
-  justify-content: center; /* centraliza os flashcards dentro da div */
+  justify-content: center;
 }
 
 .flashcard {
-  background: none;          /* remove o fundo bege */
+  background: none;
   border: none;
   perspective: 1000px;
   width: 250px;
@@ -341,7 +340,7 @@ a {
   align-items: center;
   justify-content: center;
   border-radius: 15px;
-  box-shadow: none;          /* remove a sombra externa */
+  box-shadow: none;
   cursor: pointer;
   transition: 0.3s;
   font-size: 18px;
@@ -351,7 +350,6 @@ a {
 }
 
 
-/* --- Botão de salvar hover --- */
 .save-button:hover {
   background-color: #7ea16b;
 }
@@ -360,9 +358,9 @@ a {
   display: flex;
   flex-direction: column;
   margin-bottom: 25px;
-  width: 100%;        /* ocupa toda largura disponível do form */
-  max-width: 500px;   /* limita a largura máxima */
-  margin-left: auto;  /* centraliza horizontalmente */
+  width: 100%;
+  max-width: 500px;
+  margin-left: auto;
   margin-right: auto;
 }
 
@@ -370,7 +368,7 @@ a {
 .input-field input,
 .input-field select,
 .input-field textarea {
-  width: 100%;        /* ocupa 100% do formgroup2 */
+  width: 100%;
   border: none;
   outline: none;
   background: transparent;

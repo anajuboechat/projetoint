@@ -59,10 +59,7 @@ function renderCategorias(dados) {
 
     if (!dados[tipo]) return;
 
-    // disciplinas -> materias
     Object.entries(dados[tipo]).forEach(([materiaNome, materiaObj]) => {
-
-      // matéria tem 1 idMateria dentro
       const idMateria = Object.keys(materiaObj)[0];
 
       const div = document.createElement("div");

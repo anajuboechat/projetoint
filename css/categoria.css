@@ -24,7 +24,6 @@ body {
     }
 
 
-    /* ====== FLASHCARD ====== */
     .flashcard {
       min-width: 25rem;
       max-width: 50rem;
@@ -182,7 +181,6 @@ body {
     .score-circle.correct { background: #4CAF50;}
     .score-circle.wrong { background: #E74C3C; }
 
-    /* delete button (square X) for flashcard */
     .delete-x-square-flash {
       position: absolute;
       top: 1rem;
@@ -207,7 +205,6 @@ body {
       border-color: #f3b3b3;
     }
 
-    /* modal (shared) */
     .confirm-backdrop {
       position: fixed;
       inset: 0;

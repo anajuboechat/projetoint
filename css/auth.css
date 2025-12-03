@@ -50,7 +50,7 @@ body {
   margin-bottom: 20px;
 }
 
-/* 🔥 PADRÃO DE LARGURA IGUAL */
+
 input,
 .btn-primary,
 .btn-google {
@@ -62,13 +62,12 @@ input,
   font-size: 14px;
 }
 
-/* Inputs */
+
 input {
   border: 1px solid #ccc;
   margin: 8px 0;
 }
 
-/* Botão Continue */
 .btn-primary {
   background-color: #3c3d2f;
   color: white;
@@ -79,7 +78,7 @@ input {
   margin-top: 10px;
 }
 
-/* Divider */
+
 .divider {
   display: flex;
   align-items: center;
@@ -102,7 +101,7 @@ input {
   margin-left: 10px;
 }
 
-/* Botão Google */
+
 .btn-google {
   display: flex;
   justify-content: center;

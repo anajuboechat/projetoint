@@ -1,4 +1,3 @@
-// Firebase
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
 import { getDatabase, ref, get, update } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-database.js";
@@ -17,7 +16,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getDatabase(app);
 
-// ------- POPUP CENTRAL -------
+
 function showToast(message) {
   const overlay = document.getElementById("toastOverlay");
   const toastMessage = document.getElementById("toastMessage");
@@ -45,10 +44,10 @@ const logoutBtn = document.getElementById("logoutBtn");
 
 let uid;
 
-// Botão de editar foto
+
 editButton.addEventListener("click", () => fileInput.click());
 
-// Carregar dados do usuário
+
 onAuthStateChanged(auth, async (user) => {
   if (!user) {
     window.location.href = "./login.html";
@@ -63,17 +62,14 @@ onAuthStateChanged(auth, async (user) => {
     if (snap.exists()) {
       const data = snap.val();
 
-      // 🔥 Carrega username OU nome antigo
       if (data.username) {
         nameInput.value = data.username;
       } else if (data.nome) {
         nameInput.value = data.nome;
       }
 
-      // Avatar
       if (data.avatar) avatarImage.src = data.avatar;
 
-      // Preferências
       if (data.preferencias && data.preferencias.universidades) {
         const escolhidas = data.preferencias.universidades;
         document.querySelectorAll("input[name='vestibulares']").forEach(cb => {
@@ -86,7 +82,6 @@ onAuthStateChanged(auth, async (user) => {
   }
 });
 
-// Salvar nome de usuário
 editNameBtn.addEventListener("click", async () => {
   if (!uid) return;
 
@@ -100,7 +95,6 @@ editNameBtn.addEventListener("click", async () => {
   }
 });
 
-// Salvar avatar
 fileInput.addEventListener("change", () => {
   const file = fileInput.files[0];
   if (file && uid) {
@@ -120,7 +114,6 @@ fileInput.addEventListener("change", () => {
   }
 });
 
-// Salvar tudo
 saveAllBtn.addEventListener("click", async () => {
   if (!uid) return;
 
@@ -131,10 +124,8 @@ saveAllBtn.addEventListener("click", async () => {
   ).map(cb => cb.value);
 
   try {
-    // 🔥 Salvar username
     await update(ref(db, "usuarios/" + uid), { username: nome });
 
-    // 🔥 Salvar universidades
     await update(ref(db, "usuarios/" + uid + "/preferencias"), {
       universidades: vestibulares
     });
@@ -145,7 +136,6 @@ saveAllBtn.addEventListener("click", async () => {
   }
 });
 
-// Logout
 logoutBtn.addEventListener("click", async () => {
   await signOut(auth);
   sessionStorage.setItem("isLoggedIn", "false");

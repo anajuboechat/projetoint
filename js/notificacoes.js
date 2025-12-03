@@ -16,14 +16,13 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getDatabase(app);
 
-/* ÍCONES */
 const iconMap = {
   1: "/assets/images/chat.png",
   2: "/assets/images/notes.png",
   3: "/assets/images/dingobell.png"
 };
 
-/* ================================ */
+
 function updateEmptyMessage() {
   const list = document.getElementById("notificationList");
   const container = document.querySelector(".notification-container");
@@ -40,9 +39,7 @@ function updateEmptyMessage() {
   }
 }
 
-/* ================================ */
-/*       CARREGAR NOTIFICAÇÕES     */
-/* ================================ */
+
 onAuthStateChanged(auth, async (user) => {
   if (!user) return;
   const uid = user.uid;
@@ -60,9 +57,6 @@ onAuthStateChanged(auth, async (user) => {
     const notifications = notifSnap.exists() ? notifSnap.val() : {};
     const list = document.getElementById("notificationList");
 
-    /* ================================ */
-    /*  ORDENAR NOTIFICAÇÕES POR DATA  */
-    /* ================================ */
 
     const sortedNotifications = Object.keys(notifications).sort((a, b) => {
       const nA = notifications[a];
@@ -74,15 +68,12 @@ onAuthStateChanged(auth, async (user) => {
       const dateA = new Date(yA, mA - 1, dA);
       const dateB = new Date(yB, mB - 1, dB);
 
-      return dateB - dateA; // MAIS RECENTE → ANTIGO
+      return dateB - dateA;
     });
 
-    /* ================================ */
-    /*  BLOQUEAR NOTIFICAÇÕES FUTURAS  */
-    /* ================================ */
 
     const now = new Date();
-    now.setHours(0, 0, 0, 0); // Zerar horas para comparar só o dia
+    now.setHours(0, 0, 0, 0);
 
     sortedNotifications.forEach((id) => {
       const n = notifications[id];
@@ -91,10 +82,8 @@ onAuthStateChanged(auth, async (user) => {
       const notifDate = new Date(y, m - 1, d);
       notifDate.setHours(0, 0, 0, 0);
 
-      // 🔥 SE A DATA É DO FUTURO → NÃO EXIBIR
       if (notifDate > now) return;
 
-      // 🔥 Se já foi fechada → não exibir
       if (closedNotifications[id]) return;
 
       const iconSrc = iconMap[n.icon] || iconMap[1];
@@ -110,7 +99,6 @@ onAuthStateChanged(auth, async (user) => {
         <button class="delete-btn"><div class="close-icon"></div></button>
       `;
 
-      // Botão fechar
       card.querySelector(".delete-btn").addEventListener("click", async () => {
         card.remove();
 
@@ -132,9 +120,7 @@ onAuthStateChanged(auth, async (user) => {
   }
 });
 
-/* ================================ */
-/*   FECHAR TODAS AS NOTIFICAÇÕES  */
-/* ================================ */
+
 document.getElementById("closeAllBtn").addEventListener("click", async () => {
   const user = auth.currentUser;
   if (!user) return;

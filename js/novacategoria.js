@@ -37,13 +37,11 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // caminho raiz da materia
     const materiaRef = ref(
       db,
       `usuarios/${uid}/categoria/${disciplina}/${materia}`
     );
 
-    // criar idMateria
     const idMateriaRef = push(materiaRef);
 
     await set(idMateriaRef, {
@@ -51,7 +49,6 @@ document.addEventListener("DOMContentLoaded", () => {
       criadoEm: new Date().toISOString()
     });
 
-    // cria pasta flashcards vazia
     await set(
       ref(db, `usuarios/${uid}/categoria/${disciplina}/${materia}/flashcards`),
       {}

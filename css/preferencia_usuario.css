@@ -47,7 +47,7 @@ body {
       width: 100%;
       height: 80%;
       object-fit: cover;
-      border-radius: 25px; /* arredonda tudo, incluindo parte inferior */
+      border-radius: 25px;
     }
 
     .card span {
@@ -57,7 +57,7 @@ body {
       color: #2f4f1f;
     }
 
-    /* Bolinha de seleção */
+
     .check-circle {
       position: absolute;
       top: 15px;

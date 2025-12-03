@@ -21,7 +21,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getDatabase(app);
 
-// LOGIN COM EMAIL E SENHA
+
 const submit = document.getElementById("submit");
 
 submit.addEventListener("click", async (event) => {
@@ -37,7 +37,6 @@ submit.addEventListener("click", async (event) => {
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
 
-    // Apenas ATUALIZA, não apaga!
     await update(ref(db, "usuarios/" + user.uid), {
       ultimoLogin: new Date().toISOString()
     });
@@ -58,7 +57,7 @@ submit.addEventListener("click", async (event) => {
   }
 });
 
-// LOGIN COM GOOGLE
+
 const googleBtn = document.querySelector(".btn-google");
 
 if (googleBtn) {
@@ -78,7 +77,6 @@ if (googleBtn) {
 
       const userRef = ref(db, "usuarios/" + user.uid);
 
-      // CORRIGIDO: substituído set() → update()
       await update(userRef, {
         email: user.email,
         nome: user.displayName || "",

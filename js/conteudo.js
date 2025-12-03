@@ -15,19 +15,19 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-// --- LÊ OS PARÂMETROS DA URL ---
+
 const params = new URLSearchParams(window.location.search);
-const topico = params.get("topico");   // ex: "eletroquímica"
-const area = params.get("area");       // ex: "quimica"
+const topico = params.get("topico");
+const area = params.get("area");
 
 document.getElementById("tituloTopico").innerText = topico;
 
-// 🔥🔥🔥 CORRIGIDO: caminho correto é "conteudo", não "conteudos"
+
 const caminho = `conteudo/${area}/${topico}`;
 
 console.log("Lendo Firebase em:", caminho);
 
-// --- LÊ O CONTEÚDO DO BANCO ---
+
 get(ref(db, caminho)).then(snapshot => {
     if (snapshot.exists()) {
 
@@ -49,7 +49,7 @@ get(ref(db, caminho)).then(snapshot => {
     document.getElementById("textoTopico").innerText = "Erro ao carregar conteúdo.";
 });
 
-// --- BOTÃO PARA VER QUESTÕES ---
+
 document.getElementById("btnQuestoes").onclick = () => {
     window.location.href =
         `questoes.html?topico=${encodeURIComponent(topico)}&area=${encodeURIComponent(area)}`;

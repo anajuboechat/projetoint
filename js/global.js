@@ -17,16 +17,15 @@ const firebaseConfig = {
   databaseURL: "https://medvestplus-default-rtdb.firebaseio.com"
 };
 
-// Inicializar
+
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getDatabase(app);
 
-// Referência de elementos
+
 const googleBtn = document.getElementById("googleBtn");
 const globalMsg = document.getElementById("global-message");
 
-// ---------------- GOOGLE LOGIN ----------------
 if (googleBtn) {
   const provider = new GoogleAuthProvider();
 
@@ -65,7 +64,6 @@ if (googleBtn) {
   });
 }
 
-// ---------------- CADASTRO NORMAL ----------------
 const submit = document.getElementById("submit");
 
 submit.addEventListener("click", async (event) => {
@@ -82,12 +80,10 @@ submit.addEventListener("click", async (event) => {
   const password = document.getElementById("password").value;
   const confirm = document.getElementById("confirm-password").value;
 
-  // ---------------------- VALIDAÇÃO NOVA ----------------------
   if (!email) {
     document.getElementById("email-error").textContent = "O email é obrigatório!";
     return;
   }
-  // -----------------------------------------------------------
 
   if (!username) {
     document.getElementById("username-error").textContent = "O nome de usuário é obrigatório!";

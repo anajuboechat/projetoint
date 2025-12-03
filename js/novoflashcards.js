@@ -46,7 +46,6 @@ document.addEventListener("DOMContentLoaded", () => {
       const snapshot = await get(flashcardsRef);
       const data = snapshot.exists() ? snapshot.val() : {};
 
-      // Gera ID sequencial
       const count = Object.keys(data).length + 1;
       const idFlashcard = `flashcard_${String(count).padStart(3, "0")}`;
 

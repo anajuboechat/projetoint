@@ -1,4 +1,3 @@
-/* Botão superior direito */
 .botao-resultados {
   position: absolute;
   top: 20px;
@@ -20,7 +19,7 @@
   background-color: #278c3b;
 }
 
-/* Lista de Resultados */
+
 .resultados-lista {
   margin-top: 20px;
   background: #f1f7ef;
@@ -38,7 +37,7 @@
   margin: 1rem;
 }
 
-/* Gráfico */
+
 .grafico-container {
   margin-top: 30px;
   background: white;
